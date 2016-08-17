@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
 
 
-// TODO: config object with getValue et al
+// TODO: more validators
+// TODO: virgine and reform own isValid et all
 // TODO: test with all form inputs
 // good docs https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
 // TODO: test with bootstrap and other third party components
+// TODO: tests
 // TODO: maybe global validation/error state kept by Reform and passed through onChange?
+// TODO: config object with getValue et al
+// TODO: Reform component should also expose onChange? with a global error object? witg global isValid() et al?
+// - doesnt look like it
 // TODO: probably make Reform wrap everything in a Form? dont want to make this to much of a problem
 // the only advante is less markup and no manual `noValidate` from user
-// TODO: probably the errors object could have a better/richer API
-//  - more description of the error? (for more complex validations)
 // TODO: (probably the most difficult part) get all official HTML rules working
 // TODO: custom validations? (inside the config object)
-// TODO: Reform component should also expose onChange? with a global error object? witg global isValid() et al?
+// TODO: validators and error procesing architecture
 // TODO: add custom css classes the the elemtns? or is it too much?
 
 
@@ -29,6 +32,17 @@ class ReformErrors {
   }
 }
 
+
+// validator api
+// function validator(value, type, props) {
+//   if (type === type1) {
+//     return ....
+//   } else if (type === type2) {
+//     return ...
+//   }
+//
+//   return false
+// }
 
 function onChangeFactory(child, oldOnChange) {
   return function onChange(e) {
@@ -69,7 +83,7 @@ function monkeyPatchChildrens(children) {
 
 
     // TODO: make this filter a bit more harder
-    // - only include form inputs (input, textarear, checkboxes, select, etc)
+    // - only include form inputs (input, textarear, checkboxes, select, etc) and Functions
     // - only include if they have onChange
     if (element.props.onChange) {
       const onChange = onChangeFactory(element, oldOnChange)
