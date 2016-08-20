@@ -1,6 +1,6 @@
 {
   "name": "reform2",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "devDependencies": {
     "react-scripts": "0.2.1"
