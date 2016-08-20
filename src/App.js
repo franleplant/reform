@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
 
+// TODO: a way to force the form to validate (click submit without filling any input)
+// TODO: make handy lambdas to identify elements
 // TODO: more validators
 // TODO: virgine and reform own isValid et all
 // TODO: test with all form inputs
@@ -19,10 +21,16 @@ import React, { Component } from 'react';
 // TODO: add custom css classes the the elemtns? or is it too much?
 
 
+const supportedNativeTypes = ['input', 'select', 'textarea'];
 const getValue = e => e.target.value
 // Slumpy way of detecting text elements
 const isTextElement = el => !el.type
+const isFunctionElement = type => typeof type === 'function'
+const isSupportedType = type => supportedNativeTypes.indexOf(type) !== -1 || isFunctionElement(type)
 
+// TODO: support all kind of submit elements
+const isSubmit = element => element.type === 'button' && element.props.type === 'submit'
+const isForm = element => element.type === 'form'
 
 class ReformErrors {
   isValid() {
@@ -44,6 +52,8 @@ class ReformErrors {
 //   return false
 // }
 
+// pattern
+// TODO: <select> <textarea>
 function onChangeFactory(child, oldOnChange) {
   return function onChange(e) {
     const value = getValue(e);
@@ -58,8 +68,46 @@ function onChangeFactory(child, oldOnChange) {
       }
     }
 
+    if (child.props.pattern) {
+      const supportedInputTypes = ['text', 'search', 'url', 'tel', 'email', 'password']
+      if (
+        (child.type === 'input' &&  supportedInputTypes.indexOf(child.props.type) !== -1) ||
+        isFunctionElement(child.type)) {
+
+        const re = new RegExp(child.props.pattern);
+        errors.pattern = !re.test(value);
+      }
+      console.warn(`Validator: "pattern" not supported for type ${child.type}`)
+    }
+
     if (child.props.required) {
-      errors.required = !value ? true : false
+      const supportedInputTypes = [
+        'text',
+        'search',
+        'url',
+        'tel',
+        'email',
+        'password',
+        'date',
+        'datetime',
+        'datetime-local',
+        'month',
+        'week',
+        'time',
+        'number',
+        'checkbox',
+        'radio',
+        'file'
+      ]
+      if (
+        (child.type === 'input' &&  supportedInputTypes.indexOf(child.props.type) !== -1) ||
+        child.type in ['select', 'textarea'] ||
+        isFunctionElement(child.type)) {
+
+        // Todo maybe make this check a bit better
+        errors.required = !value ? true : false
+      }
+      console.warn(`Validator: "required" not supported for type ${child.type}`)
     }
 
     let args = Array.from(arguments)
@@ -68,7 +116,7 @@ function onChangeFactory(child, oldOnChange) {
   }
 }
 
-function monkeyPatchChildrens(children) {
+function monkeyPatchChildrens(children, context) {
   return React.Children.map(children, element => {
     if (isTextElement(element)) {
       return element
@@ -79,15 +127,32 @@ function monkeyPatchChildrens(children) {
     const oldOnChange = element.props.onChange
 
     // Recursive call
-    const newChildren = monkeyPatchChildrens(oldChildren)
+    const newChildren = monkeyPatchChildrens(oldChildren, context)
 
 
-    // TODO: make this filter a bit more harder
-    // - only include form inputs (input, textarear, checkboxes, select, etc) and Functions
-    // - only include if they have onChange
-    if (element.props.onChange) {
+    if (isSupportedType(element.type) && element.props.onChange) {
       const onChange = onChangeFactory(element, oldOnChange)
-      return React.cloneElement(element, {onChange}, newChildren)
+      // TODO: maintain old refs
+      return React.cloneElement(element, {onChange, ref: el => context.controls.push(el)}, newChildren)
+    } else if (isForm(element)) {
+
+      // TODO: do the same with form onSubmit and input type submit and any other possible submit thing
+      const oldOnSubmit = element.props.onSubmit;
+      //const inputs = this.inputRefs;
+      function onSubmit(e) {
+        // Force update to all inputs
+        const event = new Event('input', { bubbles: true });
+        context.controls.forEach(c => c.dispatchEvent(event));
+        oldOnSubmit.apply(null, arguments);
+        //TODO: trigger validation to all elements
+        //do I have to retain a ref to all inputs to do this?
+        //inputs.forEach(input => input.) //???
+        //if (allInputsAreValid) {
+        //}
+        //context.forceUpdate()
+        e.preventDefault();
+      }
+      return React.cloneElement(element, {onSubmit}, newChildren)
     } else {
       return React.cloneElement(element, {}, newChildren)
     }
@@ -95,8 +160,12 @@ function monkeyPatchChildrens(children) {
 }
 
 class Reform extends Component {
+  constructor(props) {
+    super(props)
+    this.controls = []
+  }
   render() {
-    const newChildren = monkeyPatchChildrens(this.props.children)
+    const newChildren = monkeyPatchChildrens(this.props.children, this)
     return <div>{newChildren}</div>
   }
 }
@@ -108,16 +177,18 @@ class App extends Component {
       name: '',
       nameErrors: {},
       email: '',
-      emailErrors: {}
+      emailErrors: {},
+      fruit: '',
+      fruitErrors: {},
     }
 
     this.handleNameChange = this.handleNameChange.bind(this)
     this.handleEmailChange = this.handleEmailChange.bind(this)
+    this.handleFruitChange = this.handleFruitChange.bind(this)
   }
 
   handleNameChange(e, errors) {
     const isValid = errors.isValid();
-    debugger
     this.setState({
       name: e.target.value,
       nameErrors: errors
@@ -130,11 +201,24 @@ class App extends Component {
       emailErrors: errors
     })
   }
+
+  handleFruitChange(e, errors) {
+    this.setState({
+      fruit: e.target.value,
+      fruitErrors: errors
+    })
+  }
+
+  handleSubmit(e) {
+    // TODO: race condition. The error state isn't updated yet
+    debugger
+    e.preventDefault();
+  }
   render() {
     const nameValidationConfig = {}
     return (
-      <form noValidate>
-        <Reform>
+      <Reform>
+        <form noValidate onSubmit={this.handleSubmit.bind(this)}>
           <h2>Welcome to React</h2>
           <input
             type="text"
@@ -156,14 +240,25 @@ class App extends Component {
               onChange={this.handleEmailChange}
             />
           </div>
-        </Reform>
+          <div>
+            <input
+              type="text"
+              name="fruit"
+              pattern="apple|banana|grape"
+              value={this.state.fruit}
+              onChange={this.handleFruitChange}
+            />
+          </div>
+
+          <button type="submit">Submit</button>
         <div>
           <h3>Errors</h3>
           <p>{JSON.stringify(this.state.nameErrors, null, 2)}</p>
           <p>{JSON.stringify(this.state.emailErrors, null, 2)}</p>
+          <p>{JSON.stringify(this.state.fruitErrors, null, 2)}</p>
         </div>
-        <button>Submit</button>
       </form>
+    </Reform>
     );
   }
 }
