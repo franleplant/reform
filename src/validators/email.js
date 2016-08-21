@@ -1,15 +1,14 @@
-import  {controlIsFunctionType} from '../utils';
+import  * as Control from '../control';
 
-export default function requiredValidator(controlState) {
-  const condition =
-    ( controlState.elementType === 'input' || controlIsFunctionType(controlState.elementType) ) &&
-    controlState.typeProp === 'email'
+export default function emailValidator(control) {
 
+  // TODO: check this validation for custom Components
+  const condition = Control.isInputOrFunctionType(control) && control.typeProp === 'email'
 
   if (condition) {
-    return !/.+@.+\..+/.test(value)
+    return !/.+@.+\..+/.test(control.value)
   }
 
-  console.warn(`Validator: "email" not supported for type ${controlState.elementType}`)
+  console.warn(`Validator: "email" not supported for type ${control.elementType}`)
   return false
 }

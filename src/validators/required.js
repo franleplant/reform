@@ -1,4 +1,4 @@
-import  { controlIsFunctionType } from '../utils';
+import  * as Control from '../control';
 
 const supportedTypes = ['input', 'select', 'textarea']
 const supportedInputTypes = [
@@ -20,17 +20,17 @@ const supportedInputTypes = [
   'file'
 ]
 
-export default function requiredValidator(controlState) {
+export default function requiredValidator(control) {
   const condition =
-    controlState.elementType === 'input' &&  supportedInputTypes.includes(controlState.typeProp) ||
-    supportedTypes.includes(controlState.elementType) ||
-    controlIsFunctionType(controlState.elementType)
+    ( Control.isInput(control) && Control.isInputType(control, supportedInputTypes) ) ||
+    Control.isType(control, supportedTypes) ||
+    Control.isFunctionType(control.elementType)
 
   if (condition) {
       // Todo maybe make this check a bit better
-      return !controlState.value ? true : false
+      return !control.value ? true : false
   }
 
-  console.warn(`Validator: "required" not supported for type ${controlState.elementType}`)
+  console.warn(`Validator: "required" not supported for type ${control.elementType}`)
   return false
 }

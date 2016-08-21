@@ -1,47 +1,12 @@
 import React, { Component } from 'react';
-import * as validators from './validators';
+import * as Element from './element'
+import * as Control from './control'
 
-// TODO:
-// - improve utils to be modularized with controlState and element
-// - merge controlState with data-reform
 const supportedNativeTypes = ['input', 'select', 'textarea'];
-const getValue = e => e.target.value
-// Slumpy way of detecting text elements
-const isTextElement = el => !el.type
-const isFunctionElement = type => typeof type === 'function'
-const isSupportedType = type => supportedNativeTypes.indexOf(type) !== -1 || isFunctionElement(type)
-
-// TODO: support all kind of submit elements
-const isSubmit = element => element.type === 'button' && element.props.type === 'submit'
-const isForm = element => element.type === 'form'
-
-function getValidationRules(props = {}) {
-  return {
-    required: props.required,
-    minLength: props.minLength,
-    pattern: props.pattern,
-  }
-}
-
-/*
-
-interface ValidationRules {
-  required: (controlState) => bool,
-  minLength: ...
-}
-
-interface ControlState {
-  elementType: string | function,
-  name: string,
-  value: any,
-  typeProp: string | void,
-  errors: ReformErrors,
-  validationRules: ValidationRules
-}
-*/
+export const getValue = event => event.target.value
 
 
-class ReformErrors {
+export class ReformErrors {
   isValid() {
     return Object.keys(this)
       .map(error => this[error])
@@ -50,14 +15,16 @@ class ReformErrors {
 }
 
 
+/*
+ getValue: (event, control) => Fieldvalue
+*/
 
-
-
-class Reform extends Component {
+export default class Reform extends Component {
   constructor(props) {
     super(props)
-    this.reformState = {}
+    this.formState = {}
   }
+
   render() {
     const newChildren = this.monkeyPatchChildrens(this.props.children)
     return <div>{newChildren}</div>
@@ -65,28 +32,18 @@ class Reform extends Component {
 
   onChangeFactory(child, oldOnChange) {
     return e => {
-      // TODO: test this
       const name = e.target.getAttribute('name')
       // If cant found then something horrible wrong happended
-      const controlState = this.formState[name]
-
-      let errors = new ReformErrors();
+      let control = this.formState[name]
 
       // Update value
-      controlState.value = getValue(e);
+      control.value = control.getValue(e, control)
 
       // Update error hash
-      const validationRules = controlState.validationRules
-      Object.keys(validationRules)
-        .reduce((map, key) => {
-          map[key] = validationRules[key](controlState)
-          return map
-        }, errors)
+      control = Control.validate(control)
 
-
-
-      let args = Array.from(arguments)
-      args.push(errors)
+      // TODO: figure out a proper interface for the arguments
+      const args = [e, control.errors, arguments]
       oldOnChange.apply(null, args)
     }
   }
@@ -94,73 +51,91 @@ class Reform extends Component {
 
   monkeyPatchChildrens(children) {
     return React.Children.map(children, element => {
-      if (isTextElement(element)) {
+      if (Element.isTextType(element)) {
         return element
       }
 
-      const type = element.type
       const oldChildren = element.props.children
-      const oldOnChange = element.props.onChange
 
       // Recursive call
-      const newChildren = monkeyPatchChildrens(oldChildren)
+      const newChildren = this.monkeyPatchChildrens(oldChildren)
 
 
       let newProps = {};
-      if (isSupportedType(element.type) && element.props.onChange) {
+
+      // TODO: revisit this conditional
+      // TODO: if the element has data-reform then validate it
+      // TODO: probably the best way of checking this is by onChange and value props
+      // and alternatively by data-reform
+      if (
+        (Element.isFunctionType(element) || Element.isType(element, supportedNativeTypes))
+        && element.props.onChange
+      ) {
+        const oldOnChange = element.props.onChange
+        // TODO: const this key
+        // TODO: define config interface
+        const config = element.props['data-reform'] || {}
 
         const name = element.props.name
         if (!name) {
           throw new Error("form controls must have name")
         }
 
-        const validationRules = getValidationRules(element)
-        const controlState = {
+        // TODO: warn about repeated rules
+        const validationRules = Object.assign(
+          config.validationRules || {},
+          Element.getValidationRules(element)
+        );
+
+
+        // TODO: Maybe switch to a class base thingy ???
+        const control = {
           name: name,
           elementType: element.type,
           typeProp: element.props.type,
           errors: {},
           value: element.props.value,
-          valitionRules: valitionRules
+          validationRules: validationRules,
+          getValue: config.getValue || getValue
         }
 
 
         // save it!
-        this.formState[name] = controlState
+        this.formState[name] = control
 
         const onChange = this.onChangeFactory(element, oldOnChange)
         newProps = {onChange}
-      } else if (isForm(element)) {
+      } else if (Element.isForm(element)) {
 
         // TODO: revisit this
         // TODO: do the same with form onSubmit and input type submit and any other possible submit thing
         const oldOnSubmit = element.props.onSubmit;
-        //const inputs = this.inputRefs;
         const onSubmit = e => {
-          // TODO
-          this.validateForm();
-          // TODO
-          const isValid = this.isFormValid()
-          let args = Array.from(arguments)
-          args.push(isValid)
+          const isValid = this.validateForm();
+          const args = [e, isValid, arguments]
           oldOnSubmit.apply(null, args);
         }
 
         newProps =  {onSubmit}
       }
 
-      return React.cloneElement(element, {}, newChildren)
+      return React.cloneElement(element, newProps, newChildren)
     })
   }
 
   validateForm() {
-  
+    return Object.keys(this.formState)
+      .map(fieldName => this.formState[fieldName])
+      .map(control => Control.validate(control))
+      .map(control => control.errors)
+      .every(errors => errors.isValid())
   }
 
   isValid() {
-  
-          //Object.keys(this.formState)
-            //.map(fieldName => this.formState[fieldName].errors)
-            //.map(field =>)
+    return Object.keys(this.formState)
+      .map(fieldName => this.formState[fieldName])
+      .map(control => control.errors)
+      .every(errors => errors.isValid())
   }
+
 }

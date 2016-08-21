@@ -1,4 +1,4 @@
-import  { controlIsFunctionType } from '../utils';
+import  * as Control from '../control';
 
 const supportedTypes = ['input', 'textarea']
 const supportedInputTypes = [
@@ -10,19 +10,19 @@ const supportedInputTypes = [
   'password',
 ]
 
-export default function requiredValidator(controlState) {
+export default function minLengthValidator(control) {
   const condition =
-    controlState.elementType === 'input' &&  supportedInputTypes.includes(controlState.typeProp) ||
-    supportedTypes.includes(controlState.elementType) ||
-    controlIsFunctionType(controlState.elementType)
+    ( Control.isInput(control) && Control.isInputType(control, supportedInputTypes) ) ||
+    Control.isFunctionType(control) ||
+    Control.isType(control, supportedTypes)
 
-  const minLength = controlState.validationRules.minLength
-  const value = controlState.value
+  const minLength = control.validationRules.minLength
+  const value = control.value
 
   if (condition) {
       return value.length < minLength
   }
 
-  console.warn(`Validator: "minLength" not supported for type ${controlState.elementType}`)
+  console.warn(`Validator: "minLength" not supported for type ${control.elementType}`)
   return false
 }
