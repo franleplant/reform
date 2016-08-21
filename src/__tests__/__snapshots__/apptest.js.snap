@@ -1,0 +1,44 @@
+exports[`App renders a welcome view 1`] = `
+<div>
+  <form
+    noValidate={true}
+    onSubmit={[Function onSubmit]}>
+    <h2>
+      Welcome to React
+    </h2>
+    <input
+      data-reform={Object {}}
+      minLength="3"
+      name="name"
+      onChange={[Function anonymous]}
+      required={true}
+      style={
+        Object {
+          "borderColor": null
+        }
+      }
+      type="text"
+      value="" />
+    <div>
+      <input
+        name="email"
+        onChange={[Function anonymous]}
+        type="email"
+        value="" />
+    </div>
+    <div>
+      <input
+        name="fruit"
+        onChange={[Function anonymous]}
+        pattern="apple|banana|grape"
+        type="text"
+        value="" />
+    </div>
+    <button
+      onClick={[Function onClick]}
+      type="submit">
+      Submit
+    </button>
+  </form>
+</div>
+`;
