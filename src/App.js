@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import Reform from './Reform';
 
 
+// TODO: tests, maybe use alpha version of create react app?
+// TODO: work on the user side of the error state interface. Maybe use classes or
+// objects to smooth the interface
 // TODO: settle an interface for Submit and errorMap
-// TODO: monkeypatch all submit mechanisms (contemplate bootstrap forms for example)
+// TODO:  ---- monkeypatch all submit mechanisms (contemplate bootstrap forms for example) ----
 // TODO: more validators
 // TODO: test with all form inputs
 // good docs https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
 // TODO: test with bootstrap and other third party components
-// TODO: tests
 // TODO: (probably the most difficult part) get all official HTML rules working
 // TODO: custom validations? (inside the config object)
 // TODO: optimize
