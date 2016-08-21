@@ -57,9 +57,9 @@ export default class Reform extends Component {
 
   monkeyPatchChildrens(children) {
     return React.Children.map(children, element => {
-      //if (!element) {
-        //debugger
-      //}
+      if (!element) {
+        return element
+      }
       if (Element.isTextType(element)) {
         return element
       }

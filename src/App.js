@@ -25,6 +25,7 @@ class App extends Component {
       emailErrors: {},
       fruit: '',
       fruitErrors: {},
+      errors: {}
     }
 
     this.handleNameChange = this.handleNameChange.bind(this)
@@ -34,31 +35,40 @@ class App extends Component {
 
   handleNameChange(e, errors) {
     const isValid = errors.isValid();
-    this.setState({
-      name: e.target.value,
-      nameErrors: errors
+    const value = e.target.value
+    this.setState(state => {
+      state.name = value
+      state.errors.name = errors
+      return state
     })
   }
 
   handleEmailChange(e, errors) {
-    this.setState({
-      email: e.target.value,
-      emailErrors: errors
+    const value = e.target.value
+    this.setState(state => {
+      state.email = value
+      state.errors.email =  errors
+      return state
     })
   }
 
   handleFruitChange(e, errors) {
-    this.setState({
-      fruit: e.target.value,
-      fruitErrors: errors
+    const value = e.target.value
+    this.setState(state => {
+      state.fruit = value
+      state.errors.fruit = errors
+      return state
     })
   }
 
   handleSubmit(e, isValid, errorMap) {
-    console.log(errorMap)
-    if (!isValid) {
-      alert("FORM NOT VALID ")
-    }
+    this.setState(state => {
+      state.errors = errorMap
+      return state
+    })
+    //if (!isValid) {
+      //alert("FORM NOT VALID ")
+    //}
     e.preventDefault();
   }
   render() {
@@ -76,10 +86,10 @@ class App extends Component {
             value={this.state.name}
             onChange={this.handleNameChange}
             style={{
-              borderColor: Object.keys(this.state.nameErrors).length ? 'red' : null
+              borderColor: this.state.errors.name && !this.state.errors.name.isValid() ?  'red' : null
             }}
           />
-          {JSON.stringify(this.state.nameErrors, null, 2)}
+          {JSON.stringify(this.state.errors.name, null, 2)}
           <div>
             <input
               type="email"
@@ -87,7 +97,7 @@ class App extends Component {
               value={this.state.email}
               onChange={this.handleEmailChange}
             />
- {JSON.stringify(this.state.emailErrors, null, 2)}
+            {JSON.stringify(this.state.errors.email, null, 2)}
           </div>
           <div>
             <input
@@ -97,7 +107,7 @@ class App extends Component {
               value={this.state.fruit}
               onChange={this.handleFruitChange}
             />
- {JSON.stringify(this.state.fruitErrors, null, 2)}
+            {JSON.stringify(this.state.errors.fruit, null, 2)}
           </div>
 
           <button type="submit">Submit</button>
