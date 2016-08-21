@@ -5,6 +5,16 @@ import * as Control from './control'
 const supportedNativeTypes = ['input', 'select', 'textarea'];
 export const getValue = event => event.target.value
 
+/*
+
+type GetValue = (event, control) => fieldValue
+
+interface ReformConfig {
+  validationRules: ValidationRules;
+  getValue: GetValue;
+}
+*/
+
 
 export class ReformErrors {
   isValid() {
@@ -15,9 +25,6 @@ export class ReformErrors {
 }
 
 
-/*
- getValue: (event, control) => Fieldvalue
-*/
 
 export default class Reform extends Component {
   constructor(props) {
@@ -63,23 +70,12 @@ export default class Reform extends Component {
 
       let newProps = {};
 
-      // TODO: revisit this conditional
-      // TODO: if the element has data-reform then validate it
-      // TODO: probably the best way of checking this is by onChange and value props
-      // and alternatively by data-reform
-      if (
-        (Element.isFunctionType(element) || Element.isType(element, supportedNativeTypes))
-        && element.props.onChange
-      ) {
+      const REFORM_CONFIG_KEY = 'data-reform'
+      // TODO: maybe a better sanity check here. Try to be smart about missing onChanges
+      // et al. Maby limit to check onChange and Value and just that and alert about name
+      if (  element.props.onChange && element.props.value && element.props.name) {
         const oldOnChange = element.props.onChange
-        // TODO: const this key
-        // TODO: define config interface
-        const config = element.props['data-reform'] || {}
-
-        const name = element.props.name
-        if (!name) {
-          throw new Error("form controls must have name")
-        }
+        const config = element.props[REFORM_CONFIG_KEY] || {}
 
         // TODO: warn about repeated rules
         const validationRules = Object.assign(
@@ -100,15 +96,15 @@ export default class Reform extends Component {
         }
 
 
-        // save it!
         this.formState[name] = control
 
         const onChange = this.onChangeFactory(element, oldOnChange)
         newProps = {onChange}
+
+      // TODO: revisit this
+      // TODO: do the same with form onSubmit and input type submit and any other possible submit thing
       } else if (Element.isForm(element)) {
 
-        // TODO: revisit this
-        // TODO: do the same with form onSubmit and input type submit and any other possible submit thing
         const oldOnSubmit = element.props.onSubmit;
         const onSubmit = e => {
           const isValid = this.validateForm();

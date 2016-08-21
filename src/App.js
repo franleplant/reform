@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Reform from './Reform';
 
 
+// TODO: centralized list of validation rules keys
 // TODO: merge controlState with data-reform
 // TODO: monkeypatch all submit mechanisms (contemplate bootstrap forms for example)
 // TODO: more validators
