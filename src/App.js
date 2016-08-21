@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import Reform from './Reform';
 
 
-// TODO: centralized list of validation rules keys
-// TODO: merge controlState with data-reform
+// TODO: settle an interface for Submit and errorMap
 // TODO: monkeypatch all submit mechanisms (contemplate bootstrap forms for example)
 // TODO: more validators
 // TODO: test with all form inputs
@@ -55,8 +54,8 @@ class App extends Component {
     })
   }
 
-  handleSubmit(e, isValid) {
-    
+  handleSubmit(e, isValid, errorMap) {
+    console.log(errorMap)
     if (!isValid) {
       alert("FORM NOT VALID ")
     }

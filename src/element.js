@@ -9,6 +9,13 @@ export const isType = (element, types) => {
   return types.includes(element.type)
 }
 
+export const isForm = element => element.type === 'form'
+export const isSubmitInput = element => element.type === 'input' && element.props.type === 'submit'
+
+// TODO: should we follow HTML convention of every button wihout a type diffierent to 'submit' is a submit button?
+export const isSubmitButton = element => element.type === 'button' && element.props.type === 'submit'
+
+
 export const getValidationRules = (element = {}) => {
   const props = element.props || {}
 
@@ -33,8 +40,4 @@ export const getValidationRules = (element = {}) => {
   return rules
 }
 
-
-// TODO: support all kind of submit elements
-export const isSubmitButton = element => element.type === 'button' && element.props.type === 'submit'
-export const isForm = element => element.type === 'form'
 

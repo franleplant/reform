@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import * as Element from './element'
 import * as Control from './control'
 
-const supportedNativeTypes = ['input', 'select', 'textarea'];
-export const getValue = event => event.target.value
+export const defaultGetValue = event => event.target.value
 
 /*
 
@@ -58,6 +57,9 @@ export default class Reform extends Component {
 
   monkeyPatchChildrens(children) {
     return React.Children.map(children, element => {
+      //if (!element) {
+        //debugger
+      //}
       if (Element.isTextType(element)) {
         return element
       }
@@ -73,10 +75,15 @@ export default class Reform extends Component {
       const REFORM_CONFIG_KEY = 'data-reform'
       // TODO: maybe a better sanity check here. Try to be smart about missing onChanges
       // et al. Maby limit to check onChange and Value and just that and alert about name
-      if (  element.props.onChange && element.props.value && element.props.name) {
+      if (  element.props.hasOwnProperty('onChange') && element.props.hasOwnProperty('value')) {
+        const name = element.props.name
+        if (!name) {
+          throw new Error(`All controlled inputs must have "name" props. In ${element}`)
+        }
         const oldOnChange = element.props.onChange
         const config = element.props[REFORM_CONFIG_KEY] || {}
 
+        const getValue =  config.getValue || defaultGetValue
         // TODO: warn about repeated rules
         const validationRules = Object.assign(
           config.validationRules || {},
@@ -92,7 +99,7 @@ export default class Reform extends Component {
           errors: {},
           value: element.props.value,
           validationRules: validationRules,
-          getValue: config.getValue || getValue
+          getValue: getValue,
         }
 
 
@@ -101,19 +108,55 @@ export default class Reform extends Component {
         const onChange = this.onChangeFactory(element, oldOnChange)
         newProps = {onChange}
 
-      // TODO: revisit this
-      // TODO: do the same with form onSubmit and input type submit and any other possible submit thing
-      } else if (Element.isForm(element)) {
+      // TODO: are these all the ways to submit a form?
+      // Any element that has onSubmit
+      // since html only allows <form> to have onSubmit handlers then we are covered
+      // form on Submit
+      } else if (element.props.onSubmit) {
 
         const oldOnSubmit = element.props.onSubmit;
         const onSubmit = e => {
           const isValid = this.validateForm();
-          const args = [e, isValid, arguments]
+          const errorMap =
+            Object.keys(this.formState)
+              .map(fieldName => this.formState[fieldName])
+              .reduce((map, control) => {
+                const name = control.name
+                const errors = control.errors
+                map[name] = errors
+                return map
+              }, {})
+
+          const args = [e, isValid, errorMap, arguments]
           oldOnSubmit.apply(null, args);
         }
 
         newProps =  {onSubmit}
+
+      // Input type submit
+      // Button (submit)
+      } else if (Element.isSubmitInput(element) || Element.isSubmitButton(element)) {
+
+        const oldOnClick = element.props.onClick || function() {};
+        const onClick = e => {
+          const isValid = this.validateForm();
+          const errorsMap =
+            Object.keys(this.formState)
+              .map(fieldName => this.formState[fieldName])
+              .reduce((map, control) => {
+                const name = control.name
+                const errors = control.errors
+                map[name] = errors
+                return map
+              }, {})
+
+          const args = [e, isValid, errorsMap, arguments]
+          oldOnClick.apply(null, args);
+        }
+
+        newProps = {onClick}
       }
+
 
       return React.cloneElement(element, newProps, newChildren)
     })
