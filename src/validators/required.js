@@ -1,23 +1,23 @@
 import  * as Control from '../control';
 
-const supportedTypes = ['input', 'select', 'textarea']
-const supportedInputTypes = [
-  'text',
-  'search',
-  'url',
-  'tel',
-  'email',
-  'password',
+export const supportedTypes = ['input', 'select', 'textarea']
+export const supportedInputTypes = [
+  'checkbox',
   'date',
   'datetime',
   'datetime-local',
+  'email',
+  'file',
   'month',
-  'week',
-  'time',
   'number',
-  'checkbox',
+  'password',
   'radio',
-  'file'
+  'search',
+  'tel',
+  'text',
+  'time',
+  'url',
+  'week',
 ]
 
 export default function requiredValidator(control) {
