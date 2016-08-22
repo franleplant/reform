@@ -3,8 +3,12 @@
   "version": "1.2.0",
   "private": true,
   "devDependencies": {
+    "enzyme": "2.4.1",
+    "react-addons-test-utils": "15.3.1",
+    "react-dom": "15.3.1",
     "react-scripts": "facebookincubator/create-react-app#b93e6c0bce277f40ce1ceda2591bd521e573098a",
-    "react-test-renderer": "15.3.1"
+    "react-test-renderer": "15.3.1",
+    "sinon": "1.17.5"
   },
   "dependencies": {
     "react": "^15.2.1",
