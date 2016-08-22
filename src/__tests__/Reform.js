@@ -63,9 +63,69 @@ describe('required', () => {
     controlRequiredTest({type: 'textarea', validator: {required: true}, value: "ok", error: false})
   });
 
-  // TODO
-  //describe(`<select required />"`, () => {
-    //controlRequiredTest({type: 'textarea', validator: {required: true}})
-  //});
+  describe(`<select required />"`, () => {
+    const name = "test"
+    const initialValue = ""
+    const successValue = "pizza"
+    const failureValue = ""
+
+    it(`should add errors to onChange arguments with value = "${successValue}"`, () => {
+      const onChange = sinon.spy();
+      const wrapper = shallow(
+        <Reform>
+          <form>
+            <select name={name} required value={initialValue} onChange={onChange}>
+              <option value="" disabled>Select food</option>
+              <option value="hot dogs">Hot Dogs</option>
+              <option value="pizza">Pizza</option>
+              <option value="cake">Cake</option>
+            </select>
+          </form>
+        </Reform>
+      );
+
+      wrapper.find('select').simulate('change', {target: {value: successValue, getAttribute: _ => name}});
+
+      expect(onChange.calledOnce).toBe(true);
+      const [ control, event ] = onChange.args[0]
+      expect(control).toBeDefined()
+      expect(control.errors).toBeDefined()
+      expect(control.errors.required).toBeDefined()
+      expect(control.errors.required).toBe(false)
+
+      expect(event).toBeDefined()
+      expect(event.target).toBeDefined()
+      expect(event.target.value).toBe(successValue)
+    });
+
+    it(`should add errors to onChange arguments with value = "${failureValue}"`, () => {
+      const onChange = sinon.spy();
+      const wrapper = shallow(
+        <Reform>
+          <form>
+            <select name={name} required value={initialValue} onChange={onChange}>
+              <option value="" disabled>Select food</option>
+              <option value="hot dogs">Hot Dogs</option>
+              <option value="pizza">Pizza</option>
+              <option value="cake">Cake</option>
+            </select>
+          </form>
+        </Reform>
+      );
+
+      wrapper.find('select').simulate('change', {target: {value: failureValue, getAttribute: _ => name}});
+
+      expect(onChange.calledOnce).toBe(true);
+      const [ control, event ] = onChange.args[0]
+      expect(control).toBeDefined()
+      expect(control.errors).toBeDefined()
+      expect(control.errors.required).toBeDefined()
+      expect(control.errors.required).toBe(true)
+
+      expect(event).toBeDefined()
+      expect(event.target).toBeDefined()
+      expect(event.target.value).toBe(failureValue)
+    });
+  });
 
 });
