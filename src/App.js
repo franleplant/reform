@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
 import Reform from './Reform';
 
-
-
-
-
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
       name: '',
-      nameErrors: {},
       email: '',
-      emailErrors: {},
       fruit: '',
-      fruitErrors: {},
       errors: {}
     }
 
@@ -23,30 +16,30 @@ class App extends Component {
     this.handleFruitChange = this.handleFruitChange.bind(this)
   }
 
-  handleNameChange(e, errors) {
-    const isValid = errors.isValid();
-    const value = e.target.value
+  handleNameChange(control, event) {
+    const isValid = control.errors.isValid();
+    const value = control.value
     this.setState(state => {
       state.name = value
-      state.errors.name = errors
+      state.errors.name = control.errors
       return state
     })
   }
 
-  handleEmailChange(e, errors) {
-    const value = e.target.value
+  handleEmailChange(control, event) {
+    const value = control.value
     this.setState(state => {
       state.email = value
-      state.errors.email =  errors
+      state.errors.email =  control.errors
       return state
     })
   }
 
-  handleFruitChange(e, errors) {
-    const value = e.target.value
+  handleFruitChange(control, event) {
+    const value = control.value
     this.setState(state => {
       state.fruit = value
-      state.errors.fruit = errors
+      state.errors.fruit = control.errors
       return state
     })
   }

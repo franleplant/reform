@@ -60,10 +60,11 @@ export default class Reform extends Component {
   }
 
   onChangeFactory(child, oldOnChange) {
-    return e => {
+    const that = this;
+    return function(e) {
       const name = e.target.getAttribute('name')
       // If cant found then something horrible wrong happended
-      let control = this.formState[name]
+      let control = that.formState[name]
 
       // Update value
       control.value = control.getValue(e, control)
@@ -71,9 +72,7 @@ export default class Reform extends Component {
       // Update error hash
       control = Control.validate(control)
 
-      // TODO: figure out a proper interface for the arguments
-      const args = [e, control.errors, arguments]
-      oldOnChange.apply(null, args)
+      oldOnChange.apply(null, [control, ...arguments])
     }
   }
 
