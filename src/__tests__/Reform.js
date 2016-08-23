@@ -128,4 +128,62 @@ describe('required', () => {
     });
   });
 
+  // TODO: radio
+  //
+  describe(`<input type="checkbox" required />"`, () => {
+    const name = "test"
+    const initialValue = ""
+    const value = "checkbox_a"
+
+    it(`should add errors to onChange arguments with checked = true`, () => {
+      const onChange = sinon.spy();
+      const wrapper = shallow(
+        <Reform>
+          <form>
+            <input type="checkbox" name={name} value={value} onChange={onChange}  checked={initialValue} required/>
+          </form>
+        </Reform>
+      );
+
+      wrapper.find('input').simulate('change', {target: {value: "checkbox_a", checked: true, getAttribute: _ => name}});
+
+      expect(onChange.calledOnce).toBe(true);
+      const [ control, event ] = onChange.args[0]
+      expect(control).toBeDefined()
+      expect(control.errors).toBeDefined()
+      expect(control.errors.required).toBeDefined()
+      expect(control.errors.required).toBe(false)
+
+      expect(event).toBeDefined()
+      expect(event.target).toBeDefined()
+      expect(event.target.value).toBe(value)
+      expect(event.target.checked).toBe(true)
+    });
+
+    it(`should add errors to onChange arguments with checked = false`, () => {
+      const onChange = sinon.spy();
+      const wrapper = shallow(
+        <Reform>
+          <form>
+            <input type="checkbox" name={name} value={value} onChange={onChange}  checked={initialValue} required/>
+          </form>
+        </Reform>
+      );
+
+      wrapper.find('input').simulate('change', {target: {value: "checkbox_a", checked: false, getAttribute: _ => name}});
+
+      expect(onChange.calledOnce).toBe(true);
+      const [ control, event ] = onChange.args[0]
+      expect(control).toBeDefined()
+      expect(control.errors).toBeDefined()
+      expect(control.errors.required).toBeDefined()
+      expect(control.errors.required).toBe(true)
+
+      expect(event).toBeDefined()
+      expect(event.target).toBeDefined()
+      expect(event.target.value).toBe(value)
+      expect(event.target.checked).toBe(false)
+    });
+
+  });
 });

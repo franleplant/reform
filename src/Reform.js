@@ -69,6 +69,10 @@ export default class Reform extends Component {
       // Update value
       control.value = control.getValue(e, control)
 
+      if (Control.isInputType(control, 'checkbox')) {
+        control.checked = e.target.checked
+      }
+
       // Update error hash
       control = Control.validate(control)
 
@@ -105,7 +109,13 @@ export default class Reform extends Component {
         const oldOnChange = element.props.onChange
         const config = element.props[REFORM_CONFIG_KEY] || {}
 
-        const getValue =  config.getValue || defaultGetValue
+        let getValue = defaultGetValue;
+
+        if (config.getValue) {
+          getValue = config.getValue
+        }
+
+
         // TODO: warn about repeated rules
         const validationRules = Object.assign(
           config.validationRules || {},
@@ -122,6 +132,7 @@ export default class Reform extends Component {
           value: element.props.value,
           validationRules: validationRules,
           getValue: getValue,
+          checked: element.props.checked,
         }
 
 

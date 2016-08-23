@@ -48,7 +48,6 @@ class App extends Component {
     })
   }
 
-  // TODO: fix checkboxes!
   handleCheckboxChange(control, event) {
     const value = control.value
     this.setState(state => {
@@ -59,7 +58,6 @@ class App extends Component {
   }
 
   handleSelectChange(control, event) {
-  debugger
     const value = control.value
     this.setState(state => {
       state.select = value
@@ -69,6 +67,7 @@ class App extends Component {
   }
 
   handleSubmit(e, isValid, errorMap) {
+  debugger
     this.setState(state => {
       state.errors = errorMap
       return state
@@ -118,9 +117,7 @@ class App extends Component {
           </div>
 
           <div>
-            <input type="checkbox" name="checkbox" value="hot dogs" onChange={this.handleCheckboxChange} required/>
-            <input type="checkbox" name="checkbox" value="pizza" onChange={this.handleCheckboxChange} required/>
-            <input type="checkbox" name="checkbox" value="cake" onChange={this.handleCheckboxChange} required/>
+            <input type="checkbox" name="checkbox" value="checkbox_a" onChange={this.handleCheckboxChange}  checked={this.state.checkbox}required/>
             {JSON.stringify(this.state.errors.checkbox, null, 2)}
           </div>
 
