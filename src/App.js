@@ -10,6 +10,7 @@ class App extends Component {
       fruit: '',
       checkbox: '',
       select: '',
+      radio: '',
       errors: {}
     }
 
@@ -18,6 +19,7 @@ class App extends Component {
     this.handleFruitChange = this.handleFruitChange.bind(this)
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this)
     this.handleSelectChange = this.handleSelectChange.bind(this)
+    this.handleRadioChange = this.handleRadioChange.bind(this)
   }
 
   handleNameChange(control, event) {
@@ -66,8 +68,17 @@ class App extends Component {
     })
   }
 
-  handleSubmit(e, isValid, errorMap) {
+
+  handleRadioChange(control, event) {
   debugger
+    this.setState(state => {
+      state.radio = control.value
+      state.errors.radio =  control.errors
+      return state
+    })
+  }
+
+  handleSubmit(e, isValid, errorMap) {
     this.setState(state => {
       state.errors = errorMap
       return state
@@ -117,7 +128,7 @@ class App extends Component {
           </div>
 
           <div>
-            <input type="checkbox" name="checkbox" value="checkbox_a" onChange={this.handleCheckboxChange}  checked={this.state.checkbox}required/>
+            <input type="checkbox" name="checkbox" value="checkbox_a" onChange={this.handleCheckboxChange}  checked={this.state.checkbox} required/>
             {JSON.stringify(this.state.errors.checkbox, null, 2)}
           </div>
 
@@ -129,6 +140,12 @@ class App extends Component {
               <option value="cake">Cake</option>
             </select>
             {JSON.stringify(this.state.errors.select, null, 2)}
+          </div>
+
+          <div>
+            <input type="radio" name="radio" value="opt1" onChange={this.handleRadioChange} checked={this.state.radio === 'opt1'} required/>
+            <input type="radio" name="radio" value="opt2" onChange={this.handleRadioChange} checked={this.state.radio === 'opt2'} required/>
+            {JSON.stringify(this.state.errors.radio, null, 2)}
           </div>
 
           <button type="submit">Submit</button>

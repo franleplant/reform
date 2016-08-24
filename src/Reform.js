@@ -14,11 +14,15 @@ interface ReformConfig {
 }
 */
 
+/*
+ form spec!
+  https://www.w3.org/TR/html5/forms.html
+*/
 
-// TODO: tests, maybe use alpha version of create react app?
 // TODO: input type is by default "text"
 // TODO: work on the user side of the error state interface. Maybe use classes or
 // objects to smooth the interface
+// TODO: Control api: it should be a class for easy data + functionality api
 // TODO: settle an interface for Submit and errorMap
 // TODO:  ---- monkeypatch all submit mechanisms (contemplate bootstrap forms for example) ----
 // TODO: more validators
@@ -31,7 +35,11 @@ interface ReformConfig {
 // TODO: warn if no form is in the children
 // TODO: warn if no controls
 // TODO: wanr if no submit handlers
+// TODO: warn about radio buttons with different validation rules
+// TODO: warn duplicated names (except for radios)
 // TODO: validation apis (adding, composing, et al)
+// TODO: FormState api: think better about it
+// TODO: a way to force CustomComponents to validate as a radio, or a specific input type
 // TODO: optimize
 
 
@@ -109,6 +117,7 @@ export default class Reform extends Component {
         const oldOnChange = element.props.onChange
         const config = element.props[REFORM_CONFIG_KEY] || {}
 
+        let value = element.props.value
         let getValue = defaultGetValue;
 
         if (config.getValue) {
@@ -123,13 +132,22 @@ export default class Reform extends Component {
         );
 
 
+        //if it's a radio input then value should be set for
+        //the checked input if not it should be ''
+        //TODO: validate this
+        //TODO: this might be solve when we start to optimize the control
+        //object creation
+        if (element.props.type === 'radio') {
+          value = element.props.checked ? value : ''
+        }
+
         // TODO: Maybe switch to a class base thingy ???
         const control = {
           name: name,
           elementType: element.type,
           typeProp: element.props.type,
           errors: {},
-          value: element.props.value,
+          value: value,
           validationRules: validationRules,
           getValue: getValue,
           checked: element.props.checked,

@@ -33,9 +33,16 @@ export default function requiredValidator(control) {
   }
 
   // Special case for checkboxes
-  if (Control.isInput(control) && Control.isInputType(control, 'checkbox')) {
+  if (Control.isInputType(control, 'checkbox')) {
+    //Constraint validation: If the element is required and its checkedness is false, then the element is suffering from being missing.
     return !control.checked
   }
+
+  // Special case for radio
+  // need to check that one radio with the same name is checked
+  //if (Control.isInputType(control, 'radio')) {
+    //return !control.checked
+  //}
 
   console.warn(`Validator: "required" not supported for type ${control.elementType}`)
   return false

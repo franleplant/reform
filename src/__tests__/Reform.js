@@ -51,7 +51,11 @@ function controlRequiredTest(params) {
 }
 
 describe('required', () => {
-  required.supportedInputTypes.forEach(inputType => {
+  required
+  .supportedInputTypes
+  .filter(t => t !== 'radio')
+  .filter(t => t !== 'checkbox')
+  .forEach(inputType => {
     describe(`<input type="${inputType}" required />"`, () => {
       controlRequiredTest({type: 'input', inputType: inputType, validator: {required: true}, value: "", error: true})
       controlRequiredTest({type: 'input', inputType: inputType, validator: {required: true}, value: "ok", error: false})
@@ -128,8 +132,6 @@ describe('required', () => {
     });
   });
 
-  // TODO: radio
-  //
   describe(`<input type="checkbox" required />"`, () => {
     const name = "test"
     const initialValue = ""
@@ -145,7 +147,7 @@ describe('required', () => {
         </Reform>
       );
 
-      wrapper.find('input').simulate('change', {target: {value: "checkbox_a", checked: true, getAttribute: _ => name}});
+      wrapper.find('input').simulate('change', {target: {value: value, checked: true, getAttribute: _ => name}});
 
       expect(onChange.calledOnce).toBe(true);
       const [ control, event ] = onChange.args[0]
@@ -170,7 +172,7 @@ describe('required', () => {
         </Reform>
       );
 
-      wrapper.find('input').simulate('change', {target: {value: "checkbox_a", checked: false, getAttribute: _ => name}});
+      wrapper.find('input').simulate('change', {target: {value: value, checked: false, getAttribute: _ => name}});
 
       expect(onChange.calledOnce).toBe(true);
       const [ control, event ] = onChange.args[0]
@@ -186,4 +188,86 @@ describe('required', () => {
     });
 
   });
+
+
+});
+
+describe(`<input type="radio" required />"`, () => {
+  const name = "test"
+  const initialValue = ""
+
+  it(`should initially set value='' when no radio is checked`, () => {
+    const onChange = sinon.spy();
+    const wrapper = shallow(
+      <Reform>
+        <form>
+          <input type="radio" name={name} value="opt1" onChange={onChange} checked={false} required/>
+          <input type="radio" name={name} value="opt2" onChange={onChange} checked={false} required/>
+        </form>
+      </Reform>
+    );
+
+    const reform = wrapper.instance();
+    reform.validateForm();
+
+    const control = reform.formState[name];
+    expect(control.value).toBe('')
+    expect(control.errors).toBeDefined();
+    expect(control.errors.required).toBeDefined();
+    expect(control.errors.required).toBe(true);
+  });
+
+  it(`should add errors to onChange arguments with checked = true`, () => {
+    const onChange = sinon.spy();
+    const wrapper = shallow(
+      <Reform>
+        <form>
+          <input type="radio" name={name} value="opt1" onChange={onChange} checked={false} required id="opt1"/>
+          <input type="radio" name={name} value="opt2" onChange={onChange} checked={false} required/>
+        </form>
+      </Reform>
+    );
+
+    wrapper.find('#opt1').simulate('change', {target: {value: 'opt1', checked: true, getAttribute: _ => name}});
+
+    expect(onChange.calledOnce).toBe(true);
+    const [ control, event ] = onChange.args[0]
+    expect(control).toBeDefined()
+    expect(control.errors).toBeDefined()
+    expect(control.errors.required).toBeDefined()
+    expect(control.errors.required).toBe(false)
+
+    expect(event).toBeDefined()
+    expect(event.target).toBeDefined()
+    expect(event.target.value).toBe('opt1')
+    expect(event.target.checked).toBe(true)
+  });
+
+  // TODO: apprently this test does not make any sense
+  xit(`should add errors to onChange arguments with checked = false`, () => {
+    const onChange = sinon.spy();
+    const wrapper = shallow(
+      <Reform>
+        <form>
+          <input type="radio" name={name} value="opt1" onChange={onChange} checked={true} required id="opt1"/>
+          <input type="radio" name={name} value="opt2" onChange={onChange} checked={false} required/>
+        </form>
+      </Reform>
+    );
+
+    wrapper.find('#opt1').simulate('change', {target: {value: 'opt1', checked: false, getAttribute: _ => name}});
+
+    expect(onChange.calledOnce).toBe(true);
+    const [ control, event ] = onChange.args[0]
+    expect(control).toBeDefined()
+    expect(control.errors).toBeDefined()
+    expect(control.errors.required).toBeDefined()
+    expect(control.errors.required).toBe(true)
+
+    expect(event).toBeDefined()
+    expect(event.target).toBeDefined()
+    expect(event.target.value).toBe('opt1')
+    expect(event.target.checked).toBe(false)
+  });
+
 });
