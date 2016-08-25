@@ -45,7 +45,7 @@ function controlIntialStateTest(params) {
   });
 }
 
-function controlRequiredTest(params) {
+function controlOnChangeTest(params) {
   const name = "testName"
   const type = params.type
   const validator = params.validator
@@ -92,15 +92,15 @@ describe('required', () => {
   .forEach(inputType => {
     describe(`<input type="${inputType}" required />"`, () => {
       controlIntialStateTest({type: 'input', inputType: inputType, validator: {required: true}, value: "ok", error: false})
-      controlRequiredTest({type: 'input', inputType: inputType, validator: {required: true}, value: "", error: true})
-      controlRequiredTest({type: 'input', inputType: inputType, validator: {required: true}, value: "ok", error: false})
+      controlOnChangeTest({type: 'input', inputType: inputType, validator: {required: true}, value: "", error: true})
+      controlOnChangeTest({type: 'input', inputType: inputType, validator: {required: true}, value: "ok", error: false})
     });
   })
 
   describe(`<textarea required />"`, () => {
     controlIntialStateTest({type: 'textarea', validator: {required: true}, value: "", error: true})
-    controlRequiredTest({type: 'textarea', validator: {required: true}, value: "", error: true})
-    controlRequiredTest({type: 'textarea', validator: {required: true}, value: "ok", error: false})
+    controlOnChangeTest({type: 'textarea', validator: {required: true}, value: "", error: true})
+    controlOnChangeTest({type: 'textarea', validator: {required: true}, value: "ok", error: false})
   });
 
   describe(`<select required />"`, () => {
@@ -370,8 +370,8 @@ describe('required', () => {
 describe('email', () => {
   describe(`<input type="email" />"`, () => {
     controlIntialStateTest({type: 'input', inputType: 'email', validator: {email: true}, value: "a@ab.com", error: false})
-    controlRequiredTest({type: 'input', inputType: 'email', validator: {email: true}, value: "", error: true})
-    controlRequiredTest({type: 'input', inputType: 'email', validator: {email: true}, value: "a@ab.com", error: false})
+    controlOnChangeTest({type: 'input', inputType: 'email', validator: {email: true}, value: "", error: true})
+    controlOnChangeTest({type: 'input', inputType: 'email', validator: {email: true}, value: "a@ab.com", error: false})
   });
 });
 
@@ -384,14 +384,14 @@ describe('minLength', () => {
   .forEach(inputType => {
     describe(`<input type="${inputType}" minLength=3 />"`, () => {
       controlIntialStateTest({type: 'input', inputType: inputType, validator , value: "okk", error: false})
-      controlRequiredTest({type: 'input', inputType: inputType, validator, value: "", error: true})
-      controlRequiredTest({type: 'input', inputType: inputType, validator, value: "okk", error: false})
+      controlOnChangeTest({type: 'input', inputType: inputType, validator, value: "", error: true})
+      controlOnChangeTest({type: 'input', inputType: inputType, validator, value: "okk", error: false})
     });
   })
 
   describe(`<textarea minLength=3 />"`, () => {
     controlIntialStateTest({type: 'textarea', validator, value: "okk", error: true})
-    controlRequiredTest({type: 'textarea', validator, value: "", error: true})
-    controlRequiredTest({type: 'textarea', validator, value: "okk", error: false})
+    controlOnChangeTest({type: 'textarea', validator, value: "", error: true})
+    controlOnChangeTest({type: 'textarea', validator, value: "okk", error: false})
   });
 });
