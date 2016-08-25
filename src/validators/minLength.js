@@ -1,7 +1,7 @@
 import  * as Control from '../control';
 
-const supportedTypes = ['input', 'textarea']
-const supportedInputTypes = [
+export const supportedTypes = ['input', 'textarea']
+export const supportedInputTypes = [
   'text',
   'search',
   'url',

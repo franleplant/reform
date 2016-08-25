@@ -1,5 +1,6 @@
 jest.unmock('../Reform');
 jest.unmock('../validators/required');
+jest.unmock('../validators/minLength');
 
 
 import React from 'react';
@@ -10,6 +11,7 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import Reform from '../Reform';
 import * as required from '../validators/required'
+import * as minLength from '../validators/minLength'
 
 
 function controlIntialStateTest(params) {
@@ -35,7 +37,6 @@ function controlIntialStateTest(params) {
     const reform = wrapper.instance();
     reform.validateForm();
 
-    console.log(reform.formState)
     const control = reform.formState[name];
     expect(control.value).toBe(initialValue)
     expect(control.errors).toBeDefined();
@@ -363,5 +364,34 @@ describe('required', () => {
       expect(event.target.value).toBe(failureValue)
     });
 
+  });
+});
+
+describe('email', () => {
+  describe(`<input type="email" />"`, () => {
+    controlIntialStateTest({type: 'input', inputType: 'email', validator: {email: true}, value: "a@ab.com", error: false})
+    controlRequiredTest({type: 'input', inputType: 'email', validator: {email: true}, value: "", error: true})
+    controlRequiredTest({type: 'input', inputType: 'email', validator: {email: true}, value: "a@ab.com", error: false})
+  });
+});
+
+describe('minLength', () => {
+  const validator = {minLength: 3}
+  minLength
+  .supportedInputTypes
+  //.filter(t => t !== 'radio')
+  //.filter(t => t !== 'checkbox')
+  .forEach(inputType => {
+    describe(`<input type="${inputType}" minLength=3 />"`, () => {
+      controlIntialStateTest({type: 'input', inputType: inputType, validator , value: "okk", error: false})
+      controlRequiredTest({type: 'input', inputType: inputType, validator, value: "", error: true})
+      controlRequiredTest({type: 'input', inputType: inputType, validator, value: "okk", error: false})
+    });
+  })
+
+  describe(`<textarea minLength=3 />"`, () => {
+    controlIntialStateTest({type: 'textarea', validator, value: "okk", error: true})
+    controlRequiredTest({type: 'textarea', validator, value: "", error: true})
+    controlRequiredTest({type: 'textarea', validator, value: "okk", error: false})
   });
 });
