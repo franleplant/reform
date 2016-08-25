@@ -1,6 +1,6 @@
 import  * as Control from '../control';
 
-const supportedInputTypes = ['text', 'search', 'url', 'tel', 'email', 'password']
+export const supportedInputTypes = ['text', 'search', 'url', 'tel', 'email', 'password']
 
 
 export default function patternValidator(control) {

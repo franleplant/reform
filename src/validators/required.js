@@ -2,7 +2,7 @@ import  * as Control from '../control';
 
 export const supportedTypes = ['select', 'textarea']
 export const supportedInputTypes = [
-  //'checkbox',
+  'checkbox',
   'date',
   'datetime',
   'datetime-local',
@@ -22,6 +22,12 @@ export const supportedInputTypes = [
 
 // TODO: all this needs to be improved once Validator Architecture arrives
 export default function requiredValidator(control) {
+  // Special case for checkboxes
+  if (Control.isInputType(control, 'checkbox')) {
+    //Constraint validation: If the element is required and its checkedness is false, then the element is suffering from being missing.
+    return !control.checked
+  }
+
   const condition =
     ( Control.isInput(control) && Control.isInputType(control, supportedInputTypes) ) ||
     Control.isType(control, supportedTypes) ||
@@ -32,11 +38,6 @@ export default function requiredValidator(control) {
     return !control.value ? true : false
   }
 
-  // Special case for checkboxes
-  if (Control.isInputType(control, 'checkbox')) {
-    //Constraint validation: If the element is required and its checkedness is false, then the element is suffering from being missing.
-    return !control.checked
-  }
 
   // Special case for radio
   // need to check that one radio with the same name is checked

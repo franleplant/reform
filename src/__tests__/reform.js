@@ -1,6 +1,8 @@
 jest.unmock('../Reform');
 jest.unmock('../validators/required');
 jest.unmock('../validators/minLength');
+jest.unmock('../validators/pattern');
+jest.unmock('../testTemplates');
 
 
 import React from 'react';
@@ -10,42 +12,13 @@ import ReactTestUtils from 'react-addons-test-utils';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import Reform from '../Reform';
+import { controlOnChangeTest, controlIntialStateTest } from '../testTemplates'
 import * as required from '../validators/required'
 import * as minLength from '../validators/minLength'
+import * as pattern from '../validators/pattern'
 
 
-function controlIntialStateTest(params) {
-  const name = "testName"
-  const initialValue = ""
-  const type = params.type
-  const inputType = params.inputType
-  const validator = params.validator
-  const validatorKey = Object.keys(validator)[0]
-  const onChange = sinon.spy();
-
-  let props = Object.assign({ name: name, value: initialValue, onChange: onChange}, validator)
-
-  if (type === 'input') {
-    props.type = inputType
-  }
-
-  it(`should set correct initial control state`, () => {
-    const wrapper = shallow(
-      <Reform> <form> {React.createElement(type, props)} </form> </Reform>
-    );
-
-    const reform = wrapper.instance();
-    reform.validateForm();
-
-    const control = reform.formState[name];
-    expect(control.value).toBe(initialValue)
-    expect(control.errors).toBeDefined();
-    expect(control.errors[validatorKey]).toBeDefined();
-    expect(control.errors[validatorKey]).toBe(true);
-  });
-}
-
-function controlOnChangeTest(params) {
+function controlOnChangeTestOld(params) {
   const name = "testName"
   const type = params.type
   const validator = params.validator
@@ -85,22 +58,30 @@ function controlOnChangeTest(params) {
 }
 
 describe('required', () => {
+   const validator =  {required: true}
+
+
+
   required
   .supportedInputTypes
   .filter(t => t !== 'radio')
   .filter(t => t !== 'checkbox')
   .forEach(inputType => {
     describe(`<input type="${inputType}" required />"`, () => {
-      controlIntialStateTest({type: 'input', inputType: inputType, validator: {required: true}, value: "ok", error: false})
-      controlOnChangeTest({type: 'input', inputType: inputType, validator: {required: true}, value: "", error: true})
-      controlOnChangeTest({type: 'input', inputType: inputType, validator: {required: true}, value: "ok", error: false})
+      const successConfig =  {type: 'input', inputType, validator, value: "ok", error: false}
+      const failureConfig =  {type: 'input', inputType, validator, value: "", error: true}
+      controlIntialStateTest(successConfig)
+      controlOnChangeTest(failureConfig)
+      controlOnChangeTest(successConfig)
     });
   })
 
   describe(`<textarea required />"`, () => {
-    controlIntialStateTest({type: 'textarea', validator: {required: true}, value: "", error: true})
-    controlOnChangeTest({type: 'textarea', validator: {required: true}, value: "", error: true})
-    controlOnChangeTest({type: 'textarea', validator: {required: true}, value: "ok", error: false})
+      const successConfig =  {type: 'textarea', validator, value: "ok", error: false}
+      const failureConfig =  {type: 'textarea', validator, value: "", error: true}
+      controlIntialStateTest(successConfig)
+      controlOnChangeTest(failureConfig)
+      controlOnChangeTest(successConfig)
   });
 
   describe(`<select required />"`, () => {
@@ -370,8 +351,8 @@ describe('required', () => {
 describe('email', () => {
   describe(`<input type="email" />"`, () => {
     controlIntialStateTest({type: 'input', inputType: 'email', validator: {email: true}, value: "a@ab.com", error: false})
-    controlOnChangeTest({type: 'input', inputType: 'email', validator: {email: true}, value: "", error: true})
-    controlOnChangeTest({type: 'input', inputType: 'email', validator: {email: true}, value: "a@ab.com", error: false})
+    controlOnChangeTestOld({type: 'input', inputType: 'email', validator: {email: true}, value: "", error: true})
+    controlOnChangeTestOld({type: 'input', inputType: 'email', validator: {email: true}, value: "a@ab.com", error: false})
   });
 });
 
@@ -379,19 +360,30 @@ describe('minLength', () => {
   const validator = {minLength: 3}
   minLength
   .supportedInputTypes
-  //.filter(t => t !== 'radio')
-  //.filter(t => t !== 'checkbox')
   .forEach(inputType => {
     describe(`<input type="${inputType}" minLength=3 />"`, () => {
       controlIntialStateTest({type: 'input', inputType: inputType, validator , value: "okk", error: false})
-      controlOnChangeTest({type: 'input', inputType: inputType, validator, value: "", error: true})
-      controlOnChangeTest({type: 'input', inputType: inputType, validator, value: "okk", error: false})
+      controlOnChangeTestOld({type: 'input', inputType: inputType, validator, value: "", error: true})
+      controlOnChangeTestOld({type: 'input', inputType: inputType, validator, value: "okk", error: false})
     });
   })
 
   describe(`<textarea minLength=3 />"`, () => {
     controlIntialStateTest({type: 'textarea', validator, value: "okk", error: true})
-    controlOnChangeTest({type: 'textarea', validator, value: "", error: true})
-    controlOnChangeTest({type: 'textarea', validator, value: "okk", error: false})
+    controlOnChangeTestOld({type: 'textarea', validator, value: "", error: true})
+    controlOnChangeTestOld({type: 'textarea', validator, value: "okk", error: false})
   });
+});
+
+describe('pattern', () => {
+  const validator = {pattern: "apple|banana"}
+  pattern
+  .supportedInputTypes
+  .forEach(inputType => {
+    describe(`<input type="${inputType}" pattern="apple|banana" />"`, () => {
+      controlIntialStateTest({type: 'input', inputType: inputType, validator , value: "banana", error: false})
+      controlOnChangeTestOld({type: 'input', inputType: inputType, validator, value: "", error: true})
+      controlOnChangeTestOld({type: 'input', inputType: inputType, validator, value: "banana", error: false})
+    });
+  })
 });
