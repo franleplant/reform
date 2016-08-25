@@ -1,7 +1,5 @@
 jest.unmock('../Reform');
 jest.unmock('../validators/required');
-jest.unmock('../validators/minLength');
-jest.unmock('../validators/pattern');
 jest.unmock('../testTemplates');
 
 
@@ -14,53 +12,11 @@ import sinon from 'sinon';
 import Reform from '../Reform';
 import { controlOnChangeTest, controlIntialStateTest } from '../testTemplates'
 import * as required from '../validators/required'
-import * as minLength from '../validators/minLength'
-import * as pattern from '../validators/pattern'
 
 
-function controlOnChangeTestOld(params) {
-  const name = "testName"
-  const type = params.type
-  const validator = params.validator
-  const validatorKey = Object.keys(validator)[0]
-  const inputType = params.inputType
-  const initialValue = ""
-  const value = params.value
-  const error = params.error
-
-  let props = Object.assign({ name: name, value: initialValue, }, validator)
-
-  if (type === 'input') {
-    props.type = inputType
-  }
-
-
-  it(`should add errors to onChange arguments with value = "${value}"`, () => {
-    const onChange = sinon.spy();
-    props.onChange = onChange;
-    const wrapper = shallow(
-      <Reform> <form> {React.createElement(type, props)} </form> </Reform>
-    );
-
-    wrapper.find(type).simulate('change', {target: {value: value, getAttribute: _ => name}});
-
-    expect(onChange.calledOnce).toBe(true);
-    const [ control, event ] = onChange.args[0]
-    expect(control).toBeDefined()
-    expect(control.errors).toBeDefined()
-    expect(control.errors[validatorKey]).toBeDefined()
-    expect(control.errors[validatorKey]).toBe(error)
-
-    expect(event).toBeDefined()
-    expect(event.target).toBeDefined()
-    expect(event.target.value).toBe(value)
-  });
-}
 
 describe('required', () => {
    const validator =  {required: true}
-
-
 
   required
   .supportedInputTypes
@@ -84,6 +40,7 @@ describe('required', () => {
       controlOnChangeTest(successConfig)
   });
 
+  // TODO: make this reusable
   describe(`<select required />"`, () => {
     const name = "test"
     const initialValue = ""
@@ -346,44 +303,4 @@ describe('required', () => {
     });
 
   });
-});
-
-describe('email', () => {
-  describe(`<input type="email" />"`, () => {
-    controlIntialStateTest({type: 'input', inputType: 'email', validator: {email: true}, value: "a@ab.com", error: false})
-    controlOnChangeTestOld({type: 'input', inputType: 'email', validator: {email: true}, value: "", error: true})
-    controlOnChangeTestOld({type: 'input', inputType: 'email', validator: {email: true}, value: "a@ab.com", error: false})
-  });
-});
-
-describe('minLength', () => {
-  const validator = {minLength: 3}
-  minLength
-  .supportedInputTypes
-  .forEach(inputType => {
-    describe(`<input type="${inputType}" minLength=3 />"`, () => {
-      controlIntialStateTest({type: 'input', inputType: inputType, validator , value: "okk", error: false})
-      controlOnChangeTestOld({type: 'input', inputType: inputType, validator, value: "", error: true})
-      controlOnChangeTestOld({type: 'input', inputType: inputType, validator, value: "okk", error: false})
-    });
-  })
-
-  describe(`<textarea minLength=3 />"`, () => {
-    controlIntialStateTest({type: 'textarea', validator, value: "okk", error: true})
-    controlOnChangeTestOld({type: 'textarea', validator, value: "", error: true})
-    controlOnChangeTestOld({type: 'textarea', validator, value: "okk", error: false})
-  });
-});
-
-describe('pattern', () => {
-  const validator = {pattern: "apple|banana"}
-  pattern
-  .supportedInputTypes
-  .forEach(inputType => {
-    describe(`<input type="${inputType}" pattern="apple|banana" />"`, () => {
-      controlIntialStateTest({type: 'input', inputType: inputType, validator , value: "banana", error: false})
-      controlOnChangeTestOld({type: 'input', inputType: inputType, validator, value: "", error: true})
-      controlOnChangeTestOld({type: 'input', inputType: inputType, validator, value: "banana", error: false})
-    });
-  })
 });
