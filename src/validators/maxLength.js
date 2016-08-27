@@ -10,19 +10,19 @@ export const supportedInputTypes = [
   'password',
 ]
 
-export default function minLengthValidator(control) {
+export default function maxLengthValidator(control) {
   const condition =
     Control.isInputType(control, supportedInputTypes) ||
     Control.isFunctionType(control) ||
     Control.isType(control, supportedTypes)
 
-  const minLength = control.validationRules.minLength
+  const maxLength = control.validationRules.maxLength
   const value = control.value
 
   if (condition) {
-      return value.length < minLength
+      return value.length > maxLength
   }
 
-  console.warn(`Validator: "minLength" not supported for type ${control.elementType}`)
+  console.warn(`Validator: "maxLength" not supported for type ${control.elementType}`)
   return false
 }

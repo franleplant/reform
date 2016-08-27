@@ -29,12 +29,21 @@ export const getValidationRules = (element = {}) => {
     rules.minLength = props.minLength;
   }
 
+  if (props.maxLength) {
+    rules.maxLength = props.maxLength;
+  }
+
   if (props.pattern) {
     rules.pattern = props.pattern
   }
 
+  // The important part is the key, the value can be anything truthy
   if (props.type === 'email') {
     rules.email = 'email'
+  }
+
+  if (props.type === 'url') {
+    rules.url = 'url'
   }
 
   return rules

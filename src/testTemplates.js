@@ -54,6 +54,7 @@ export function controlIntialStateTest(params) {
   const validator = params.validator || {}
   const validatorKey = Object.keys(validator)[0]
   const inputType = params.inputType
+  const validity = params.validity || true
 
   const initialValue = params.intialValue || ""
   const value = params.value || ""
@@ -75,11 +76,12 @@ export function controlIntialStateTest(params) {
 
     const reform = wrapper.instance();
     reform.validateForm();
+    console.log(validatorKey, JSON.stringify(reform.formState, null, 2))
 
     const control = reform.formState[name];
     expect(control.value).toBe(initialValue)
     expect(control.errors).toBeDefined();
     expect(control.errors[validatorKey]).toBeDefined();
-    expect(control.errors[validatorKey]).toBe(true);
+    expect(control.errors[validatorKey]).toBe(error);
   });
 }

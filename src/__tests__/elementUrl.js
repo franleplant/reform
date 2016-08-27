@@ -12,11 +12,11 @@ import Reform from '../Reform';
 import { controlOnChangeTest, controlIntialStateTest } from '../testTemplates'
 
 
-describe('email', () => {
-  const validator = {email: true}
-  const successConfig = {type: 'input', inputType: 'email', validator, value: "a@ab.com", error: false}
-  const failureConfig = {type: 'input', inputType: 'email', validator, value: "", error: true}
-  describe(`<input type="email" />"`, () => {
+describe('url', () => {
+  const validator = {url: true}
+  const successConfig = {type: 'input', inputType: 'url', validator, value: "www.google.com", error: false}
+  const failureConfig = {type: 'input', inputType: 'url', validator, value: "", error: true}
+  describe(`<input type="url" />"`, () => {
     controlIntialStateTest(failureConfig)
     controlOnChangeTest(failureConfig)
     controlOnChangeTest(successConfig)

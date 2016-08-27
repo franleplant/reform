@@ -26,7 +26,7 @@ describe('required', () => {
     describe(`<input type="${inputType}" required />"`, () => {
       const successConfig =  {type: 'input', inputType, validator, value: "ok", error: false}
       const failureConfig =  {type: 'input', inputType, validator, value: "", error: true}
-      controlIntialStateTest(successConfig)
+      controlIntialStateTest(failureConfig)
       controlOnChangeTest(failureConfig)
       controlOnChangeTest(successConfig)
     });
@@ -35,12 +35,13 @@ describe('required', () => {
   describe(`<textarea required />"`, () => {
       const successConfig =  {type: 'textarea', validator, value: "ok", error: false}
       const failureConfig =  {type: 'textarea', validator, value: "", error: true}
-      controlIntialStateTest(successConfig)
+      controlIntialStateTest(failureConfig)
       controlOnChangeTest(failureConfig)
       controlOnChangeTest(successConfig)
   });
 
   // TODO: make this reusable
+  // TODO: test initial state
   describe(`<select required />"`, () => {
     const name = "test"
     const initialValue = ""
@@ -106,6 +107,8 @@ describe('required', () => {
     });
   });
 
+
+  // TODO: test initial state
   describe(`<input type="checkbox" required />"`, () => {
     const name = "test"
     const initialValue = ""
@@ -162,6 +165,7 @@ describe('required', () => {
     });
 
   });
+
 
 
 

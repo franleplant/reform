@@ -97,6 +97,7 @@ class App extends Component {
           <input
             type="text"
             name="name"
+            maxLength="10"
             minLength="3"
             required
             data-reform={nameValidationConfig}
