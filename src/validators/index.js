@@ -15,7 +15,7 @@ import month from './month'
 import week from './week'
 import time from './time'
 import datetimeLocal from './datetime-local'
-// TODO type color
+import color from './color'
 
 
 export const validators = {
@@ -35,6 +35,7 @@ export const validators = {
   week,
   time,
   'datetime-local': datetimeLocal,
+  color,
 }
 
 

@@ -12,6 +12,7 @@ interface ControlState {
   elementType: string | function,
   name: string,
   value: any,
+  // TODO: this should be named to inputType
   typeProp: string | void,
   errors: ReformErrors,
   validationRules: ValidationRules

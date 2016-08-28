@@ -15,25 +15,31 @@ interface ReformConfig {
 */
 
 /*
- form spec!
+  form spec!
   https://www.w3.org/TR/html5/forms.html
+
+  good docs
+  https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
 */
 
-// TODO: better control detection / parsing (see `if` in MonkeyPatch)
-// TODO: a way to force CustomComponents to validate as a radio, or a specific input type (this is solved by the above ^)
-// TODO: work on the user side of the error state interface. Maybe use classes or
-// objects to smooth the interface
-// TODO: Control api: it should be a class for easy data + functionality api
-// TODO: input type is by default "text"
-// TODO: settle an interface for Submit and errorMap
-// TODO:  ---- monkeypatch all submit mechanisms (contemplate bootstrap forms for example) ----
 // TODO: more validators
 // TODO: test with all form inputs
 // good docs https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
+// TODO: (probably the most difficult part) get all official HTML rules working
+// TODO: better control detection / parsing (see `if` in MonkeyPatch)
+// TODO: a way to force CustomComponents to validate as a radio, or a specific input type (this is solved by the above ^)
+//      don't we already have one? we could pass `validationRules = {email: true}` for example
+// TODO: work on the user side of the error state interface. Maybe use classes or
+// objects to smooth the interface
+// TODO: Control api: it should be a class for easy data + functionality api
+// TODO: Probably the validator signature should be this one: 
+//      `type Validator = (control, formState) => boolean;` (we need to add the form state as argument, not a braking change thou)
+// TODO: input type is by default "text"
+// TODO: settle an interface for Submit and errorMap
+// TODO: monkeypatch all submit mechanisms (contemplate bootstrap forms for example) (inputs, submits, buttons, images)
 // TODO: test with bootstrap and other third party components
 // TODO: test bootstrap integration
 // TODO: test date selectors (moment?) integration
-// TODO: (probably the most difficult part) get all official HTML rules working
 // TODO: custom validations? (inside the config object)
 // TODO: warnings all over the place
 // TODO: warn if no form is in the children
@@ -145,6 +151,8 @@ export default class Reform extends Component {
         //TODO: validate this
         //TODO: this might be solve when we start to optimize the control
         //object creation
+        //TODO: warn user when not all radio buttons with the same name
+        //have the same validationRules
         if (element.props.type === 'radio') {
           value = element.props.checked ? value : ''
         }

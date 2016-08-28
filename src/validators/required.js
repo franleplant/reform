@@ -3,6 +3,7 @@ import  * as Control from '../control';
 export const supportedTypes = ['select', 'textarea']
 export const supportedInputTypes = [
   'checkbox',
+  'color',
   'date',
   'datetime-local',
   'email',
