@@ -23,18 +23,9 @@ interface ReformConfig {
   https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
 */
 
-// TODO: more validators
-// TODO: test with all form inputs
-// good docs https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
-// TODO: (probably the most difficult part) get all official HTML rules working
-// TODO: better control detection / parsing (see `if` in MonkeyPatch)
-// TODO: a way to force CustomComponents to validate as a radio, or a specific input type (this is solved by the above ^)
-//      don't we already have one? we could pass `validationRules = {email: true}` for example
 // TODO: work on the user side of the error state interface. Maybe use classes or
 // objects to smooth the interface
 // TODO: Control api: it should be a class for easy data + functionality api
-// TODO: Probably the validator signature should be this one: 
-//      `type Validator = (control, formState) => boolean;` (we need to add the form state as argument, not a braking change thou)
 // TODO: input type is by default "text"
 // TODO: settle an interface for Submit and errorMap
 // TODO: monkeypatch all submit mechanisms (contemplate bootstrap forms for example) (inputs, submits, buttons, images)
@@ -92,7 +83,7 @@ export default class Reform extends Component {
       }
 
       // Update error hash
-      control = Control.validate(control)
+      control = Control.validate(control, that.formState)
 
       oldOnChange.apply(null, [control, ...arguments])
     }
@@ -117,13 +108,10 @@ export default class Reform extends Component {
       let newProps = {};
 
       const REFORM_CONFIG_KEY = 'data-reform'
-      // TODO the way to distinguish controls from other element should be the following:
+
+      // the way to distinguish controls from other element should be the following:
       // - checkboxes, radios and Custom checkboxes and Radios should have onChange, checked, value
       // - The rest of the inputs and their Custom counterparts should have onChanve and value
-      // All of them should have a name parameter but keep it inside the if so we can provide
-      // a better developer experience
-      // TODO: maybe a better sanity check here. Try to be smart about missing onChanges
-      // et al. Maby limit to check onChange and Value and just that and alert about name
       if (  element.props.hasOwnProperty('onChange') && element.props.hasOwnProperty('value')) {
         const name = element.props.name
         if (!name) {
@@ -237,7 +225,7 @@ export default class Reform extends Component {
   validateForm() {
     return Object.keys(this.formState)
       .map(fieldName => this.formState[fieldName])
-      .map(control => Control.validate(control))
+      .map(control => Control.validate(control, this.formState))
       .map(control => control.errors)
       .every(errors => errors.isValid())
   }

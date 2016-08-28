@@ -38,14 +38,23 @@ export const isInputType = (control, types) => {
 
 
 
-export const validate = control => {
+export const validate = (control, formState) => {
   const validationRules = control.validationRules
 
   control.errors =
     Object.keys(validationRules)
       .reduce((map, key) => {
-        const validator = validators[key]
-        map[key] = validator(control)
+        let validator
+
+        // TODO test ad hoc validationRules
+        // Allow custom ad hoc validationRules
+        if (typeof validationRules[key] === 'function') {
+          validator = validationRules[key]
+        } else {
+          validator = validators[key]
+        }
+
+        map[key] = validator(control, formState)
         return map
       }, new ReformErrors())
 
