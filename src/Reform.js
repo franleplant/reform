@@ -11,6 +11,7 @@ type GetValue = (event, control) => fieldValue
 interface ReformConfig {
   validationRules: ValidationRules;
   getValue: GetValue;
+  typeProp: string
 }
 */
 
@@ -132,11 +133,6 @@ export default class Reform extends Component {
         const config = element.props[REFORM_CONFIG_KEY] || {}
 
         let value = element.props.value
-        let getValue = defaultGetValue;
-
-        if (config.getValue) {
-          getValue = config.getValue
-        }
 
 
         // TODO: warn about repeated rules
@@ -146,26 +142,35 @@ export default class Reform extends Component {
         );
 
 
-        //if it's a radio input then value should be set for
-        //the checked input if not it should be ''
-        //TODO: validate this
-        //TODO: this might be solve when we start to optimize the control
-        //object creation
-        //TODO: warn user when not all radio buttons with the same name
-        //have the same validationRules
+        //if it's a radio input then value should be set for the checked input if not it should be ''
+        //warn user when not all radio buttons with the same name have the same validationRules
         if (element.props.type === 'radio') {
-          value = element.props.checked ? value : ''
+          const control = this.formState[name]
+          if (control) {
+            const newValidationRules = Element.getValidationRules(element)
+            if (JSON.stringify(newValidationRules) !== JSON.stringify(control.validationRules)) {
+              console.error(`All <input type=radio name=${name} /> with the same name should have the same validation rules`)
+              throw new Error('Bad validation rules')
+            }
+
+            value = element.props.checked ? value : control.value
+          } else {
+            value = element.props.checked ? value : ''
+          }
         }
 
         // TODO: Maybe switch to a class base thingy ???
         const control = {
           name: name,
           elementType: element.type,
-          typeProp: element.props.type,
+          // Hackable
+          typeProp: config.typeProp || element.props.type,
           errors: {},
           value: value,
+          // Hackable
           validationRules: validationRules,
-          getValue: getValue,
+          // Hackable
+          getValue: config.getValue || defaultGetValue,
           checked: element.props.checked,
         }
 

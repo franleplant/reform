@@ -239,6 +239,27 @@ describe('required', () => {
       expect(control.errors.required).toBe(true);
     });
 
+    it(`should initially set value='opt2' (edit mode)`, () => {
+      const onChange = sinon.spy();
+      const wrapper = shallow(
+        <Reform>
+          <form>
+            <input type="radio" name={name} value="opt1" onChange={onChange} checked={false} required/>
+            <input type="radio" name={name} value="opt2" onChange={onChange} checked={true} required/>
+          </form>
+        </Reform>
+      );
+
+      const reform = wrapper.instance();
+      reform.validateForm();
+
+      const control = reform.formState[name];
+      expect(control.value).toBe('opt2')
+      expect(control.errors).toBeDefined();
+      expect(control.errors.required).toBeDefined();
+      expect(control.errors.required).toBe(false);
+    });
+
     it(`should add errors to onChange arguments with checked = true`, () => {
       const onChange = sinon.spy();
       const wrapper = shallow(
