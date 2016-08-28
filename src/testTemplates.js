@@ -24,21 +24,27 @@ export function controlOnChangeTest(params) {
     props.type = inputType
   }
 
+  const wrapper = shallow(
+    <Reform> <form> {React.createElement(type, props)} </form> </Reform>
+  );
 
-  it(`should add errors to onChange arguments with value = "${value}"`, () => {
-    const wrapper = shallow(
-      <Reform> <form> {React.createElement(type, props)} </form> </Reform>
-    );
+  wrapper.find(type).simulate('change', {target: {value: value, getAttribute: _ => name}});
+  const [ control, event ] = onChange.args[0]
 
-    wrapper.find(type).simulate('change', {target: {value: value, getAttribute: _ => name}});
-
+  it(`should call original onChange when 'change' event is triggered`, () => {
     expect(onChange.calledOnce).toBe(true);
-    const [ control, event ] = onChange.args[0]
+  });
+
+  it(`should pass a valid control as first argument of the original onChange`, () => {
     expect(control).toBeDefined()
-    expect(control.errors).toBeDefined()
+  });
+
+  it(`control should have errors = { ${validatorKey}: ${error} } with value = ${value}`, () => {
     expect(control.errors[validatorKey]).toBeDefined()
     expect(control.errors[validatorKey]).toBe(error)
+  });
 
+  it(`should keep the original event untouched `, () => {
     expect(event).toBeDefined()
     expect(event.target).toBeDefined()
     expect(event.target.value).toBe(value)
@@ -68,19 +74,26 @@ export function controlIntialStateTest(params) {
     props.type = inputType
   }
 
+  const wrapper = shallow(
+    <Reform> <form> {React.createElement(type, props)} </form> </Reform>
+  );
 
-  it(`should set correct initial control state`, () => {
-    const wrapper = shallow(
-      <Reform> <form> {React.createElement(type, props)} </form> </Reform>
-    );
-
-    const reform = wrapper.instance();
+  const reform = wrapper.instance();
+  it(`should validate all form`, () => {
     reform.validateForm();
-    //console.log(validatorKey, JSON.stringify(reform.formState, null, 2))
+  });
 
-    const control = reform.formState[name];
+  const control = reform.formState[name];
+
+  it(`should set the correct value. control = { value: ${value} }`, () => {
     expect(control.value).toBe(initialValue)
+  });
+
+  it(`should set the correct errors map.`, () => {
     expect(control.errors).toBeDefined();
+  });
+
+  it(`should set the correct error. error = { ${validatorKey}: ${error} }. With value = ${value}`, () => {
     expect(control.errors[validatorKey]).toBeDefined();
     expect(control.errors[validatorKey]).toBe(error);
   });

@@ -23,10 +23,14 @@ export default function minValidator(control) {
         return false
       }
 
+      if (!Number.isFinite(value)) {
+        return true;
+      }
+
       return value < min
     }
 
-    if (Control.isInputType(control, ['date', 'month', 'weekend', 'datetime-local'])) {
+    if (Control.isInputType(control, ['date', 'month', 'week', 'datetime-local'])) {
       const minDate = Date.parse(min)
       const valueDate = Date.parse(value)
       if (Number.isNaN(minDate)) {
@@ -61,6 +65,6 @@ export default function minValidator(control) {
     }
   }
 
-  console.warn(`Validator: "min" not supported for type ${control.elementType}`)
+  console.warn(`Validator: "min" not supported for type ${JSON.stringify(control, null, 2)}`)
   return false
 }

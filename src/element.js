@@ -84,6 +84,14 @@ export const getValidationRules = (element = {}) => {
     rules.time = 'time'
   }
 
+  if (props.type === 'number') {
+    rules.number = 'number'
+  }
+
+  if (props.type === 'range') {
+    rules.range = 'range'
+  }
+
   return rules
 }
 

@@ -4,7 +4,10 @@ import maxLength from './maxLength'
 import pattern from './pattern'
 import min from './min'
 //import max from './max'
+
+// TODO Do we really need to validate step? It doesn't look like it
 //import step from './step'
+
 // Input Types
 import email from './email'
 import url from './url'
@@ -25,7 +28,6 @@ export const validators = {
   pattern,
   min,
   //max,
-  //step,
   email,
   url,
   number,
