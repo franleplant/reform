@@ -76,7 +76,7 @@ export function controlIntialStateTest(params) {
 
     const reform = wrapper.instance();
     reform.validateForm();
-    console.log(validatorKey, JSON.stringify(reform.formState, null, 2))
+    //console.log(validatorKey, JSON.stringify(reform.formState, null, 2))
 
     const control = reform.formState[name];
     expect(control.value).toBe(initialValue)

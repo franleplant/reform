@@ -1,5 +1,5 @@
 import { ReformErrors } from './Reform';
-import * as validators from './validators';
+import { validators } from './validators';
 
 /*
 

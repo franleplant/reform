@@ -19,16 +19,20 @@ interface ReformConfig {
   https://www.w3.org/TR/html5/forms.html
 */
 
-// TODO: input type is by default "text"
+// TODO: better control detection / parsing (see `if` in MonkeyPatch)
+// TODO: a way to force CustomComponents to validate as a radio, or a specific input type (this is solved by the above ^)
 // TODO: work on the user side of the error state interface. Maybe use classes or
 // objects to smooth the interface
 // TODO: Control api: it should be a class for easy data + functionality api
+// TODO: input type is by default "text"
 // TODO: settle an interface for Submit and errorMap
 // TODO:  ---- monkeypatch all submit mechanisms (contemplate bootstrap forms for example) ----
 // TODO: more validators
 // TODO: test with all form inputs
 // good docs https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
 // TODO: test with bootstrap and other third party components
+// TODO: test bootstrap integration
+// TODO: test date selectors (moment?) integration
 // TODO: (probably the most difficult part) get all official HTML rules working
 // TODO: custom validations? (inside the config object)
 // TODO: warnings all over the place
@@ -39,7 +43,6 @@ interface ReformConfig {
 // TODO: warn duplicated names (except for radios)
 // TODO: validation apis (adding, composing, et al)
 // TODO: FormState api: think better about it
-// TODO: a way to force CustomComponents to validate as a radio, or a specific input type
 // TODO: optimize
 
 
@@ -107,6 +110,11 @@ export default class Reform extends Component {
       let newProps = {};
 
       const REFORM_CONFIG_KEY = 'data-reform'
+      // TODO the way to distinguish controls from other element should be the following:
+      // - checkboxes, radios and Custom checkboxes and Radios should have onChange, checked, value
+      // - The rest of the inputs and their Custom counterparts should have onChanve and value
+      // All of them should have a name parameter but keep it inside the if so we can provide
+      // a better developer experience
       // TODO: maybe a better sanity check here. Try to be smart about missing onChanges
       // et al. Maby limit to check onChange and Value and just that and alert about name
       if (  element.props.hasOwnProperty('onChange') && element.props.hasOwnProperty('value')) {

@@ -22,6 +22,11 @@ describe('required', () => {
   .supportedInputTypes
   .filter(t => t !== 'radio')
   .filter(t => t !== 'checkbox')
+  //.filter(t => t !== 'date')
+  //.filter(t => t !== 'datetime-local')
+  //.filter(t => t !== 'time')
+  //.filter(t => t !== 'month')
+  //.filter(t => t !== 'week')
   .forEach(inputType => {
     describe(`<input type="${inputType}" required />"`, () => {
       const successConfig =  {type: 'input', inputType, validator, value: "ok", error: false}
@@ -31,6 +36,46 @@ describe('required', () => {
       controlOnChangeTest(successConfig)
     });
   })
+
+  //describe(`<input type=date required />"`, () => {
+      //const successConfig =  {type: 'input', inputType: "date", validator, value: "2016-08-27", error: false}
+      //const failureConfig =  {type: 'input', inputType: "date", validator, value: "", error: true}
+      //controlIntialStateTest(failureConfig)
+      //controlOnChangeTest(failureConfig)
+      //controlOnChangeTest(successConfig)
+  //});
+
+  //describe(`<input type=datetime-local required />"`, () => {
+      //const successConfig =  {type: 'input', inputType: "datetime-local", validator, value: "2016-08-10T11:01", error: false}
+      //const failureConfig =  {type: 'input', inputType: "datetime-local", validator, value: "", error: true}
+      //controlIntialStateTest(failureConfig)
+      //controlOnChangeTest(failureConfig)
+      //controlOnChangeTest(successConfig)
+  //});
+
+  //describe(`<input type=month required />"`, () => {
+      //const successConfig =  {type: 'input', inputType: "month", validator, value: "2016-08", error: false}
+      //const failureConfig =  {type: 'input', inputType: "month", validator, value: "", error: true}
+      //controlIntialStateTest(failureConfig)
+      //controlOnChangeTest(failureConfig)
+      //controlOnChangeTest(successConfig)
+  //});
+
+  //describe(`<input type=week required />"`, () => {
+      //const successConfig =  {type: 'input', inputType: "week", validator, value: "2016-W33", error: false}
+      //const failureConfig =  {type: 'input', inputType: "week", validator, value: "", error: true}
+      //controlIntialStateTest(failureConfig)
+      //controlOnChangeTest(failureConfig)
+      //controlOnChangeTest(successConfig)
+  //});
+
+  //describe(`<input type=time required />"`, () => {
+      //const successConfig =  {type: 'input', inputType: "time", validator, value: "20:03", error: false}
+      //const failureConfig =  {type: 'input', inputType: "time", validator, value: "", error: true}
+      //controlIntialStateTest(failureConfig)
+      //controlOnChangeTest(failureConfig)
+      //controlOnChangeTest(successConfig)
+  //});
 
   describe(`<textarea required />"`, () => {
       const successConfig =  {type: 'textarea', validator, value: "ok", error: false}

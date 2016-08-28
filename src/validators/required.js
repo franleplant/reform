@@ -4,7 +4,6 @@ export const supportedTypes = ['select', 'textarea']
 export const supportedInputTypes = [
   'checkbox',
   'date',
-  'datetime',
   'datetime-local',
   'email',
   'file',
