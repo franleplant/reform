@@ -45,10 +45,6 @@ export const getValidationRules = (element = {}) => {
     rules.max = props.max
   }
 
-  if (props.step) {
-    rules.step = props.step
-  }
-
   // The important part is the key, the value can be anything truthy
   if (props.type === 'email') {
     rules.email = 'email'
