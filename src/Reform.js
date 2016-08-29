@@ -37,7 +37,6 @@ interface ReformConfig {
 // TODO: warn if no form is in the children
 // TODO: warn if no controls
 // TODO: wanr if no submit handlers
-// TODO: warn about radio buttons with different validation rules
 // TODO: warn duplicated names (except for radios)
 // TODO: validation apis (adding, composing, et al)
 // TODO: FormState api: think better about it
@@ -132,7 +131,16 @@ export default class Reform extends Component {
 
         //if it's a radio input then value should be set for the checked input if not it should be ''
         //warn user when not all radio buttons with the same name have the same validationRules
-        if (element.props.type === 'radio') {
+        let type = element.type
+        // TODO: test all this with minified builds of react-bootstrap
+        let isBootstrapRadio = false;
+        try {
+          if (type.name === 'Radio') {
+            isBootstrapRadio = true
+          }
+        } catch (e) {}
+
+        if (element.props.type === 'radio' || isBootstrapRadio) {
           const control = this.formState[name]
           if (control) {
             const newValidationRules = Element.getValidationRules(element)
