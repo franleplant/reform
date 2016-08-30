@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as Element from './element'
 import * as Control from './control'
+import { validatorKeys as standardValidatorKeys } from './validators';
 
 export const defaultGetValue = event => event.target.value
 
@@ -112,66 +113,39 @@ export default class Reform extends Component {
       // - checkboxes, radios and Custom checkboxes and Radios should have onChange, checked, value
       // - The rest of the inputs and their Custom counterparts should have onChanve and value
       if (  element.props.hasOwnProperty('onChange') && element.props.hasOwnProperty('value')) {
-        const name = element.props.name
-        if (!name) {
-          throw new Error(`All controlled inputs must have "name" props. In ${element}`)
-        }
         const oldOnChange = element.props.onChange
-        const config = element.props[REFORM_CONFIG_KEY] || {}
-
-        let value = element.props.value
 
 
-        // TODO: warn about repeated rules
-        const validationRules = Object.assign(
-          config.validationRules || {},
-          Element.getValidationRules(element)
-        );
-
-
+        // TODO: how to interface with Control class
+        // TODO: we need to modifiy the existing value of the named control
+        // with the one that is cheked
         //if it's a radio input then value should be set for the checked input if not it should be ''
         //warn user when not all radio buttons with the same name have the same validationRules
-        let type = element.type
-        // TODO: test all this with minified builds of react-bootstrap
-        let isBootstrapRadio = false;
-        try {
-          if (type.name === 'Radio') {
-            isBootstrapRadio = true
-          }
-        } catch (e) {}
+        //let type = element.type
+        //// TODO: test all this with minified builds of react-bootstrap
+        //let isBootstrapRadio = false;
+        //try {
+          //if (type.name === 'Radio') {
+            //isBootstrapRadio = true
+          //}
+        //} catch (e) {}
 
-        if (element.props.type === 'radio' || isBootstrapRadio) {
-          const control = this.formState[name]
-          if (control) {
-            const newValidationRules = Element.getValidationRules(element)
-            if (JSON.stringify(newValidationRules) !== JSON.stringify(control.validationRules)) {
-              console.error(`All <input type=radio name=${name} /> with the same name should have the same validation rules`)
-              throw new Error('Bad validation rules')
-            }
+        //if (element.props.type === 'radio' || isBootstrapRadio) {
+          //const control = this.formState[name]
+          //if (control) {
+            //const newValidationRules = Element.getValidationRules(element)
+            //if (JSON.stringify(newValidationRules) !== JSON.stringify(control.validationRules)) {
+              //console.error(`All <input type=radio name=${name} /> with the same name should have the same validation rules`)
+              //throw new Error('Bad validation rules')
+            //}
 
-            value = element.props.checked ? value : control.value
-          } else {
-            value = element.props.checked ? value : ''
-          }
-        }
+            //value = element.props.checked ? value : control.value
+          //} else {
+            //value = element.props.checked ? value : ''
+          //}
+        //}
 
-        // TODO: Maybe switch to a class base thingy ???
-        const control = {
-          name: name,
-          elementType: element.type,
-          // Hackable
-          typeProp: config.typeProp || element.props.type,
-          errors: {},
-          value: value,
-          // Hackable
-          validationRules: validationRules,
-          // Hackable
-          getValue: config.getValue || defaultGetValue,
-          checked: element.props.checked,
-        }
-
-
-        this.formState[name] = control
+        this.formState[name] = new Control(element, element.props[REFORM_CONFIG_KEY]);
 
         const onChange = this.onChangeFactory(element, oldOnChange)
         newProps = {onChange}
@@ -230,6 +204,7 @@ export default class Reform extends Component {
     })
   }
 
+  // TODO use Control class
   validateForm() {
     return Object.keys(this.formState)
       .map(fieldName => this.formState[fieldName])

@@ -8,7 +8,6 @@ import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
 //import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 import Reform from '../Reform';
 import { controlOnChangeTest, controlIntialStateTest } from '../testTemplates'
 import * as minLength from '../validators/minLength'

@@ -7,7 +7,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 import Reform from '../Reform';
 import { controlOnChangeTest, controlIntialStateTest } from '../testTemplates'
 import * as maxLength from '../validators/maxLength'
