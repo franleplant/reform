@@ -145,6 +145,7 @@ export default class Reform extends Component {
           //}
         //}
 
+        const name = element.props.name;
         this.formState[name] = new Control(element, element.props[REFORM_CONFIG_KEY]);
 
         const onChange = this.onChangeFactory(element, oldOnChange)

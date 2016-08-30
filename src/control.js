@@ -4,7 +4,7 @@ import { validators } from './validators';
 function mergeRulesSafely(obj1, obj2) {
   Object.keys(obj2).forEach(key => {
     if (standardValidatorKeys.includes(key)) {
-      throw new Error(`You are overwriting default validation rules. In ${element}. Rule ${key}`))
+      throw new Error(`You are overwriting default validation rules. In ${element}. Rule ${key}`)
     }
   });
 
