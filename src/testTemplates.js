@@ -1,3 +1,7 @@
+
+jest.unmock('sinon');
+
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
@@ -5,6 +9,7 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import Reform from './Reform';
 
+console.log("AHHH", Date, typeof Date)
 export function controlOnChangeTest(params) {
   const name = params.name || "testName"
   const type = params.type || "input"

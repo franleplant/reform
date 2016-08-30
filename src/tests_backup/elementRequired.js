@@ -1,6 +1,7 @@
 jest.unmock('../Reform');
 jest.unmock('../validators/required');
 jest.unmock('../testTemplates');
+jest.unmock('sinon');
 
 
 import React from 'react';
