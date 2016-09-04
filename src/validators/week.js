@@ -1,23 +1,15 @@
 // Official docs https://www.w3.org/TR/html5/infrastructure.html
 // 2.4.5.8 Weeks
+import { parseWeek } from '../utils';
 
 // Example week: "2016-W33"
 // TODO: this needs to be improved since some years have 52 weeks
 const MAX_WEEK = 53
 export default function weekValidator(control) {
   const value = control.value
-  let [ year, weekstr ] = value.split("-");
-  year = parseInt(year, 10)
+  const [year, week] = parseWeek(value)
 
-  // Error if weekstr is not defined
-  if (!weekstr) {
-    return true
-  }
-  // We remove the "W" from "W33"
-  let week = weekstr.slice(1)
-  week = parseInt(week, 10)
-
-  if (!Number.isFinite(year) || !Number.isFinite(week)) {
+  if (!year || !week) {
     return true
   }
 

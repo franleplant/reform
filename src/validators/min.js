@@ -1,3 +1,5 @@
+import { parseMonth, parseWeek } from '../utils';
+
 export const supportedInputTypes = [
   'range',
   'number',
@@ -59,37 +61,22 @@ export default function minValidator(control) {
     }
 
     if (control.isInputType('month')) {
-      // TODO re-use this
-      function parseMonth(value) {
-        let [ year, month ] = value.split("-");
-        year = parseInt(year, 10)
-        month = parseInt(month, 10)
-
-        if (!Number.isFinite(year) || !Number.isFinite(month)) {
-          return;
-        }
-
-        return [year, month];
-      }
-
-      const valueMonth = parseMonth(value);
-      const minMonth = parseMonth(min);
+      const [vYear, vMonth] = parseMonth(value);
+      const [mYear, mMonth] = parseMonth(min);
 
       // Invalid min
-      if (!minMonth) {
+      if (!mYear || !mMonth) {
         // TODO generalize logging 
         console.error(`Validator: "min" should have a valid month as value. Found ${min}. In ${JSON.stringify(control, null, 2)}`)
         return false
       }
 
       // Invalid week
-      if (!valueMonth) {
+      if (!vYear || !vMonth) {
         return true
       }
 
 
-      const [vYear, vMonth] = valueMonth;
-      const [mYear, mMonth] = minMonth;
 
       let error = false;
 
@@ -107,44 +94,19 @@ export default function minValidator(control) {
     }
 
     if (control.isInputType('week')) {
-      // TODO: probably refactor this along with validators/week since they do pretty much the same
-      function parseWeek(value) {
-        let [ year, weekstr ] = value.split("-");
-        year = parseInt(year, 10)
-
-        // Error if weekstr is not defined
-        if (!weekstr) {
-          return
-        }
-
-        // We remove the "W" from "W33"
-        let week = weekstr.slice(1)
-        week = parseInt(week, 10)
-
-        if (!Number.isFinite(year) || !Number.isFinite(week)) {
-          return
-        }
-
-        return [year, week]
-      }
-
-      const valueWeek = parseWeek(value);
-      const minWeek = parseWeek(min);
+      const [vYear, vWeek] = parseWeek(value);
+      const [mYear, mWeek] = parseWeek(min);
 
       // Invalid min
-      if (!minWeek) {
+      if (!mYear || !mWeek) {
         console.error(`Validator: "min" should have a valid week as value. Found ${min}. In ${JSON.stringify(control, null, 2)}`)
         return false
       }
 
       // Invalid week
-      if (!valueWeek) {
+      if (!vYear || !vWeek) {
         return true
       }
-
-
-      const [vYear, vWeek] = valueWeek;
-      const [mYear, mWeek] = minWeek;
 
       let error = false;
 
@@ -159,7 +121,6 @@ export default function minValidator(control) {
 
 
       return  error;
-
     }
 
     if (control.isInputType('time')) {

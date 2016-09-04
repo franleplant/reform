@@ -1,12 +1,11 @@
 // Official docs https://www.w3.org/TR/html5/infrastructure.html#valid-month-string
+import { parseMonth } from '../utils';
 
 export default function monthValidator(control) {
   const value = control.value
-  let [ year, month ] = value.split("-");
-  year = parseInt(year, 10)
-  month = parseInt(month, 10)
+  const [ year, month ] = parseMonth(value)
 
-  if (!Number.isFinite(year) || !Number.isFinite(month)) {
+  if (!year || !month) {
     return true
   }
 
