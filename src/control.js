@@ -30,13 +30,22 @@ export default class Control {
       value = element.props.checked ? value : ''
     }
 
+    let inputType = element.props.type;
+    if (!inputType && element.type === 'input') {
+      // Text is the default
+      inputType = 'text'
+    }
+
+    if (config.inputType) {
+      inputType = config.inputType
+    }
+
     this.elementType = element.type;
     this.name = element.props.name
     this.errors =  new ReformErrors();
     this.value = value;
     this.checked = element.props.checked;
     // Hackable
-    // TODO: change name across the board
     this.inputType = config.inputType || element.props.type;
     // Hackable
     this.validationRules = mergeRulesSafely(Element.getValidationRules(element), config.validationRules);

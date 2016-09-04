@@ -24,10 +24,6 @@ interface ReformConfig {
   https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
 */
 
-// TODO: work on the user side of the error state interface. Maybe use classes or
-// objects to smooth the interface
-// TODO: Control api: it should be a class for easy data + functionality api
-// TODO: input type is by default "text"
 // TODO: settle an interface for Submit and errorMap
 // TODO: monkeypatch all submit mechanisms (contemplate bootstrap forms for example) (inputs, submits, buttons, images)
 // TODO: test with bootstrap and other third party components
@@ -41,6 +37,7 @@ interface ReformConfig {
 // TODO: warn duplicated names (except for radios)
 // TODO: validation apis (adding, composing, et al)
 // TODO: FormState api: think better about it
+// TODO: logging generalization
 // TODO: optimize
 
 
