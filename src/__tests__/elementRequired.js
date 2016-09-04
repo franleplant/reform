@@ -8,9 +8,8 @@ import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
 //import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 import Reform from '../Reform';
-import { controlOnChangeTest, controlIntialStateTest } from '../testTemplates'
+import { controlOnChangeTest, controlIntialStateTest, spy } from '../testTemplates'
 import * as required from '../validators/required'
 
 
@@ -94,7 +93,7 @@ describe('required', () => {
     const failureValue = ""
 
     it(`should add errors to onChange arguments with value = "${successValue}"`, () => {
-      const onChange = sinon.spy();
+      const onChange = spy();
       const wrapper = shallow(
         <Reform>
           <form>
@@ -123,7 +122,7 @@ describe('required', () => {
     });
 
     it(`should add errors to onChange arguments with value = "${failureValue}"`, () => {
-      const onChange = sinon.spy();
+      const onChange = spy();
       const wrapper = shallow(
         <Reform>
           <form>
@@ -160,7 +159,7 @@ describe('required', () => {
     const value = "checkbox_a"
 
     it(`should add errors to onChange arguments with checked = true`, () => {
-      const onChange = sinon.spy();
+      const onChange = spy();
       const wrapper = shallow(
         <Reform>
           <form>
@@ -185,7 +184,7 @@ describe('required', () => {
     });
 
     it(`should add errors to onChange arguments with checked = false`, () => {
-      const onChange = sinon.spy();
+      const onChange = spy();
       const wrapper = shallow(
         <Reform>
           <form>
@@ -219,7 +218,7 @@ describe('required', () => {
     const initialValue = ""
 
     it(`should initially set value='' when no radio is checked`, () => {
-      const onChange = sinon.spy();
+      const onChange = spy();
       const wrapper = shallow(
         <Reform>
           <form>
@@ -240,7 +239,7 @@ describe('required', () => {
     });
 
     it(`should initially set value='opt2' (edit mode)`, () => {
-      const onChange = sinon.spy();
+      const onChange = spy();
       const wrapper = shallow(
         <Reform>
           <form>
@@ -261,7 +260,7 @@ describe('required', () => {
     });
 
     it(`should add errors to onChange arguments with checked = true`, () => {
-      const onChange = sinon.spy();
+      const onChange = spy();
       const wrapper = shallow(
         <Reform>
           <form>
@@ -288,7 +287,7 @@ describe('required', () => {
 
     // TODO: apprently this test does not make any sense
     xit(`should add errors to onChange arguments with checked = false`, () => {
-      const onChange = sinon.spy();
+      const onChange = spy();
       const wrapper = shallow(
         <Reform>
           <form>
@@ -325,7 +324,7 @@ describe('required', () => {
     const Custom = (props) => <input type="text" {...props} />
 
     it(`should add errors to onChange arguments with value = "${successValue}"`, () => {
-      const onChange = sinon.spy();
+      const onChange = spy();
       const wrapper = shallow(
         <Reform>
           <form>
@@ -349,7 +348,7 @@ describe('required', () => {
     });
 
     it(`should add errors to onChange arguments with value = "${failureValue}"`, () => {
-      const onChange = sinon.spy();
+      const onChange = spy();
       const wrapper = shallow(
         <Reform>
           <form>

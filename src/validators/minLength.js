@@ -1,5 +1,3 @@
-import  * as Control from '../control';
-
 export const supportedTypes = ['textarea']
 export const supportedInputTypes = [
   'text',
@@ -12,9 +10,9 @@ export const supportedInputTypes = [
 
 export default function minLengthValidator(control) {
   const condition =
-    Control.isInputType(control, supportedInputTypes) ||
-    Control.isFunctionType(control) ||
-    Control.isType(control, supportedTypes)
+    control.isInputType(supportedInputTypes) ||
+    control.isFunctionType() ||
+    control.isType(supportedTypes)
 
   const minLength = control.validationRules.minLength
   const value = control.value

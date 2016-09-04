@@ -2,8 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 import Reform from './Reform';
+
+export function spy() {
+  function spyInstance() {
+    spyInstance.args.push(arguments);
+    spyInstance.calledOnce = true;
+    spyInstance.calls += 1;
+  }
+
+
+  spyInstance.calledOnce = false;
+  spyInstance.args = [];
+  spyInstance.calls = 0;
+
+  return spyInstance;
+}
 
 export function controlOnChangeTest(params) {
   const name = params.name || "testName"
@@ -15,7 +29,7 @@ export function controlOnChangeTest(params) {
   const initialValue = params.intialValue || ""
   const value = params.value || ""
   const error = params.error
-  const onChange = sinon.spy();
+  const onChange = spy();
 
 
   let props = Object.assign({ name, onChange, value: initialValue}, validator)
@@ -65,7 +79,7 @@ export function controlIntialStateTest(params) {
   const initialValue = params.intialValue || ""
   const value = params.value || ""
   const error = params.error
-  const onChange = sinon.spy();
+  const onChange = spy();
 
 
   let props = Object.assign({ name, onChange, value: initialValue}, validator)

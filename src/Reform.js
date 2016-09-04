@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as Element from './element'
-import * as Control from './control'
+import Control from './control'
 import { validatorKeys as standardValidatorKeys } from './validators';
 
 export const defaultGetValue = event => event.target.value
@@ -78,12 +78,12 @@ export default class Reform extends Component {
       // Update value
       control.value = control.getValue(e, control)
 
-      if (Control.isInputType(control, 'checkbox')) {
+      if (control.isInputType('checkbox')) {
         control.checked = e.target.checked
       }
 
       // Update error hash
-      control = Control.validate(control, that.formState)
+      control.validate(that.formState)
 
       oldOnChange.apply(null, [control, ...arguments])
     }
@@ -209,16 +209,14 @@ export default class Reform extends Component {
   validateForm() {
     return Object.keys(this.formState)
       .map(fieldName => this.formState[fieldName])
-      .map(control => Control.validate(control, this.formState))
-      .map(control => control.errors)
-      .every(errors => errors.isValid())
+      .map(control => control.validate(this.formState))
+      .every(isValid => isValid)
   }
 
   isValid() {
     return Object.keys(this.formState)
       .map(fieldName => this.formState[fieldName])
-      .map(control => control.errors)
-      .every(errors => errors.isValid())
+      .every(control => control.isValid())
   }
 
 }

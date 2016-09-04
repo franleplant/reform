@@ -4,7 +4,7 @@ export default function monthValidator(control) {
   const value = control.value
   let [ year, month ] = value.split("-");
   year = parseInt(year, 10)
-  month = parseInt(year, 10)
+  month = parseInt(month, 10)
 
   if (!Number.isFinite(year) || !Number.isFinite(month)) {
     return true

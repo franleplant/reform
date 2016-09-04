@@ -1,5 +1,3 @@
-import  * as Control from '../control';
-
 export const supportedTypes = ['select', 'textarea']
 export const supportedInputTypes = [
   'checkbox',
@@ -23,15 +21,15 @@ export const supportedInputTypes = [
 // TODO: all this needs to be improved once Validator Architecture arrives
 export default function requiredValidator(control) {
   // Special case for checkboxes
-  if (Control.isInputType(control, 'checkbox')) {
+  if (control.isInputType('checkbox')) {
     //Constraint validation: If the element is required and its checkedness is false, then the element is suffering from being missing.
     return !control.checked
   }
 
   const condition =
-    ( Control.isInput(control) && Control.isInputType(control, supportedInputTypes) ) ||
-    Control.isType(control, supportedTypes) ||
-    Control.isFunctionType(control.elementType)
+    control.isInputType(supportedInputTypes) ||
+    control.isType(supportedTypes) ||
+    control.isFunctionType()
 
   if (condition) {
     // Todo maybe make this check a bit better

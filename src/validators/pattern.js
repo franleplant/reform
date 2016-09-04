@@ -1,12 +1,10 @@
-import  * as Control from '../control';
+//import  * as Control from '../control';
 
 export const supportedInputTypes = ['text', 'search', 'url', 'tel', 'email', 'password']
 
 
 export default function patternValidator(control) {
-  const condition =
-    ( Control.isInput(control) && Control.isInputType(control, supportedInputTypes) ) ||
-    Control.isFunctionType(control)
+  const condition = control.isInputType(supportedInputTypes) || control.isFunctionType()
 
 
   if (condition) {
