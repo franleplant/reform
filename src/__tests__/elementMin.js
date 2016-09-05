@@ -1,13 +1,6 @@
-jest.unmock('../Reform');
-jest.unmock('../validators/min');
-jest.unmock('../testTemplates');
-
-//TODO
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
-//import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
 import Reform from '../Reform';
 import { controlOnChangeTest, controlIntialStateTest } from '../testTemplates'

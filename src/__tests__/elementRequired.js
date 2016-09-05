@@ -1,8 +1,3 @@
-jest.unmock('../Reform');
-jest.unmock('../validators/required');
-jest.unmock('../testTemplates');
-
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
@@ -36,45 +31,45 @@ describe('required', () => {
     });
   })
 
-  //describe(`<input type=date required />"`, () => {
-      //const successConfig =  {type: 'input', inputType: "date", validator, value: "2016-08-27", error: false}
-      //const failureConfig =  {type: 'input', inputType: "date", validator, value: "", error: true}
-      //controlIntialStateTest(failureConfig)
-      //controlOnChangeTest(failureConfig)
-      //controlOnChangeTest(successConfig)
-  //});
+  describe(`<input type=date required />"`, () => {
+      const successConfig =  {type: 'input', inputType: "date", validator, value: "2016-08-27", error: false}
+      const failureConfig =  {type: 'input', inputType: "date", validator, value: "", error: true}
+      controlIntialStateTest(failureConfig)
+      controlOnChangeTest(failureConfig)
+      controlOnChangeTest(successConfig)
+  });
 
-  //describe(`<input type=datetime-local required />"`, () => {
-      //const successConfig =  {type: 'input', inputType: "datetime-local", validator, value: "2016-08-10T11:01", error: false}
-      //const failureConfig =  {type: 'input', inputType: "datetime-local", validator, value: "", error: true}
-      //controlIntialStateTest(failureConfig)
-      //controlOnChangeTest(failureConfig)
-      //controlOnChangeTest(successConfig)
-  //});
+  describe(`<input type=datetime-local required />"`, () => {
+      const successConfig =  {type: 'input', inputType: "datetime-local", validator, value: "2016-08-10T11:01", error: false}
+      const failureConfig =  {type: 'input', inputType: "datetime-local", validator, value: "", error: true}
+      controlIntialStateTest(failureConfig)
+      controlOnChangeTest(failureConfig)
+      controlOnChangeTest(successConfig)
+  });
 
-  //describe(`<input type=month required />"`, () => {
-      //const successConfig =  {type: 'input', inputType: "month", validator, value: "2016-08", error: false}
-      //const failureConfig =  {type: 'input', inputType: "month", validator, value: "", error: true}
-      //controlIntialStateTest(failureConfig)
-      //controlOnChangeTest(failureConfig)
-      //controlOnChangeTest(successConfig)
-  //});
+  describe(`<input type=month required />"`, () => {
+      const successConfig =  {type: 'input', inputType: "month", validator, value: "2016-08", error: false}
+      const failureConfig =  {type: 'input', inputType: "month", validator, value: "", error: true}
+      controlIntialStateTest(failureConfig)
+      controlOnChangeTest(failureConfig)
+      controlOnChangeTest(successConfig)
+  });
 
-  //describe(`<input type=week required />"`, () => {
-      //const successConfig =  {type: 'input', inputType: "week", validator, value: "2016-W33", error: false}
-      //const failureConfig =  {type: 'input', inputType: "week", validator, value: "", error: true}
-      //controlIntialStateTest(failureConfig)
-      //controlOnChangeTest(failureConfig)
-      //controlOnChangeTest(successConfig)
-  //});
+  describe(`<input type=week required />"`, () => {
+      const successConfig =  {type: 'input', inputType: "week", validator, value: "2016-W33", error: false}
+      const failureConfig =  {type: 'input', inputType: "week", validator, value: "", error: true}
+      controlIntialStateTest(failureConfig)
+      controlOnChangeTest(failureConfig)
+      controlOnChangeTest(successConfig)
+  });
 
-  //describe(`<input type=time required />"`, () => {
-      //const successConfig =  {type: 'input', inputType: "time", validator, value: "20:03", error: false}
-      //const failureConfig =  {type: 'input', inputType: "time", validator, value: "", error: true}
-      //controlIntialStateTest(failureConfig)
-      //controlOnChangeTest(failureConfig)
-      //controlOnChangeTest(successConfig)
-  //});
+  describe(`<input type=time required />"`, () => {
+      const successConfig =  {type: 'input', inputType: "time", validator, value: "20:03", error: false}
+      const failureConfig =  {type: 'input', inputType: "time", validator, value: "", error: true}
+      controlIntialStateTest(failureConfig)
+      controlOnChangeTest(failureConfig)
+      controlOnChangeTest(successConfig)
+  });
 
   describe(`<textarea required />"`, () => {
       const successConfig =  {type: 'textarea', validator, value: "ok", error: false}

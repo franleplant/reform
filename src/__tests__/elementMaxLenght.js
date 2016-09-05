@@ -1,8 +1,3 @@
-jest.unmock('../Reform');
-jest.unmock('../validators/maxLength');
-jest.unmock('../testTemplates');
-
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
