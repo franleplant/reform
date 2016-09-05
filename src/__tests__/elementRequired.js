@@ -16,11 +16,11 @@ describe('required', () => {
   .supportedInputTypes
   .filter(t => t !== 'radio')
   .filter(t => t !== 'checkbox')
-  //.filter(t => t !== 'date')
-  //.filter(t => t !== 'datetime-local')
-  //.filter(t => t !== 'time')
-  //.filter(t => t !== 'month')
-  //.filter(t => t !== 'week')
+  .filter(t => t !== 'date')
+  .filter(t => t !== 'datetime-local')
+  .filter(t => t !== 'time')
+  .filter(t => t !== 'month')
+  .filter(t => t !== 'week')
   .forEach(inputType => {
     describe(`<input type="${inputType}" required />"`, () => {
       const successConfig =  {type: 'input', inputType, validator, value: "ok", error: false}
