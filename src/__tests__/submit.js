@@ -81,6 +81,7 @@ function render() {
 
   return [wrapper, onSubmit];
 }
+
 describe('reform onSubmit', () => {
   describe('empty form', () => {
     let errorMap;
@@ -169,3 +170,123 @@ describe('reform onSubmit', () => {
     })
   })
 });
+
+
+
+
+describe('reform submit mechanisms', () => {
+  describe('<button>', () => {
+    const onSubmit = jest.fn();
+
+    const wrapper = shallow(
+      <Reform>
+        <form onSubmit={function() {}}>
+          <input type="text" name={name1} required value="" onChange={function() {}} />
+          <input type="email" name={name2} required value="" onChange={function() {}} />
+          <button onClick={onSubmit}></button>
+        </form>
+      </Reform>
+    );
+
+    let errorMap;
+    wrapper.find('button').simulate('click', {target: {}});
+    const [form] = onSubmit.mock.calls[0]
+    errorMap = form.getErrorMap();
+
+    it('should call the original onSubmit handler', () => {
+      expect(onSubmit).toBeCalled()
+    })
+
+
+    it('should call the original onSubmit handler with a form object', () => {
+      expect(form).toBeDefined();
+    })
+
+    it('should validate each control and maintain their state', () => {
+      expect(errorMap[name1].required).toBe(true);
+      expect(errorMap[name2].required).toBe(true);
+      expect(errorMap[name2].email).toBe(true);
+    });
+
+    it('should be invalid when all the controls are invalid', () => {
+      expect(form.isValid()).toBe(false);
+    })
+  });
+
+
+  describe('<button type="submit">', () => {
+    const onSubmit = jest.fn();
+
+    const wrapper = shallow(
+      <Reform>
+        <form onSubmit={function() {}}>
+          <input type="text" name={name1} required value="" onChange={function() {}} />
+          <input type="email" name={name2} required value="" onChange={function() {}} />
+          <button type="submit" onClick={onSubmit}></button>
+        </form>
+      </Reform>
+    );
+
+    let errorMap;
+    wrapper.find('button').simulate('click', {target: {}});
+    const [form] = onSubmit.mock.calls[0]
+    errorMap = form.getErrorMap();
+
+    it('should call the original onSubmit handler', () => {
+      expect(onSubmit).toBeCalled()
+    })
+
+
+    it('should call the original onSubmit handler with a form object', () => {
+      expect(form).toBeDefined();
+    })
+
+    it('should validate each control and maintain their state', () => {
+      expect(errorMap[name1].required).toBe(true);
+      expect(errorMap[name2].required).toBe(true);
+      expect(errorMap[name2].email).toBe(true);
+    });
+
+    it('should be invalid when all the controls are invalid', () => {
+      expect(form.isValid()).toBe(false);
+    })
+  });
+
+  describe('<input type="submit">', () => {
+    const onSubmit = jest.fn();
+
+    const wrapper = shallow(
+      <Reform>
+        <form onSubmit={function() {}}>
+          <input type="text" name={name1} required value="" onChange={function() {}} />
+          <input type="email" name={name2} required value="" onChange={function() {}} />
+          <input type="submit" onClick={onSubmit}/>
+        </form>
+      </Reform>
+    );
+
+    let errorMap;
+    wrapper.find('input[type="submit"]').simulate('click', {target: {}});
+    const [form] = onSubmit.mock.calls[0]
+    errorMap = form.getErrorMap();
+
+    it('should call the original onSubmit handler', () => {
+      expect(onSubmit).toBeCalled()
+    })
+
+
+    it('should call the original onSubmit handler with a form object', () => {
+      expect(form).toBeDefined();
+    })
+
+    it('should validate each control and maintain their state', () => {
+      expect(errorMap[name1].required).toBe(true);
+      expect(errorMap[name2].required).toBe(true);
+      expect(errorMap[name2].email).toBe(true);
+    });
+
+    it('should be invalid when all the controls are invalid', () => {
+      expect(form.isValid()).toBe(false);
+    })
+  });
+})

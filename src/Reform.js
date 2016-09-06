@@ -25,17 +25,16 @@ interface ReformConfig {
 */
 
 // TODO: monkeypatch all submit mechanisms (contemplate bootstrap forms for example) (inputs, submits, buttons, images)
+// TODO: custom validations? (inside the config object)
 // TODO: test with bootstrap and other third party components
 // TODO: test bootstrap integration
 // TODO: moment and date selectors integration?
-// TODO: custom validations? (inside the config object)
 // TODO: warnings all over the place
 // TODO: warn if no form is in the children
 // TODO: warn if no controls
 // TODO: wanr if no submit handlers
 // TODO: warn duplicated names (except for radios)
 // TODO: validation apis (adding, composing, et al)
-// TODO: FormState api: think better about it
 // TODO: logging generalization
 // TODO: optimize
 
