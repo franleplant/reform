@@ -70,7 +70,6 @@ class App extends Component {
 
 
   handleRadioChange(control, event) {
-  debugger
     this.setState(state => {
       state.radio = control.value
       state.errors.radio =  control.errors
@@ -78,14 +77,15 @@ class App extends Component {
     })
   }
 
-  handleSubmit(e, isValid, errorMap) {
+  handleSubmit(form, event) {
     this.setState(state => {
-      state.errors = errorMap
+      state.errors = form.getErrorMap();
       return state
-    })
-    //if (!isValid) {
-      //alert("FORM NOT VALID ")
-    //}
+    });
+
+    if (!form.isValid()) {
+      alert("FORM NOT VALID ")
+    }
     e.preventDefault();
   }
   render() {

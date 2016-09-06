@@ -1,4 +1,3 @@
-import { ReformErrors } from './Reform';
 import * as Element from './element';
 import { validators } from './validators';
 
@@ -42,7 +41,7 @@ export default class Control {
 
     this.elementType = element.type;
     this.name = element.props.name
-    this.errors =  new ReformErrors();
+    this.errors =  {};
     this.value = value;
     this.checked = element.props.checked;
     // Hackable

@@ -3,8 +3,8 @@ import * as Element from './element'
 import Control from './control'
 import { validatorKeys as standardValidatorKeys } from './validators';
 
-export const defaultGetValue = event => event.target.value
 
+const noop = function() {};
 /*
 
 type GetValue = (event, control) => fieldValue
@@ -24,7 +24,6 @@ interface ReformConfig {
   https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
 */
 
-// TODO: settle an interface for Submit and errorMap
 // TODO: monkeypatch all submit mechanisms (contemplate bootstrap forms for example) (inputs, submits, buttons, images)
 // TODO: test with bootstrap and other third party components
 // TODO: test bootstrap integration
@@ -41,16 +40,6 @@ interface ReformConfig {
 // TODO: optimize
 
 
-
-
-
-export class ReformErrors {
-  isValid() {
-    return Object.keys(this)
-      .map(error => this[error])
-      .every(error => error === false)
-  }
-}
 
 
 
@@ -109,7 +98,11 @@ export default class Reform extends Component {
       // the way to distinguish controls from other element should be the following:
       // - checkboxes, radios and Custom checkboxes and Radios should have onChange, checked, value
       // - The rest of the inputs and their Custom counterparts should have onChanve and value
-      if (  element.props.hasOwnProperty('onChange') && element.props.hasOwnProperty('value')) {
+      const isControl = element.props.hasOwnProperty('onChange') && element.props.hasOwnProperty('value');
+      const isForm = element.props.hasOwnProperty('onSubmit');
+      // TODO: hack all submit mechanisms
+      const isSubmit = Element.isSubmitInput(element) || Element.isSubmitButton(element);
+      if (isControl) {
         const oldOnChange = element.props.onChange
 
 
@@ -118,15 +111,7 @@ export default class Reform extends Component {
         // with the one that is cheked
         //if it's a radio input then value should be set for the checked input if not it should be ''
         //warn user when not all radio buttons with the same name have the same validationRules
-        //let type = element.type
-        //// TODO: test all this with minified builds of react-bootstrap
-        //let isBootstrapRadio = false;
-        //try {
-          //if (type.name === 'Radio') {
-            //isBootstrapRadio = true
-          //}
-        //} catch (e) {}
-
+        //
         //if (element.props.type === 'radio' || isBootstrapRadio) {
           //const control = this.formState[name]
           //if (control) {
@@ -148,50 +133,22 @@ export default class Reform extends Component {
         const onChange = this.onChangeFactory(element, oldOnChange)
         newProps = {onChange}
 
-      // TODO: are these all the ways to submit a form?
-      // Any element that has onSubmit
-      // since html only allows <form> to have onSubmit handlers then we are covered
-      // form on Submit
-      } else if (element.props.onSubmit) {
-
+      } else if (isForm) {
         const oldOnSubmit = element.props.onSubmit;
-        const onSubmit = e => {
-          const isValid = this.validateForm();
-          const errorMap =
-            Object.keys(this.formState)
-              .map(fieldName => this.formState[fieldName])
-              .reduce((map, control) => {
-                const name = control.name
-                const errors = control.errors
-                map[name] = errors
-                return map
-              }, {})
-
-          const args = [e, isValid, errorMap, arguments]
-          oldOnSubmit.apply(null, args);
+        const onSubmit = (...args) => {
+          this.validateForm();
+          oldOnSubmit.apply(null, [this, ...args]);
         }
 
-        newProps =  {onSubmit}
+        // Disable html5 native validation
+        newProps =  {onSubmit, noValidate: true};
 
-      // Input type submit
-      // Button (submit)
-      } else if (Element.isSubmitInput(element) || Element.isSubmitButton(element)) {
+      } else if (isSubmit) {
 
-        const oldOnClick = element.props.onClick || function() {};
-        const onClick = e => {
-          const isValid = this.validateForm();
-          const errorsMap =
-            Object.keys(this.formState)
-              .map(fieldName => this.formState[fieldName])
-              .reduce((map, control) => {
-                const name = control.name
-                const errors = control.errors
-                map[name] = errors
-                return map
-              }, {})
-
-          const args = [e, isValid, errorsMap, arguments]
-          oldOnClick.apply(null, args);
+        const oldOnClick = element.props.onClick || noop;
+        const onClick = (...args) => {
+          this.validateForm();
+          oldOnClick.apply(null, [this, ...args]);
         }
 
         newProps = {onClick}
@@ -202,18 +159,29 @@ export default class Reform extends Component {
     })
   }
 
-  // TODO use Control class
   validateForm() {
-    return Object.keys(this.formState)
+    Object.keys(this.formState)
       .map(fieldName => this.formState[fieldName])
-      .map(control => control.validate(this.formState))
-      .every(isValid => isValid)
+      .forEach(control => control.validate(this.formState))
+
+    return this.isValid();
   }
 
   isValid() {
     return Object.keys(this.formState)
       .map(fieldName => this.formState[fieldName])
       .every(control => control.isValid())
+  }
+
+
+  getErrorMap() {
+    let errorMap = {}
+    for (let fieldName in this.formState) {
+      const control = this.formState[fieldName];
+      errorMap[fieldName] = control.errors;
+    }
+
+    return errorMap;
   }
 
 }
