@@ -4,7 +4,7 @@ import ReactTestUtils from 'react-addons-test-utils';
 import { shallow } from 'enzyme';
 import Reform from '../Reform';
 import { controlOnChangeTest, controlIntialStateTest } from '../testTemplates'
-import * as minLength from '../validators/minLength'
+import * as minLength from '../officialValidators/minLength'
 
 
 describe('minLength', () => {

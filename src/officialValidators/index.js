@@ -21,7 +21,7 @@ import datetimeLocal from './datetime-local'
 import color from './color'
 
 
-export const validators = {
+export const rules = {
   required,
   minLength,
   maxLength,
@@ -41,4 +41,4 @@ export const validators = {
 }
 
 
-export const validatorKeys = Object.keys(validators);
+export const keys = Object.keys(rules);

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import * as Element from './element'
 import Control from './control'
-import { validatorKeys as standardValidatorKeys } from './validators';
-
 
 const noop = function() {};
 /*
@@ -24,9 +22,8 @@ interface ReformConfig {
   https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
 */
 
-// TODO: custom validations? (inside the config object) (and test)
-// TODO: custom validations ad hoc: test
 // TODO: test getValue
+// TODO: move example to a inner create react app app
 // TODO: test with bootstrap and other third party components
 // TODO: test bootstrap integration
 // TODO: moment and date selectors integration?
@@ -35,14 +32,9 @@ interface ReformConfig {
 // TODO: warn if no controls
 // TODO: wanr if no submit handlers
 // TODO: warn duplicated names (except for radios)
-// TODO: validation apis (adding, composing, et al)
 // TODO: logging generalization
 // TODO: monkeypatch all submit mechanisms (contemplate bootstrap forms for example) (inputs, submits, buttons, images)
 // TODO: optimize
-
-
-
-
 
 export default class Reform extends Component {
   constructor(props) {

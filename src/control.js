@@ -1,5 +1,6 @@
 import * as Element from './element';
-import { validators, validatorKeys } from './validators';
+import * as officialValidators from './officialValidators';
+import * as validators from './validators';
 
 const defaultGetValue = event => event.target.value
 
@@ -9,7 +10,7 @@ function mergeRulesSafely(obj1 = {}, obj2) {
   }
 
   Object.keys(obj2).forEach(key => {
-    if (validatorKeys.includes(key)) {
+    if (officialValidators.keys.includes(key)) {
       throw new Error(`You are overwriting default validation rules. In ${element}. Rule ${key}`)
     }
   });
@@ -62,9 +63,8 @@ export default class Control {
     for (let ruleKey in validationRules) {
       if (!validationRules.hasOwnProperty(ruleKey)) continue;
       const ruleValue = validationRules[ruleKey];
-      // TODO test ad hoc validationRules
       // Allow custom ad hoc validationRules
-      const validator = typeof ruleValue === 'function' ? ruleValue : validators[ruleKey];
+      const validator = typeof ruleValue === 'function' ? ruleValue : validators.rules[ruleKey];
       this.errors[ruleKey] = validator(this, formState)
     }
 

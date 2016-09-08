@@ -4,7 +4,7 @@ import ReactTestUtils from 'react-addons-test-utils';
 import { shallow } from 'enzyme';
 import Reform from '../Reform';
 import { controlOnChangeTest, controlIntialStateTest } from '../testTemplates'
-import * as maxLength from '../validators/maxLength'
+import * as maxLength from '../officialValidators/maxLength'
 
 
 const validatorKey = "maxLength"

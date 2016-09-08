@@ -4,7 +4,7 @@ import ReactTestUtils from 'react-addons-test-utils';
 import { shallow } from 'enzyme';
 import Reform from '../Reform';
 import { controlOnChangeTest, controlIntialStateTest } from '../testTemplates'
-import * as pattern from '../validators/pattern'
+import * as pattern from '../officialValidators/pattern'
 
 
 describe('pattern', () => {
