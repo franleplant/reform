@@ -1,5 +1,5 @@
 import * as Element from './element';
-import { validators } from './validators';
+import { validators, validatorKeys } from './validators';
 
 const defaultGetValue = event => event.target.value
 
@@ -9,7 +9,7 @@ function mergeRulesSafely(obj1 = {}, obj2) {
   }
 
   Object.keys(obj2).forEach(key => {
-    if (standardValidatorKeys.includes(key)) {
+    if (validatorKeys.includes(key)) {
       throw new Error(`You are overwriting default validation rules. In ${element}. Rule ${key}`)
     }
   });

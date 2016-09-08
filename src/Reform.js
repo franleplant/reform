@@ -24,8 +24,9 @@ interface ReformConfig {
   https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
 */
 
-// TODO: monkeypatch all submit mechanisms (contemplate bootstrap forms for example) (inputs, submits, buttons, images)
-// TODO: custom validations? (inside the config object)
+// TODO: custom validations? (inside the config object) (and test)
+// TODO: custom validations ad hoc: test
+// TODO: test getValue
 // TODO: test with bootstrap and other third party components
 // TODO: test bootstrap integration
 // TODO: moment and date selectors integration?
@@ -36,6 +37,7 @@ interface ReformConfig {
 // TODO: warn duplicated names (except for radios)
 // TODO: validation apis (adding, composing, et al)
 // TODO: logging generalization
+// TODO: monkeypatch all submit mechanisms (contemplate bootstrap forms for example) (inputs, submits, buttons, images)
 // TODO: optimize
 
 
