@@ -22,6 +22,7 @@ interface ReformConfig {
   https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
 */
 
+// TODO: docs!
 // TODO: test getValue
 // TODO: move example to a inner create react app app
 // TODO: test with bootstrap and other third party components
