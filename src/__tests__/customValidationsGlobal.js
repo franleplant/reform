@@ -2,11 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
 import { shallow } from 'enzyme';
-import Reform from '../Reform';
-import * as Validator from '../validators';
+import Reform, { Validators } from '../main';
 import { controlOnChangeTest, controlIntialStateTest, spy } from '../testTemplates'
 
-Validator.addRule('myRule', control => control.value !== 'Delfina');
+Validators.addRule('myRule', control => control.value !== 'Delfina');
 
 const name1 = "test_control_1";
 const name2 = "test_control_2";
@@ -82,7 +81,7 @@ describe('Custom Validations: Globals', () => {
 
   describe('test case 2: formState', () => {
 
-    Validator.addRule('myComposedRule', (control, formState) => {
+    Validators.addRule('myComposedRule', (control, formState) => {
       return control.value !== formState[name2].value
     });
 
