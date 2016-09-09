@@ -55,6 +55,10 @@ export default class Reform extends Component {
       // If cant found then something horrible wrong happended
       let control = that.formState[name]
 
+      if (!control) {
+        throw new Error(`Could not find control with name ${name}. This is likely a bug with Reform :(`)
+      }
+
       // Update value
       control.value = control.getValue(e, control)
 
