@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Reform from './Reform';
+import Reform from '../main';
 
 class App extends Component {
   constructor(props) {

@@ -11,11 +11,38 @@ function mergeRulesSafely(obj1 = {}, obj2) {
 
   Object.keys(obj2).forEach(key => {
     if (officialValidators.keys.includes(key)) {
-      throw new Error(`You are overwriting default validation rules. In ${element}. Rule ${key}`)
+      throw new Error(`You are overwriting default validation rules.  Rule ${key}`)
     }
   });
 
   return Object.assign({}, obj1, obj2);
+}
+
+export class ReformErrors {
+  isValid() {
+    let hasErrors = false;
+    for (let errorKey in this) {
+      if (!this.hasOwnProperty(errorKey)) {
+        continue;
+      }
+
+      hasErrors = hasErrors || this[errorKey];
+    }
+
+    return !hasErrors;
+  }
+
+
+  // This improves a lot the interface of errors userside
+  // The use can initialize this.state.errors[fieldName] with an empty object
+  // and then go around without asking if that object has the function isValid
+  // or if it has the errors already loaded.
+  // This mostly covers continuous validation and in particular the initial render
+  // before a `change` event is triggered and the user's component saves the real
+  // error object
+  get isInvalid() {
+    return !this.isValid();
+  }
 }
 
 
@@ -42,7 +69,7 @@ export default class Control {
 
     this.elementType = element.type;
     this.name = element.props.name
-    this.errors =  {};
+    this.errors =  new ReformErrors();
     this.value = value;
     this.checked = element.props.checked;
     // Hackable
@@ -123,9 +150,4 @@ interface ControlState {
 }
 
 */
-
-export const isInput = control => control.elementType === 'input'
-
-export const isInputOrFunctionType = control => control.elementType === 'input' || isFunctionType(control.elementType)
-
 
