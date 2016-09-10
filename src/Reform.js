@@ -3,41 +3,6 @@ import * as Element from './element'
 import Control from './control'
 
 const noop = function() {};
-/*
-
-type GetValue = (event, control) => fieldValue
-
-interface ReformConfig {
-  validationRules: ValidationRules;
-  getValue: GetValue;
-  typeProp: string
-}
-*/
-
-/*
-  form spec!
-  https://www.w3.org/TR/html5/forms.html
-
-  good docs
-  https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
-*/
-
-// TODO: docs! and examples!
-// TODO: test getValue
-// TODO: async validators
-// TODO: error view helpers
-// TODO: move example to a inner create react app app
-// TODO: test with bootstrap and other third party components
-// TODO: test bootstrap integration
-// TODO: moment and date selectors integration?
-// TODO: warnings all over the place
-// TODO: warn if no form is in the children
-// TODO: warn if no controls
-// TODO: wanr if no submit handlers
-// TODO: warn duplicated names (except for radios)
-// TODO: logging generalization
-// TODO: monkeypatch all submit mechanisms (contemplate bootstrap forms for example) (inputs, submits, buttons, images)
-// TODO: optimize
 
 export default class Reform extends Component {
   constructor(props) {
@@ -50,10 +15,9 @@ export default class Reform extends Component {
     return <div>{newChildren}</div>
   }
 
-  onChangeFactory(child, oldOnChange) {
+  onChangeFactory(name, child, oldOnChange) {
     const that = this;
     return function(e) {
-      const name = e.target.getAttribute('name')
       // If cant found then something horrible wrong happended
       let control = that.formState[name]
 
@@ -130,7 +94,7 @@ export default class Reform extends Component {
         const control = new Control(element, element.props[REFORM_CONFIG_KEY]);
         this.formState[control.name] = control;
 
-        const onChange = this.onChangeFactory(element, oldOnChange)
+        const onChange = this.onChangeFactory(control.name, element, oldOnChange)
         newProps = {onChange}
 
       } else if (isForm) {
