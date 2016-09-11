@@ -69,29 +69,16 @@ export default class Reform extends Component {
       if (isControl) {
         const oldOnChange = element.props.onChange
 
-
-        // TODO: how to interface with Control class
-        // TODO: we need to modifiy the existing value of the named control
-        // with the one that is cheked
-        //if it's a radio input then value should be set for the checked input if not it should be ''
-        //warn user when not all radio buttons with the same name have the same validationRules
-        //
-        //if (element.props.type === 'radio' || isBootstrapRadio) {
-          //const control = this.formState[name]
-          //if (control) {
-            //const newValidationRules = Element.getValidationRules(element)
-            //if (JSON.stringify(newValidationRules) !== JSON.stringify(control.validationRules)) {
-              //console.error(`All <input type=radio name=${name} /> with the same name should have the same validation rules`)
-              //throw new Error('Bad validation rules')
-            //}
-
-            //value = element.props.checked ? value : control.value
-          //} else {
-            //value = element.props.checked ? value : ''
-          //}
-        //}
-
         const control = new Control(element, element.props[REFORM_CONFIG_KEY]);
+
+        // Special case for Radio buttons
+        if (Element.isRadio(element)) {
+          const existingControl = this.formState[control.name];
+          if (existingControl) {
+            control.value = control.checked ? control.value : existingControl.value;
+          }
+        }
+
         this.formState[control.name] = control;
 
         const onChange = this.onChangeFactory(control.name, element, oldOnChange)
