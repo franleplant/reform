@@ -15,19 +15,9 @@ export const isSubmitButton = element => element.type === 'button'
 
 
 export function isRadio(element) {
-  //if it's a radio input then value should be set for the checked input if not it should be ''
-  //warn user when not all radio buttons with the same name have the same validationRules
-  const elementType = element.type;
-  const inputType = element.props.type;
-  // TODO: test all this with minified builds of react-bootstrap
-  let isBootstrapRadio = false;
-  try {
-    if (type.name === 'Radio') {
-      isBootstrapRadio = true
-    }
-  } catch (e) {}
-
-  return inputType === 'radio' || isBootstrapRadio
+  //TODO: warn user when not all radio buttons with the same name have the same validationRules
+  const props = element.props || {};
+  return props.hasOwnProperty('checked') && props.hasOwnProperty('onChange') && props.hasOwnProperty('value')
 }
 
 

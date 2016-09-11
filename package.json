@@ -4,9 +4,11 @@
   "private": false,
   "main": "main.js",
   "devDependencies": {
+    "bootstrap": "3.3.7",
     "coveralls": "2.11.12",
     "enzyme": "2.4.1",
     "react-addons-test-utils": "15.3.1",
+    "react-bootstrap": "0.30.3",
     "react-scripts": "0.4.1"
   },
   "dependencies": {
