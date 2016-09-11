@@ -27,8 +27,10 @@ export default class Reform extends Component {
       // Update value
       control.value = control.getValue(e, control)
 
-      if (control.isInputType('checkbox')) {
+      try {
         control.checked = e.target.checked
+      } catch(e) {
+        control.checked = null;
       }
 
       // Update error hash
@@ -61,7 +63,9 @@ export default class Reform extends Component {
       // the way to distinguish controls from other element should be the following:
       // - checkboxes, radios and Custom checkboxes and Radios should have onChange, checked, value
       // - The rest of the inputs and their Custom counterparts should have onChanve and value
-      const isControl = element.props.hasOwnProperty('onChange') && element.props.hasOwnProperty('value');
+      const isControl =
+        element.props.hasOwnProperty('onChange') &&
+        (element.props.hasOwnProperty('value') || element.props.hasOwnProperty('checked'));
       const isForm = element.props.hasOwnProperty('onSubmit');
       // TODO: hack all submit mechanisms
       const isSubmit = Element.isSubmitInput(element) || Element.isSubmitButton(element);

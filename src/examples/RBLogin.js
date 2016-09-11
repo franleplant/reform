@@ -9,6 +9,7 @@ export default class RBLogin extends Component {
       fields: {
         username: '',
         password: '',
+        tos: false,
       },
 
       errors: null,
@@ -18,6 +19,7 @@ export default class RBLogin extends Component {
   handleFieldChange(fieldName, control, event) {
     this.setState(state => {
       state.fields[fieldName] = control.value;
+      state.errors = null;
       return state
     })
   }
@@ -77,6 +79,16 @@ export default class RBLogin extends Component {
             <FormControl type="password" placeholder="password" minLength="6" required {...autocontrol('password')} />
             {errors && errors.password.minLength ? <Alert bsStyle="danger">Password should have at least 6 characters</Alert> : null}
             {errors && errors.password.required ? <Alert bsStyle="danger">Password is required</Alert> : null}
+          </FormGroup>
+
+          <FormGroup {...getValidationState('tos')}>
+            <ControlLabel>Password</ControlLabel>
+            <Checkbox required name="tos" checked={fields.tos} onChange={control => this.setState(state => {
+              state.fields.tos = control.checked
+              state.errors = null;
+              return state;
+            })} />
+            {errors && errors.tos.required ? <Alert bsStyle="danger">TOS aceptance is required</Alert> : null}
           </FormGroup>
 
           <Button type="submit">Submit</Button>

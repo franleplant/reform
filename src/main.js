@@ -23,6 +23,7 @@ interface ReformConfig {
   https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
 */
 
+// TODO: work a bit more with checkboxes
 // TODO: document that the form or Form element should have an onSubmit for Reform to work (users could manually set noValidate though)
 // TODO: docs! and examples!
 // TODO: remove e.getAttr('name') calls because it's not necessary anymore

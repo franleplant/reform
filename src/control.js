@@ -57,6 +57,7 @@ export default class Control {
       value = element.props.checked ? value : ''
     }
 
+
     let inputType = element.props.type;
     if (!inputType && element.type === 'input') {
       // Text is the default
