@@ -16,10 +16,9 @@ export default class Reform extends Component {
   }
 
   onChangeFactory(name, child, oldOnChange) {
-    const that = this;
-    return function(e) {
+    return (e, ...args) => {
       // If cant found then something horrible wrong happended
-      let control = that.formState[name]
+      let control = this.formState[name]
 
       if (!control) {
         throw new Error(`Could not find control with name ${name}. This is likely a bug with Reform :(`)
@@ -33,9 +32,9 @@ export default class Reform extends Component {
       }
 
       // Update error hash
-      control.validate(that.formState)
+      control.validate(this.formState)
 
-      oldOnChange.apply(null, [control, ...arguments])
+      oldOnChange.apply(null, [control, e, ...args])
     }
   }
 

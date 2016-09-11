@@ -1,8 +1,11 @@
+import '../node_modules/bootstrap/dist/css/bootstrap.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './examples/App';
 import Login from './examples/Login';
 import LoginNative from './examples/LoginNative';
+import RBLogin from './examples/RBLogin';
 
 
 class Examples extends React.Component {
@@ -19,6 +22,11 @@ class Examples extends React.Component {
         <div>
           <h2>Login example that displays errors (if any) on submit</h2>
           <LoginNative />
+        </div>
+
+        <div>
+          <h2>React Bootstrap integration</h2>
+          <RBLogin />
         </div>
 
         <div>
