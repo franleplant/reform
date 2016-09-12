@@ -92,16 +92,22 @@ TODO: add keywords for better searching
 This is the entry point to the lib. The way to use it is as follow:
 
 ```javascript
-
 <Reform>
   <form onSubmit={...}>
     {fields...}
   </form>
 </Reform>
-
 ```
-
 This Component does not receive any props, that's by design so we keep the interface as minimal and simple as possible.
+
+
+> If you do not provide the `onSubmit` in your `<form>` element then you should manually set `noValidate`
+to stop HTML5 native validation from happening. Don't worry, you still get it through Reform's functionality.
+
+
+> Reform needs an `onSubmit` handler on the `<form>` element or a `onClick` on submit mechanisms. Ideally you will handle everything
+through `onSubmit` but you are free to do the way you want to.
+
 
 
 

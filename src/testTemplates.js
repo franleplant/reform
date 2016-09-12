@@ -42,7 +42,7 @@ export function controlOnChangeTest(params) {
     <Reform> <form> {React.createElement(type, props)} </form> </Reform>
   );
 
-  wrapper.find(type).simulate('change', {target: {value: value, getAttribute: _ => name}});
+  wrapper.find(type).simulate('change', {target: { value }});
   const [ control, event ] = onChange.args[0]
 
   it(`should call original onChange when 'change' event is triggered`, () => {

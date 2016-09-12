@@ -24,9 +24,7 @@ interface ReformConfig {
 */
 
 // TODO: work a bit more with checkboxes
-// TODO: document that the form or Form element should have an onSubmit for Reform to work (users could manually set noValidate though)
 // TODO: docs! and examples!
-// TODO: remove e.getAttr('name') calls because it's not necessary anymore
 // TODO: async validators
 // TODO: error view helpers
 // TODO: test with bootstrap and other third party components
