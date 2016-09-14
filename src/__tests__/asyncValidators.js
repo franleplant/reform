@@ -11,7 +11,7 @@ const name1 = "test_control_1";
 const existingName = 'Delfina'
 
 
-const apiResponse = _ => new Promise(resolve => setTimeout(_ => resolve(), responseTime + 1))
+const apiResponse = _ => new Promise(resolve => setTimeout(_ => resolve(), responseTime + 50))
 
 // This test simulates a username select box, where we asynchronously check against a fake api
 // that checks if the username already is in use
