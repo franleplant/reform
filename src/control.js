@@ -85,7 +85,7 @@ export default class Control {
     }
   }
 
-  validate(formState) {
+  async validate(formState) {
     const validationRules = this.validationRules
 
     for (let ruleKey in validationRules) {
@@ -93,7 +93,7 @@ export default class Control {
       const ruleValue = validationRules[ruleKey];
       // Allow custom ad hoc validationRules
       const validator = typeof ruleValue === 'function' ? ruleValue : validators.rules[ruleKey];
-      this.errors[ruleKey] = validator(this, formState)
+      this.errors[ruleKey] = await validator(this, formState)
     }
 
     return this.isValid();

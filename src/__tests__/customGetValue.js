@@ -36,9 +36,12 @@ describe('Custom Get Value', () => {
 
   const [wrapper, onChange] = render();
   wrapper.find('input').simulate('change', value);
-  const [control] = onChange.mock.calls[0]
 
-  it('should use the custom getValue to get the value from the onChange params', () => {
+  const promise = new Promise(resolve => setTimeout(_ => resolve()));
+
+  it('should use the custom getValue to get the value from the onChange params', async () => {
+    await promise;
+    const [control] = onChange.mock.calls[0]
     expect(control.value).toBe(value)
   })
 })

@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
 import { shallow } from 'enzyme';
 import Reform, { Validators } from '../main';
-import { controlOnChangeTest, controlIntialStateTest, spy } from '../testTemplates'
+import { controlOnChangeTest, controlIntialStateTest, nextTick } from '../testTemplates'
+
+
 
 Validators.addRule('myRule', control => control.value !== 'Delfina');
 
@@ -40,18 +42,24 @@ describe('Custom Validations: Globals', () => {
     describe('fail', () => {
       const [wrapper, onChange] = render();
       wrapper.find('input').simulate('change', {target: { value: '', getAttribute: _ => name1}});
-      const [control] = onChange.mock.calls[0]
+      const promise = nextTick();
 
-      it('should call the original onChange handler', () => {
+      it('should call the original onChange handler', async () => {
+        await promise;
+        const [control] = onChange.mock.calls[0]
         expect(onChange).toBeCalled()
       })
 
-      it('should set error={myRule: true}', () => {
+      it('should set error={myRule: true}', async () => {
+        await promise;
+        const [control] = onChange.mock.calls[0]
         expect(control.errors.myRule).toBeDefined()
         expect(control.errors.myRule).toBe(true)
       })
 
-      it('should set error={required: true}', () => {
+      it('should set error={required: true}', async () => {
+        await promise;
+        const [control] = onChange.mock.calls[0]
         expect(control.errors.required).toBeDefined()
         expect(control.errors.required).toBe(true)
       })
@@ -59,19 +67,25 @@ describe('Custom Validations: Globals', () => {
 
     describe('success', () => {
       const [wrapper, onChange] = render();
-      wrapper.find('input').simulate('change', {target: { value: 'Delfina', getAttribute: _ => name1}});
-      const [control] = onChange.mock.calls[0]
+      wrapper.find('input').simulate('change', {target: { value: 'Delfina' }});
+      const promise = nextTick();
 
-      it('should call the original onChange handler', () => {
+      it('should call the original onChange handler', async () => {
+        await promise;
+        const [control] = onChange.mock.calls[0]
         expect(onChange).toBeCalled()
       })
 
-      it('should set error={myRule: true}', () => {
+      it('should set error={myRule: true}', async () => {
+        await promise;
+        const [control] = onChange.mock.calls[0]
         expect(control.errors.myRule).toBeDefined()
         expect(control.errors.myRule).toBe(false)
       })
 
-      it('should set error={required: true}', () => {
+      it('should set error={required: true}', async () => {
+        await promise;
+        const [control] = onChange.mock.calls[0]
         expect(control.errors.required).toBeDefined()
         expect(control.errors.required).toBe(false)
       })
@@ -120,19 +134,25 @@ describe('Custom Validations: Globals', () => {
 
     describe('fail', () => {
       const [wrapper, onChange] = render();
-      wrapper.find(`#${name1}`).simulate('change', {target: { value: '', getAttribute: _ => name1}});
-      const [control] = onChange.mock.calls[0]
+      wrapper.find(`#${name1}`).simulate('change', {target: { value: ''}});
+      const promise = nextTick();
 
-      it('should call the original onChange handler', () => {
+      it('should call the original onChange handler', async () => {
+        await promise;
+        const [control] = onChange.mock.calls[0]
         expect(onChange).toBeCalled()
       })
 
-      it('should set error={myComposedRule: true}', () => {
+      it('should set error={myComposedRule: true}', async () => {
+        await promise;
+        const [control] = onChange.mock.calls[0]
         expect(control.errors.myComposedRule).toBeDefined()
         expect(control.errors.myComposedRule).toBe(true)
       })
 
-      it('should set error={required: true}', () => {
+      it('should set error={required: true}', async () => {
+        await promise;
+        const [control] = onChange.mock.calls[0]
         expect(control.errors.required).toBeDefined()
         expect(control.errors.required).toBe(true)
       })
@@ -140,19 +160,25 @@ describe('Custom Validations: Globals', () => {
 
     describe('success', () => {
       const [wrapper, onChange] = render();
-      wrapper.find(`#${name1}`).simulate('change', {target: { value: 'Delfina', getAttribute: _ => name1}});
-      const [control] = onChange.mock.calls[0]
+      wrapper.find(`#${name1}`).simulate('change', {target: { value: 'Delfina' }});
+      const promise = nextTick();
 
-      it('should call the original onChange handler', () => {
+      it('should call the original onChange handler', async () => {
+        await promise;
+        const [control] = onChange.mock.calls[0]
         expect(onChange).toBeCalled()
       })
 
-      it('should set error={myComposedRule: true}', () => {
+      it('should set error={myComposedRule: true}', async () => {
+        await promise;
+        const [control] = onChange.mock.calls[0]
         expect(control.errors.myComposedRule).toBeDefined()
         expect(control.errors.myComposedRule).toBe(false)
       })
 
-      it('should set error={required: true}', () => {
+      it('should set error={required: true}', async () => {
+        await promise;
+        const [control] = onChange.mock.calls[0]
         expect(control.errors.required).toBeDefined()
         expect(control.errors.required).toBe(false)
       })

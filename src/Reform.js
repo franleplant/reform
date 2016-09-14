@@ -16,7 +16,7 @@ export default class Reform extends Component {
   }
 
   onChangeFactory(name, child, oldOnChange) {
-    return (e, ...args) => {
+    return async (e, ...args) => {
       // If cant found then something horrible wrong happended
       let control = this.formState[name]
 
@@ -34,7 +34,7 @@ export default class Reform extends Component {
       }
 
       // Update error hash
-      control.validate(this.formState)
+      await control.validate(this.formState)
 
       oldOnChange.apply(null, [control, e, ...args])
     }
@@ -89,8 +89,8 @@ export default class Reform extends Component {
 
       } else if (isForm) {
         const oldOnSubmit = element.props.onSubmit;
-        const onSubmit = (...args) => {
-          this.validateForm();
+        const onSubmit = async (...args) => {
+          await this.validateForm();
           oldOnSubmit.apply(null, [this, ...args]);
         }
 
@@ -100,8 +100,8 @@ export default class Reform extends Component {
       } else if (isSubmit) {
 
         const oldOnClick = element.props.onClick || noop;
-        const onClick = (...args) => {
-          this.validateForm();
+        const onClick = async (...args) => {
+          await this.validateForm();
           oldOnClick.apply(null, [this, ...args]);
         }
 
@@ -113,10 +113,11 @@ export default class Reform extends Component {
     })
   }
 
-  validateForm() {
-    Object.keys(this.formState)
-      .map(fieldName => this.formState[fieldName])
-      .forEach(control => control.validate(this.formState))
+  async validateForm() {
+    for (const fieldName in this.formState) {
+      const control = this.formState[fieldName];
+      await control.validate(this.formState);
+    }
 
     return this.isValid();
   }
