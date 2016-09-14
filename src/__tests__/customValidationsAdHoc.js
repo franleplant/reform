@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
 import { shallow } from 'enzyme';
 import Reform from '../main';
-import { controlOnChangeTest, controlIntialStateTest, spy } from '../testTemplates'
+import { controlOnChangeTest, controlIntialStateTest, nextTick } from '../testTemplates'
 
 
 const name = "test_control_1";
@@ -37,19 +37,26 @@ describe('Custom Validations: Ad Hoc', () => {
   describe('test case 1', () => {
     describe('fail', () => {
       const [wrapper, onChange] = render();
-      wrapper.find('input').simulate('change', {target: { value: '', getAttribute: _ => name}});
-      const [control] = onChange.mock.calls[0]
+      wrapper.find('input').simulate('change', {target: { value: ''}});
 
-      it('should call the original onChange handler', () => {
+      const promise = nextTick();
+
+
+      it('should call the original onChange handler', async () => {
+        await promise;
         expect(onChange).toBeCalled()
       })
 
-      it('should set error={myRule: true}', () => {
+      it('should set error={myRule: true}', async () => {
+        await promise;
+        const [control] = onChange.mock.calls[0];
         expect(control.errors.myRule).toBeDefined()
         expect(control.errors.myRule).toBe(true)
       })
 
-      it('should set error={required: true}', () => {
+      it('should set error={required: true}', async () => {
+        await promise;
+        const [control] = onChange.mock.calls[0];
         expect(control.errors.required).toBeDefined()
         expect(control.errors.required).toBe(true)
       })
@@ -57,19 +64,25 @@ describe('Custom Validations: Ad Hoc', () => {
 
     describe('success', () => {
       const [wrapper, onChange] = render();
-      wrapper.find('input').simulate('change', {target: { value: 'Delfina', getAttribute: _ => name}});
-      const [control] = onChange.mock.calls[0]
+      wrapper.find('input').simulate('change', {target: { value: 'Delfina'}});
+      const promise = nextTick();
 
-      it('should call the original onChange handler', () => {
+
+      it('should call the original onChange handler', async () => {
+        await promise;
         expect(onChange).toBeCalled()
       })
 
-      it('should set error={myRule: true}', () => {
+      it('should set error={myRule: true}', async () => {
+        await promise;
+        const [control] = onChange.mock.calls[0]
         expect(control.errors.myRule).toBeDefined()
         expect(control.errors.myRule).toBe(false)
       })
 
-      it('should set error={required: true}', () => {
+      it('should set error={required: true}', async () => {
+        await promise;
+        const [control] = onChange.mock.calls[0]
         expect(control.errors.required).toBeDefined()
         expect(control.errors.required).toBe(false)
       })

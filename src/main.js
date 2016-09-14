@@ -23,11 +23,11 @@ interface ReformConfig {
   https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
 */
 
-// TODO: work a bit more with checkboxes
-// TODO: document that the form or Form element should have an onSubmit for Reform to work (users could manually set noValidate though)
+// TODO: warn if custom validator is not found
 // TODO: docs! and examples!
-// TODO: remove e.getAttr('name') calls because it's not necessary anymore
-// TODO: async validators
+// TODO: example: async validators
+// TODO: example: dusplicate password input equality check
+// TODO: work a bit more with checkboxes
 // TODO: error view helpers
 // TODO: test with bootstrap and other third party components
 // TODO: test bootstrap integration

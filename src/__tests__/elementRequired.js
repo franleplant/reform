@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
 import { shallow } from 'enzyme';
 import Reform from '../main';
-import { controlOnChangeTest, controlIntialStateTest, spy } from '../testTemplates'
+import { controlOnChangeTest, controlIntialStateTest, spy, nextTick } from '../testTemplates'
 import * as required from '../officialValidators/required'
 
+// TODO: replace spy with jest.fn
 
 
 describe('required', () => {
@@ -86,22 +87,30 @@ describe('required', () => {
     const successValue = "pizza"
     const failureValue = ""
 
-    it(`should add errors to onChange arguments with value = "${successValue}"`, () => {
-      const onChange = spy();
-      const wrapper = shallow(
-        <Reform>
-          <form>
-            <select name={name} required value={initialValue} onChange={onChange}>
-              <option value="" disabled>Select food</option>
-              <option value="hot dogs">Hot Dogs</option>
-              <option value="pizza">Pizza</option>
-              <option value="cake">Cake</option>
-            </select>
-          </form>
-        </Reform>
-      );
+    it(`should add errors to onChange arguments with value = "${successValue}"`, async () => {
+      function render() {
+        const onChange = spy();
+        const wrapper = shallow(
+          <Reform>
+            <form>
+              <select name={name} required value={initialValue} onChange={onChange}>
+                <option value="" disabled>Select food</option>
+                <option value="hot dogs">Hot Dogs</option>
+                <option value="pizza">Pizza</option>
+                <option value="cake">Cake</option>
+              </select>
+            </form>
+          </Reform>
+        );
 
-      wrapper.find('select').simulate('change', {target: {value: successValue, getAttribute: _ => name}});
+        return [wrapper, onChange]
+      }
+
+      const [wrapper, onChange] = render();
+      wrapper.find('select').simulate('change', {target: {value: successValue }});
+
+      await nextTick();
+
 
       expect(onChange.calledOnce).toBe(true);
       const [ control, event ] = onChange.args[0]
@@ -115,22 +124,31 @@ describe('required', () => {
       expect(event.target.value).toBe(successValue)
     });
 
-    it(`should add errors to onChange arguments with value = "${failureValue}"`, () => {
-      const onChange = spy();
-      const wrapper = shallow(
-        <Reform>
-          <form>
-            <select name={name} required value={initialValue} onChange={onChange}>
-              <option value="" disabled>Select food</option>
-              <option value="hot dogs">Hot Dogs</option>
-              <option value="pizza">Pizza</option>
-              <option value="cake">Cake</option>
-            </select>
-          </form>
-        </Reform>
-      );
+    it(`should add errors to onChange arguments with value = "${failureValue}"`, async () => {
 
-      wrapper.find('select').simulate('change', {target: {value: failureValue, getAttribute: _ => name}});
+      function render() {
+        const onChange = spy();
+        const wrapper = shallow(
+          <Reform>
+            <form>
+              <select name={name} required value={initialValue} onChange={onChange}>
+                <option value="" disabled>Select food</option>
+                <option value="hot dogs">Hot Dogs</option>
+                <option value="pizza">Pizza</option>
+                <option value="cake">Cake</option>
+              </select>
+            </form>
+          </Reform>
+        );
+
+        return [wrapper, onChange]
+      }
+
+
+      const [wrapper, onChange] = render();
+      wrapper.find('select').simulate('change', {target: {value: failureValue}});
+
+      await nextTick();
 
       expect(onChange.calledOnce).toBe(true);
       const [ control, event ] = onChange.args[0]
@@ -152,17 +170,24 @@ describe('required', () => {
     const initialValue = ""
     const value = "checkbox_a"
 
-    it(`should add errors to onChange arguments with checked = true`, () => {
-      const onChange = spy();
-      const wrapper = shallow(
-        <Reform>
-          <form>
-            <input type="checkbox" name={name} value={value} onChange={onChange}  checked={initialValue} required/>
-          </form>
-        </Reform>
-      );
+    it(`should add errors to onChange arguments with checked = true`, async () => {
+      function render() {
+        const onChange = spy();
+        const wrapper = shallow(
+          <Reform>
+            <form>
+              <input type="checkbox" name={name} value={value} onChange={onChange}  checked={initialValue} required/>
+            </form>
+          </Reform>
+        );
 
-      wrapper.find('input').simulate('change', {target: {value: value, checked: true, getAttribute: _ => name}});
+        return [wrapper, onChange]
+      }
+
+      const [wrapper, onChange] = render();
+      wrapper.find('input').simulate('change', {target: {value: value, checked: true}});
+
+      await nextTick();
 
       expect(onChange.calledOnce).toBe(true);
       const [ control, event ] = onChange.args[0]
@@ -177,17 +202,24 @@ describe('required', () => {
       expect(event.target.checked).toBe(true)
     });
 
-    it(`should add errors to onChange arguments with checked = false`, () => {
-      const onChange = spy();
-      const wrapper = shallow(
-        <Reform>
-          <form>
-            <input type="checkbox" name={name} value={value} onChange={onChange}  checked={initialValue} required/>
-          </form>
-        </Reform>
-      );
+    it(`should add errors to onChange arguments with checked = false`, async () => {
 
-      wrapper.find('input').simulate('change', {target: {value: value, checked: false, getAttribute: _ => name}});
+      function render() {
+        const onChange = spy();
+        const wrapper = shallow(
+          <Reform>
+            <form>
+              <input type="checkbox" name={name} value={value} onChange={onChange}  checked={initialValue} required/>
+            </form>
+          </Reform>
+        );
+
+        return [wrapper, onChange]
+      }
+
+      const [wrapper, onChange] = render();
+      wrapper.find('input').simulate('change', {target: {value: value, checked: false}});
+      await nextTick();
 
       expect(onChange.calledOnce).toBe(true);
       const [ control, event ] = onChange.args[0]
@@ -211,19 +243,25 @@ describe('required', () => {
     const name = "test"
     const initialValue = ""
 
-    it(`should initially set value='' when no radio is checked`, () => {
-      const onChange = spy();
-      const wrapper = shallow(
-        <Reform>
-          <form>
-            <input type="radio" name={name} value="opt1" onChange={onChange} checked={false} required/>
-            <input type="radio" name={name} value="opt2" onChange={onChange} checked={false} required/>
-          </form>
-        </Reform>
-      );
+    it(`should initially set value='' when no radio is checked`, async () => {
+      function render() {
+        const onChange = spy();
+        const wrapper = shallow(
+          <Reform>
+            <form>
+              <input type="radio" name={name} value="opt1" onChange={onChange} checked={false} required/>
+              <input type="radio" name={name} value="opt2" onChange={onChange} checked={false} required/>
+            </form>
+          </Reform>
+        );
 
+        return [wrapper, onChange]
+      }
+
+      const [wrapper, onChange] = render();
       const reform = wrapper.instance();
-      reform.validateForm();
+
+      await reform.validateForm();
 
       const control = reform.formState[name];
       expect(control.value).toBe('')
@@ -232,7 +270,7 @@ describe('required', () => {
       expect(control.errors.required).toBe(true);
     });
 
-    it(`should initially set value='opt2' (edit mode)`, () => {
+    it(`should initially set value='opt2' (edit mode)`, async () => {
       const onChange = spy();
       const wrapper = shallow(
         <Reform>
@@ -244,7 +282,7 @@ describe('required', () => {
       );
 
       const reform = wrapper.instance();
-      reform.validateForm();
+      await reform.validateForm();
 
       const control = reform.formState[name];
       expect(control.value).toBe('opt2')
@@ -253,18 +291,24 @@ describe('required', () => {
       expect(control.errors.required).toBe(false);
     });
 
-    it(`should add errors to onChange arguments with checked = true`, () => {
-      const onChange = spy();
-      const wrapper = shallow(
-        <Reform>
-          <form>
-            <input type="radio" name={name} value="opt1" onChange={onChange} checked={false} required id="opt1"/>
-            <input type="radio" name={name} value="opt2" onChange={onChange} checked={false} required/>
-          </form>
-        </Reform>
-      );
+    it(`should add errors to onChange arguments with checked = true`, async () => {
+      function render() {
+        const onChange = spy();
+        const wrapper = shallow(
+          <Reform>
+            <form>
+              <input type="radio" name={name} value="opt1" onChange={onChange} checked={false} required id="opt1"/>
+              <input type="radio" name={name} value="opt2" onChange={onChange} checked={false} required/>
+            </form>
+          </Reform>
+        );
 
-      wrapper.find('#opt1').simulate('change', {target: {value: 'opt1', checked: true, getAttribute: _ => name}});
+        return [wrapper, onChange]
+      }
+
+      const [wrapper, onChange] = render();
+      wrapper.find('#opt1').simulate('change', {target: {value: 'opt1', checked: true}});
+      await nextTick();
 
       expect(onChange.calledOnce).toBe(true);
       const [ control, event ] = onChange.args[0]
@@ -309,7 +353,7 @@ describe('required', () => {
   });
 
   // TODO: this isn't working, we might need to go Enzyme Full DOM rendering to do this
-  xdescribe(`<Custom required />"`, () => {
+  describe(`<Custom required />"`, () => {
     const name = "test"
     const initialValue = ""
     const successValue = "ok"
@@ -317,7 +361,7 @@ describe('required', () => {
 
     const Custom = (props) => <input type="text" {...props} />
 
-    it(`should add errors to onChange arguments with value = "${successValue}"`, () => {
+    function render() {
       const onChange = spy();
       const wrapper = shallow(
         <Reform>
@@ -327,7 +371,16 @@ describe('required', () => {
         </Reform>
       );
 
-      wrapper.find('input').simulate('change', {target: {value: successValue, getAttribute: _ => name}});
+      return [wrapper, onChange]
+    }
+
+    it(`should add errors to onChange arguments with value = "${successValue}"`, async () => {
+
+
+      const [wrapper, onChange] = render();
+
+      wrapper.find('Custom').simulate('change', {target: {value: successValue}});
+      await nextTick();
 
       expect(onChange.calledOnce).toBe(true);
       const [ control, event ] = onChange.args[0]
@@ -338,20 +391,13 @@ describe('required', () => {
 
       expect(event).toBeDefined()
       expect(event.target).toBeDefined()
-      expect(event.target.value).toBe(sucessValue)
+      expect(event.target.value).toBe(successValue)
     });
 
-    it(`should add errors to onChange arguments with value = "${failureValue}"`, () => {
-      const onChange = spy();
-      const wrapper = shallow(
-        <Reform>
-          <form>
-            <Custom name={name} value={initialValue} onChange={onChange} required/>
-          </form>
-        </Reform>
-      );
-
-      wrapper.find('input').simulate('change', {target: {value: failureValue, getAttribute: _ => name}});
+    it(`should add errors to onChange arguments with value = "${failureValue}"`, async () => {
+      const [wrapper, onChange] = render();
+      wrapper.find('Custom').simulate('change', {target: {value: failureValue}});
+      await nextTick();
 
       expect(onChange.calledOnce).toBe(true);
       const [ control, event ] = onChange.args[0]
