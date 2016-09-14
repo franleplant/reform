@@ -28,7 +28,7 @@ The main objectives of **Reform** are:
 
 
 In a sense **Reform** is a port of HTML5 validation primitives to the React world
-while maintaining common React Idioms.
+while maintaining common React Idioms and adding custom error display and custom async validators.
 
 People familiar with Angular 1 forms will feel at home here.
 
@@ -147,7 +147,146 @@ errors: {
 
 #### data-reform
 
+`data-reform` is a custom prop used to config reform on a particular form control.
+
+Use it to:
+
+- Define Custom Validators (ad hoc or global)
+- Custom `getValue`
+
+```javascript
+
+const dataReform = {
+  getValue: event => event.target.value.toUpperCase(),
+  validationRules: {
+    myRule1: ...
+  }
+}
+```
+
+
+`getValue` is useful when you are trying to validate a custom component
+that instead of invoking `onChange` with an `event` object as native elements do, it
+invokes `onChange` with something else.
+This hooks let's you configure how Reform calculates the value of a given control
+from the onChange arguments.
+
+it's signature is:
+
+```typescript
+
+GetValue: (first: Event | any, control: Control) => any
+```
+
 #### Custom Validators
+
+Reform supports two forms of custom validators: Ad Hoc and Global.
+Both support out of the box and transparently async validations.
+
+Validators are just functions with the following signature:
+
+```typescript
+CustomValidator: (control: Control, formState: FormState) => boolean;
+```
+
+If a validator returns `true` then that means that there is an error.
+
+Example
+
+```javascript
+function customMinLength(control, formState) {
+  const value = control.value;
+
+  if (value.length < 5) {
+    // error
+    return true
+  }
+
+  // everything's fine
+  return false
+}
+```
+
+
+> FormState gives you access to the rest of the form controls, so you can implement things such
+as password verification pretty easily
+
+##### Ad Hoc Custom Validators
+
+This type of custom validators are defined in place of the control using it.
+They are similar to anonymous functions, they are intended for one time use.
+
+
+Let's use `CustomMinLength` defined before as an Ad Hoc Custom Validator
+
+```javascript
+<Reform>
+  <form onSubmit={...}>
+    <input
+      type="text"
+      value={...}
+      onChange={...}
+      data-reform={{
+        validationRules: {
+          customMinLength: customMinLength
+        }
+      }}
+    />
+
+    <button>Submit</button>
+  </form>
+</Reform>
+
+```
+
+> Ad Hoc means exactly..... TODO
+
+> While you could create a simple function that acts as custom validator and pass it around
+like you will do with a regular function and use it ad hoc several times, you should avoid this
+and use Global Validators instead.
+
+
+#### Global Validators
+
+When building a big application you will probably want to create a reusable
+pool of Custom Validators that are related to your app's domain.
+Reform let's you define new validators and re-use them.
+
+Let's add `customMinLength` as a Global Validator
+
+```javascript
+import { Validators } from '../main';
+Validators.addRule('customMinLength', customMinLength);
+```
+
+
+Now you can use it everywhere via `data-reform`
+
+```javascript
+<Reform>
+  <form onSubmit={...}>
+    <input
+      type="text"
+      value={...}
+      onChange={...}
+      data-reform={{
+        validationRules: {
+          customMinLength: true
+        }
+      }}
+    />
+
+    <button>Submit</button>
+  </form>
+</Reform>
+```
+
+
+> Note that instead of passing a function to `customMinLength` we are passing a simple boolean, 
+Reform will then look for a previously defined validator with that rule.
+
+
+
 
 ### Common solutions for common problems
 
