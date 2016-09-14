@@ -52,12 +52,17 @@ will change signatures to these ones:
 
 ```javascript
 
-function onChange(control, event) { ...  }
+function onChange(control: Control, event: HTMLEvent) { ...  }
 
 
-function onSubmit(formState, event) { ...  }
-
+function onSubmit(formState: Form, event: HTMLEvent) { ...  }
 ```
+
+> Note that Reform will only add a first argument to these function, the rest of
+the parameters will still be there. `event` tends to be the first parameter (and the only)
+for native elements (i.e. input, select, textarea), but it might be anything else for
+custom form controls. Reform does not interfere with that and it's designed to work well
+with anything. See Examples.
 
 
 
@@ -88,6 +93,7 @@ TODO
 TODO: add keywords for better searching
 
 #### <Reform/>
+> form, reform, component, entry point, onSubmit, top level api
 
 This is the entry point to the lib. The way to use it is as follow:
 
@@ -112,17 +118,30 @@ through `onSubmit` but you are free to do the way you want to.
 
 
 #### Control
+> form control, form input, custom controls, field, input, select, textarea, radio, checkbox
 
 How do you access it?
 
-```javascript
+```typescript
 
 type Control = {
   value: string | number | any;
   checked: boolean;
   errors: {
     [validationRuleKey: string]: boolean;
-  }
+  };
+
+  validationRules: {
+    // For more info check the custom validator rules
+    // This hash will be filled automatically by Reform when
+    // using built-in standard rules (require, min, minLength, et al)
+    [validationRuleKey: string]: boolean | Function;
+  };
+
+  // This function tells Reform how to get the value of a Control Element
+  // from the arguments of the onChange event handler.
+  // Check `data-form` section for more information
+  getValue: Function;
 }
 
 ```
@@ -137,15 +156,36 @@ errors: {
 }
 ```
 
-- `true` tells you that the rule has an error
-- `false` tells you that there isn't one
+- `true`: the rule has an error. The field is not valid
+- `false` the rule does not have an error. The field is Valid
 - each `validationRuleKey` is always related to a rule. So, for example, there's a rule (function) called `required` (built-in) which will be evaluated every time the input changes value and it's result will be stored in errors. 
 
-> Always `errors[validationRuleKey]` will `true` is there is an **error**
+> Always `errors[validationRuleKey]` will be `true` if there is an **error**
+
+
+TODO: show snippets of common form Controls
 
 #### Form
+> form state, formState, isValid, access to all controls
+
+You can use this object to access all the controls in the form.
+It's useful when you want to do validations that take in account more than one field.
+
+```typescript
+type Form = {
+  [fieldName: string]: Control;
+
+  isValid: () => boolean;
+
+  // You will probably never use this method.
+  // It's used internally by Reform
+  async validate: () => boolean;
+}
+```
+
 
 #### data-reform
+> configuration, config, manual, customization, custom validators, get value, parse
 
 `data-reform` is a custom prop used to config reform on a particular form control.
 
@@ -174,11 +214,14 @@ from the onChange arguments.
 it's signature is:
 
 ```typescript
-
 GetValue: (first: Event | any, control: Control) => any
 ```
 
+
+TODO: example about this
+
 #### Custom Validators
+> custom validators, validate, ad hoc, global validators, async validators
 
 Reform supports two forms of custom validators: Ad Hoc and Global.
 Both support out of the box and transparently async validations.
