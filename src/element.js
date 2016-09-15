@@ -21,6 +21,20 @@ export function isRadio(element) {
 }
 
 
+// TODO: improve this and the above function to be as flexible as possible
+export function isCheckbox(element) {
+  const type = element.type;
+
+  if (typeof type === 'function') {
+    // React-Bootstrap
+    return type.name === 'Checkbox'
+  }
+
+  // native checkbox
+  return element.prop.type === 'checkbox'
+}
+
+
 export const getValidationRules = (element = {}) => {
   const props = element.props || {}
 

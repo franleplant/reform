@@ -134,6 +134,16 @@ export default class Control {
     return typeof this.elementType === 'function';
   }
 
+  isCheckbox() {
+    const type = this.elementType;
+    const inputType = this.inputType;
+
+    // native checkbox
+    return inputType === 'checkbox' ||
+      // React-Bootstrap
+      (typeof type === 'function' && type.name === 'Checkbox')
+  }
+
 
 
 }

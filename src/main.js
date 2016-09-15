@@ -26,7 +26,7 @@ interface ReformConfig {
 // TODO: docs! and examples!
 // TODO: example: async validators
 // TODO: example: dusplicate password input equality check
-// TODO: work a bit more with checkboxes
+// TODO: examples and checkboxes tests. Document the way to force something to be treated as a checkbox
 // TODO: error view helpers
 // TODO: test with bootstrap and other third party components
 // TODO: test bootstrap integration
