@@ -23,7 +23,6 @@ interface ReformConfig {
   https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
 */
 
-// TODO: warn if custom validator is not found
 // TODO: docs! and examples!
 // TODO: example: async validators
 // TODO: example: dusplicate password input equality check

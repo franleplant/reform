@@ -93,6 +93,11 @@ export default class Control {
       const ruleValue = validationRules[ruleKey];
       // Allow custom ad hoc validationRules
       const validator = typeof ruleValue === 'function' ? ruleValue : validators.rules[ruleKey];
+
+      if (!validator) {
+        throw new Error(`Validator ${ruleKey} not found in control ${JSON.stringify(this)}`);
+      }
+
       this.errors[ruleKey] = await validator(this, formState)
     }
 
