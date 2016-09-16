@@ -27,6 +27,8 @@ interface ReformConfig {
 // TODO: example: async validators
 // TODO: example: dusplicate password input equality check
 // TODO: examples and checkboxes tests. Document the way to force something to be treated as a checkbox
+// TODO: support for asyn validators extra error details (say connection error et al). Probably a simple meta
+// field inside the control will suffice
 // TODO: error view helpers
 // TODO: test with bootstrap and other third party components
 // TODO: test bootstrap integration
