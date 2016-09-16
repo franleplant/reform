@@ -127,7 +127,7 @@ describe('required', () => {
     it(`should add errors to onChange arguments with value = "${failureValue}"`, async () => {
 
       function render() {
-        const onChange = spy();
+        const onChange = jest.fn();
         const wrapper = shallow(
           <Reform>
             <form>
@@ -150,8 +150,8 @@ describe('required', () => {
 
       await nextTick();
 
-      expect(onChange.calledOnce).toBe(true);
-      const [ control, event ] = onChange.args[0]
+      expect(onChange).toBeCalled();
+      const [ control, event ] = onChange.mock.calls[0]
       expect(control).toBeDefined()
       expect(control.errors).toBeDefined()
       expect(control.errors.required).toBeDefined()

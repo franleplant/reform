@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 import Reform from './main';
 
 
-export const nextTick = _ => new Promise(resolve => setTimeout(_ => resolve()));
+export const nextTick = delay => new Promise(resolve => setTimeout(_ => resolve(), delay));
 
 export function spy() {
   function spyInstance() {
@@ -45,7 +45,7 @@ export function controlOnChangeTest(params) {
     <Reform> <form> {React.createElement(type, props)} </form> </Reform>
   );
 
-  wrapper.find(type).simulate('change', {target: { value }});
+  wrapper.find(type).simulate('change', {target: { value }, persist: function() {}});
 
   let control;
   let event;
@@ -63,7 +63,7 @@ export function controlOnChangeTest(params) {
 
         resolve([control, event])
       } else {
-        console.log('rejected yo')
+        console.log('rejected yo', JSON.stringify(onChange.mock))
         reject();
       }
     })

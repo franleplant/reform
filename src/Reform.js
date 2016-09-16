@@ -16,7 +16,12 @@ export default class Reform extends Component {
   }
 
   onChangeFactory(name, child, oldOnChange) {
-    return async (e, ...args) => {
+    return async (event, ...args) => {
+      try {
+      // Dont null-ify this object react, staph
+      event.persist();
+      } catch(e) {}
+
       // If cant found then something horrible wrong happended
       let control = this.formState[name]
 
@@ -25,18 +30,19 @@ export default class Reform extends Component {
       }
 
       // Update value
-      control.value = control.getValue(e, control)
+      control.value = control.getValue(event, control)
 
       try {
-        control.checked = e.target.checked
+        control.checked = event.target.checked
       } catch(e) {
         control.checked = null;
       }
 
+
       // Update error hash
       await control.validate(this.formState)
 
-      oldOnChange.apply(null, [control, e, ...args])
+      oldOnChange.apply(null, [control, event, ...args])
     }
   }
 
@@ -89,9 +95,13 @@ export default class Reform extends Component {
 
       } else if (isForm) {
         const oldOnSubmit = element.props.onSubmit;
-        const onSubmit = async (...args) => {
+        const onSubmit = async (event, ...args) => {
+          try {
+            // Dont null-ify this object react, staph
+            event.persist();
+          } catch(e) {}
           await this.validateForm();
-          oldOnSubmit.apply(null, [this, ...args]);
+          oldOnSubmit.apply(null, [this, event, ...args]);
         }
 
         // Disable html5 native validation
@@ -100,9 +110,13 @@ export default class Reform extends Component {
       } else if (isSubmit) {
 
         const oldOnClick = element.props.onClick || noop;
-        const onClick = async (...args) => {
+        const onClick = async (event, ...args) => {
+          try {
+            // Dont null-ify this object react, staph
+            event.persist();
+          } catch(e) {}
           await this.validateForm();
-          oldOnClick.apply(null, [this, ...args]);
+          oldOnClick.apply(null, [this, event, ...args]);
         }
 
         newProps = {onClick}

@@ -6,6 +6,7 @@ import App from './examples/App';
 import Login from './examples/Login';
 import LoginNative from './examples/LoginNative';
 import RBLogin from './examples/RBLogin';
+import Select from './examples/Select';
 
 
 class Examples extends React.Component {
@@ -27,6 +28,11 @@ class Examples extends React.Component {
         <div>
           <h2>React Bootstrap integration</h2>
           <RBLogin />
+        </div>
+
+        <div>
+          <h2>Select</h2>
+          <Select />
         </div>
 
         <div>
