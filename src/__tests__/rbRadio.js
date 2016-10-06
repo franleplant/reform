@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
 import { shallow } from 'enzyme';
 import { Radio } from 'react-bootstrap';
-import Reform from '../main';
+import Reform from '../index';
 import { controlOnChangeTest, controlIntialStateTest, spy } from '../testTemplates'
 
 

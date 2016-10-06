@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
 import { shallow } from 'enzyme';
-import Reform, { Validators } from '../main';
+import Reform, { Validators } from '../index';
 import { controlOnChangeTest, controlIntialStateTest } from '../testTemplates'
 
 

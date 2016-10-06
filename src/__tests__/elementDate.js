@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
 //import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
-import Reform from '../main';
+import Reform from '../index';
 import { controlOnChangeTest, controlIntialStateTest } from '../testTemplates'
 
 

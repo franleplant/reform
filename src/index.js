@@ -1,50 +1,41 @@
-import '../node_modules/bootstrap/dist/css/bootstrap.css';
+import Reform from './Reform';
+import * as Validators from './validators.js';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './examples/App';
-import Login from './examples/Login';
-import LoginNative from './examples/LoginNative';
-import RBLogin from './examples/RBLogin';
-import Select from './examples/Select';
+export default Reform;
+export { Validators };
 
+/*
 
-class Examples extends React.Component {
-  render() {
-    return (
-      <div>
-        <h1>Reform Examples</h1>
-        <p></p>
-        <div>
-          <h2>Login example that always displays the errors</h2>
-          <Login />
-        </div>
+type GetValue = (event, control) => fieldValue
 
-        <div>
-          <h2>Login example that displays errors (if any) on submit</h2>
-          <LoginNative />
-        </div>
-
-        <div>
-          <h2>React Bootstrap integration</h2>
-          <RBLogin />
-        </div>
-
-        <div>
-          <h2>Select</h2>
-          <Select />
-        </div>
-
-        <div>
-          <App />
-        </div>
-
-      </div>
-    );
-  }
+interface ReformConfig {
+  validationRules: ValidationRules;
+  getValue: GetValue;
+  typeProp: string
 }
+*/
 
-ReactDOM.render(
-  <Examples />,
-  document.getElementById('root')
-);
+/*
+  form spec!
+  https://www.w3.org/TR/html5/forms.html
+
+  good docs
+  https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
+*/
+
+// TODO: docs! and examples!
+// TODO: example: dusplicate password input equality check
+// TODO: examples and checkboxes tests. Document the way to force something to be treated as a checkbox
+// TODO: support for asyn validators extra error details (say connection error et al). Probably a simple meta
+// field inside the control will suffice
+// TODO: error view helpers
+// TODO: test with bootstrap and other third party components
+// TODO: test bootstrap integration
+// TODO: warnings all over the place
+// TODO: warn if no form is in the children
+// TODO: warn if no controls
+// TODO: wanr if no submit handlers
+// TODO: warn duplicated names (except for radios)
+// TODO: logging generalization
+// TODO: monkeypatch all submit mechanisms (contemplate bootstrap forms for example) (inputs, submits, buttons, images)
+// TODO: optimize
