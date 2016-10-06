@@ -2,7 +2,7 @@
   "name": "@franleplant/reform",
   "version": "4.1.0",
   "private": false,
-  "main": "main.js",
+  "main": "src/main.js",
   "devDependencies": {
     "bootstrap": "3.3.7",
     "coveralls": "2.11.12",
