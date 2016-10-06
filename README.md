@@ -5,10 +5,122 @@ Form validation library for react
 
 > This lib is in Alpha stage
 
+We have a separate [Repo for examples](https://github.com/franleplant/reform-examples)
+that's versioned in the same sequence at this main repo, so working Examples for version `4.2.4` will be tagged
+by version `4.2.4` in reform-examples
+
 ## Quick Start
 
+```javascript
+import React, { Component } from 'react';
+import Reform from '@franleplant/reform';
 
-TODO
+export default class LoginNative extends Component {
+  constructor(props) {
+    super(props)
+
+    /* 1st */
+    this.state = {
+      fields: {
+        username: '',
+        password: '',
+      },
+
+      errors: {
+        username: {},
+        password: {},
+      }
+    }
+  }
+
+  /* 2st */
+  handleFieldChange(fieldName, control, event) {
+    this.setState(state => {
+      state.fields[fieldName] = control.value;
+      return state
+    })
+  }
+
+  /* 3rd */
+  handleSubmit(form, event) {
+    event.preventDefault();
+    this.setState(state => {
+      state.errors = form.getErrorMap();
+      return state
+    });
+
+    if (!form.isValid()) {
+      console.log("FORM NOT VALID ")
+    }
+  }
+
+  render() {
+    const {fields, errors} = this.state;
+
+
+    const autocontrol = fieldName => {
+      return ({
+        name: fieldName,
+        value: fields[fieldName],
+        onChange: this.handleFieldChange.bind(this, fieldName),
+        style: {
+          borderColor: errors[fieldName].isInvalid ? 'red' : null,
+        },
+      })
+    }
+
+
+    /* 4th */
+    return (
+      <Reform>
+        <form onSubmit={this.handleSubmit.bind(this)}>
+          <div>
+            <input type="text" placeholder="username" minLength="3" required {...autocontrol('username')} />
+            {errors.username.minLength ? <p>User Name should have at least 3 characters</p> : null}
+            {errors.username.required ? <p>User Name is required</p> : null}
+          </div>
+
+          <div>
+            <input type="password" placeholder="password" minLength="6" required {...autocontrol('password')} />
+            {errors.password.minLength ? <p>Password should have at least 6 characters</p> : null}
+            {errors.password.required ? <p>Password is required</p> : null}
+          </div>
+
+          <button type="submit">Submit</button>
+        </form>
+      </Reform>
+    );
+  }
+}
+```
+
+
+1- Define your state with fields and errors
+
+> NOTE Reform does not care where you store your state. This is a good way but you should free
+to accomodate as you like it, in fact you could even go as far as storing Form state into Redux, but
+I would recommend against.
+
+2- Define your `onChange` handlers
+
+In here I show you how to create a generic `onChange` handler to be re-used in all fields (or at least in most)
+
+> NOTE how the onChange receives a new paramater called `control`, that's Reform in the works :smile:
+
+3- Define your `onSubmit` handler
+
+It's important that your form has an `onSubmit` handler to Reform to work correctly
+
+Note how onSubmit receives a new parameter called `form`, that's Reform in the works :smile:
+
+4- Render your form
+
+The important part here is that you need to wrap everything in `<Reform>`
+
+
+> NOTE that most of the steps is just React plain form and input handling, that's fine and that's the goal of Reform,
+we only add information to those hooks but the paradigm is the same.
+
 
 
 ## Index
