@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "bootstrap": "3.3.7",
+    "react-dom": "^15.3.2",
     "coveralls": "2.11.12",
     "enzyme": "2.4.1",
     "react-addons-test-utils": "15.3.1",
