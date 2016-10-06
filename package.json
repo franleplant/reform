@@ -2,11 +2,12 @@
   "name": "@franleplant/reform",
   "version": "4.2.1",
   "private": false,
-  "main": "src/index.js",
+  "main": "build/index.js",
   "dependencies": {
     "react": "^15.3.1"
   },
   "scripts": {
+    "prepublish": "npm run build",
     "build": "node scripts/build.js",
     "test": "jest --watch --env=jsdom",
     "test:travis": "jest --env=jsdom --coverage"
