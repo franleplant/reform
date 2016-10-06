@@ -28,7 +28,7 @@ The main objectives of **Reform** are:
 
 
 In a sense **Reform** is a port of HTML5 validation primitives to the React world
-while maintaining common React Idioms and adding custom error display and custom async validators.
+while maintaining common React Idioms and adding custom error display and custom validators.
 
 People familiar with Angular 1 forms will feel at home here.
 
@@ -179,7 +179,7 @@ type Form = {
 
   // You will probably never use this method.
   // It's used internally by Reform
-  async validate: () => boolean;
+  validate: () => boolean;
 }
 ```
 
@@ -223,8 +223,11 @@ TODO: example about this
 #### Custom Validators
 > custom validators, validate, ad hoc, global validators, async validators
 
+> Async validators are not supported! They are planned but right now they complicate things too
+much, if you need to work with async validators you can use them directly with React, Reform wont 
+get in the way
+
 Reform supports two forms of custom validators: Ad Hoc and Global.
-Both support out of the box and transparently async validations.
 
 Validators are just functions with the following signature:
 

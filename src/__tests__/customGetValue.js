@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
 import { shallow } from 'enzyme';
 import Reform from '../main';
-import { controlOnChangeTest, controlIntialStateTest, nextTick } from '../testTemplates'
+import { controlOnChangeTest, controlIntialStateTest } from '../testTemplates'
 
 
 const name = "test_control_1";
@@ -37,10 +37,7 @@ describe('Custom Get Value', () => {
   const [wrapper, onChange] = render();
   wrapper.find('input').simulate('change', value);
 
-  const promise = nextTick();
-
-  it('should use the custom getValue to get the value from the onChange params', async () => {
-    await promise;
+  it('should use the custom getValue to get the value from the onChange params', () => {
     expect(onChange).toBeCalled();
     const [control] = onChange.mock.calls[0]
     expect(control.value).toBe(value)

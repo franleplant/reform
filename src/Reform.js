@@ -16,12 +16,7 @@ export default class Reform extends Component {
   }
 
   onChangeFactory(name, child, oldOnChange) {
-    return async (event, ...args) => {
-      try {
-      // Dont null-ify this object react, staph
-      event.persist();
-      } catch(e) {}
-
+    return (event, ...args) => {
       // If cant found then something horrible wrong happended
       let control = this.formState[name]
 
@@ -40,9 +35,16 @@ export default class Reform extends Component {
 
 
       // Update error hash
-      await control.validate(this.formState)
+      control.validate(this.formState)
 
       oldOnChange.apply(null, [control, event, ...args])
+    }
+  }
+
+  onSubmitFactory(oldOnSubmit) {
+    return (event, ...args) => {
+      this.validateForm();
+      oldOnSubmit.apply(null, [this, event, ...args]);
     }
   }
 
@@ -95,30 +97,14 @@ export default class Reform extends Component {
 
       } else if (isForm) {
         const oldOnSubmit = element.props.onSubmit;
-        const onSubmit = async (event, ...args) => {
-          try {
-            // Dont null-ify this object react, staph
-            event.persist();
-          } catch(e) {}
-          await this.validateForm();
-          oldOnSubmit.apply(null, [this, event, ...args]);
-        }
-
+        const onSubmit = this.onSubmitFactory(oldOnSubmit);
         // Disable html5 native validation
         newProps =  {onSubmit, noValidate: true};
 
       } else if (isSubmit) {
 
         const oldOnClick = element.props.onClick || noop;
-        const onClick = async (event, ...args) => {
-          try {
-            // Dont null-ify this object react, staph
-            event.persist();
-          } catch(e) {}
-          await this.validateForm();
-          oldOnClick.apply(null, [this, event, ...args]);
-        }
-
+        const onClick = this.onSubmitFactory(oldOnClick);
         newProps = {onClick}
       }
 
@@ -127,10 +113,10 @@ export default class Reform extends Component {
     })
   }
 
-  async validateForm() {
+  validateForm() {
     for (const fieldName in this.formState) {
       const control = this.formState[fieldName];
-      await control.validate(this.formState);
+      control.validate(this.formState);
     }
 
     return this.isValid();

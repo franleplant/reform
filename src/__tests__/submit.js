@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
 import { shallow } from 'enzyme';
 import Reform from '../main';
-import { controlOnChangeTest, controlIntialStateTest, nextTick } from '../testTemplates'
+import { controlOnChangeTest, controlIntialStateTest } from '../testTemplates'
 
 
 const name1 = "test_control_1";
@@ -30,22 +30,17 @@ describe('reform onSubmit', () => {
     const [wrapper, onSubmit] = render();
     wrapper.find('form').simulate('submit', {target: {}});
 
-    const promise = nextTick();
-
-    it('should call the original onSubmit handler', async () => {
-      await promise;
+    it('should call the original onSubmit handler', () => {
       expect(onSubmit).toBeCalled()
     })
 
 
-    it('should call the original onSubmit handler with a form object', async () => {
-      await promise;
+    it('should call the original onSubmit handler with a form object', () => {
       const [form] = onSubmit.mock.calls[0]
       expect(form).toBeDefined();
     })
 
-    it('should validate each control and maintain their state', async () => {
-      await promise;
+    it('should validate each control and maintain their state', () => {
       const [form] = onSubmit.mock.calls[0]
       const errorMap = form.getErrorMap();
       expect(errorMap[name1].required).toBe(true);
@@ -53,8 +48,7 @@ describe('reform onSubmit', () => {
       expect(errorMap[name2].email).toBe(true);
     });
 
-    it('should be invalid when all the controls are invalid', async () => {
-      await promise;
+    it('should be invalid when all the controls are invalid', () => {
       const [form] = onSubmit.mock.calls[0]
       expect(form.isValid()).toBe(false);
     })
@@ -66,22 +60,16 @@ describe('reform onSubmit', () => {
     reform.formState[name1].value = "valid value";
     wrapper.find('form').simulate('submit', {target: {}});
 
-    const promise = nextTick();
-
-    it('should call the original onSubmit handler', async () => {
-      await promise;
+    it('should call the original onSubmit handler', () => {
       expect(onSubmit).toBeCalled()
     })
 
-
-    it('should call the original onSubmit handler with a form object', async () => {
-      await promise;
+    it('should call the original onSubmit handler with a form object', () => {
       const [form] = onSubmit.mock.calls[0]
       expect(form).toBeDefined();
     })
 
-    it('should validate each control and maintain their state (1 valid control and 1 invalid)', async () => {
-      await promise;
+    it('should validate each control and maintain their state (1 valid control and 1 invalid)', () => {
       const [form] = onSubmit.mock.calls[0]
       const errorMap = form.getErrorMap();
       expect(errorMap[name1].required).toBe(false);
@@ -89,8 +77,7 @@ describe('reform onSubmit', () => {
       expect(errorMap[name2].email).toBe(true);
     })
 
-    it('should be invalid when some controls are invalid', async () => {
-      await promise;
+    it('should be invalid when some controls are invalid', () => {
       const [form] = onSubmit.mock.calls[0]
       expect(form.isValid()).toBe(false);
     })
@@ -104,22 +91,17 @@ describe('reform onSubmit', () => {
 
     wrapper.find('form').simulate('submit', {target: {}});
 
-    const promise = nextTick();
-
-    it('should call the original onSubmit handler', async () => {
-      await promise;
+    it('should call the original onSubmit handler', () => {
       expect(onSubmit).toBeCalled()
     })
 
 
-    it('should call the original onSubmit handler with a form object', async () => {
-      await promise;
+    it('should call the original onSubmit handler with a form object', () => {
       const [form] = onSubmit.mock.calls[0]
       expect(form).toBeDefined();
     })
 
-    it('should validate each control and maintain their state (all valid)', async () => {
-      await promise;
+    it('should validate each control and maintain their state (all valid)', () => {
       const [form] = onSubmit.mock.calls[0]
       const errorMap = form.getErrorMap();
       expect(errorMap[name1].required).toBe(false);
@@ -127,8 +109,7 @@ describe('reform onSubmit', () => {
       expect(errorMap[name2].email).toBe(false);
     })
 
-    it('should be valid when ALL controls are valid', async () => {
-      await promise;
+    it('should be valid when ALL controls are valid', () => {
       const [form] = onSubmit.mock.calls[0]
       expect(form.isValid()).toBe(true);
     })
@@ -154,22 +135,17 @@ describe('reform submit mechanisms', () => {
 
     wrapper.find('button').simulate('click', {target: {}});
 
-    const promise = nextTick();
-
-    it('should call the original onSubmit handler', async () => {
-      await promise;
+    it('should call the original onSubmit handler', () => {
       expect(onSubmit).toBeCalled()
     })
 
 
-    it('should call the original onSubmit handler with a form object', async () => {
-      await promise;
+    it('should call the original onSubmit handler with a form object', () => {
       const [form] = onSubmit.mock.calls[0]
       expect(form).toBeDefined();
     })
 
-    it('should validate each control and maintain their state', async () => {
-      await promise;
+    it('should validate each control and maintain their state', () => {
       const [form] = onSubmit.mock.calls[0]
       const errorMap = form.getErrorMap();
       expect(errorMap[name1].required).toBe(true);
@@ -177,8 +153,7 @@ describe('reform submit mechanisms', () => {
       expect(errorMap[name2].email).toBe(true);
     });
 
-    it('should be invalid when all the controls are invalid', async () => {
-      await promise;
+    it('should be invalid when all the controls are invalid', () => {
       const [form] = onSubmit.mock.calls[0]
       expect(form.isValid()).toBe(false);
     })
@@ -199,23 +174,18 @@ describe('reform submit mechanisms', () => {
     );
 
     wrapper.find('button').simulate('click', {target: {}});
-    const promise = nextTick();
 
-
-    it('should call the original onSubmit handler', async () => {
-      await promise;
+    it('should call the original onSubmit handler', () => {
       expect(onSubmit).toBeCalled()
     })
 
 
-    it('should call the original onSubmit handler with a form object', async () => {
-      await promise;
+    it('should call the original onSubmit handler with a form object', () => {
       const [form] = onSubmit.mock.calls[0]
       expect(form).toBeDefined();
     })
 
-    it('should validate each control and maintain their state', async () => {
-      await promise;
+    it('should validate each control and maintain their state', () => {
       const [form] = onSubmit.mock.calls[0]
       const errorMap = form.getErrorMap();
       expect(errorMap[name1].required).toBe(true);
@@ -223,8 +193,7 @@ describe('reform submit mechanisms', () => {
       expect(errorMap[name2].email).toBe(true);
     });
 
-    it('should be invalid when all the controls are invalid', async () => {
-      await promise;
+    it('should be invalid when all the controls are invalid', () => {
       const [form] = onSubmit.mock.calls[0]
       expect(form.isValid()).toBe(false);
     })
@@ -244,23 +213,19 @@ describe('reform submit mechanisms', () => {
     );
 
     wrapper.find('input[type="submit"]').simulate('click', {target: {}});
-    const promise = nextTick();
 
 
-    it('should call the original onSubmit handler', async () => {
-      await promise;
+    it('should call the original onSubmit handler', () => {
       expect(onSubmit).toBeCalled()
     })
 
 
-    it('should call the original onSubmit handler with a form object', async () => {
-      await promise;
+    it('should call the original onSubmit handler with a form object', () => {
       const [form] = onSubmit.mock.calls[0]
       expect(form).toBeDefined();
     })
 
-    it('should validate each control and maintain their state', async () => {
-      await promise;
+    it('should validate each control and maintain their state', () => {
       const [form] = onSubmit.mock.calls[0]
       const errorMap = form.getErrorMap();
       expect(errorMap[name1].required).toBe(true);
@@ -268,8 +233,7 @@ describe('reform submit mechanisms', () => {
       expect(errorMap[name2].email).toBe(true);
     });
 
-    it('should be invalid when all the controls are invalid', async () => {
-      await promise;
+    it('should be invalid when all the controls are invalid', () => {
       const [form] = onSubmit.mock.calls[0]
       expect(form.isValid()).toBe(false);
     })

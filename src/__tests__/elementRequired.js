@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
 import { shallow } from 'enzyme';
 import Reform from '../main';
-import { controlOnChangeTest, controlIntialStateTest, spy, nextTick } from '../testTemplates'
+import { controlOnChangeTest, controlIntialStateTest, spy } from '../testTemplates'
 import * as required from '../officialValidators/required'
 
 // TODO: replace spy with jest.fn
@@ -87,7 +87,7 @@ describe('required', () => {
     const successValue = "pizza"
     const failureValue = ""
 
-    it(`should add errors to onChange arguments with value = "${successValue}"`, async () => {
+    it(`should add errors to onChange arguments with value = "${successValue}"`, () => {
       function render() {
         const onChange = spy();
         const wrapper = shallow(
@@ -109,9 +109,6 @@ describe('required', () => {
       const [wrapper, onChange] = render();
       wrapper.find('select').simulate('change', {target: {value: successValue }});
 
-      await nextTick();
-
-
       expect(onChange.calledOnce).toBe(true);
       const [ control, event ] = onChange.args[0]
       expect(control).toBeDefined()
@@ -124,7 +121,7 @@ describe('required', () => {
       expect(event.target.value).toBe(successValue)
     });
 
-    it(`should add errors to onChange arguments with value = "${failureValue}"`, async () => {
+    it(`should add errors to onChange arguments with value = "${failureValue}"`, () => {
 
       function render() {
         const onChange = jest.fn();
@@ -148,8 +145,6 @@ describe('required', () => {
       const [wrapper, onChange] = render();
       wrapper.find('select').simulate('change', {target: {value: failureValue}});
 
-      await nextTick();
-
       expect(onChange).toBeCalled();
       const [ control, event ] = onChange.mock.calls[0]
       expect(control).toBeDefined()
@@ -170,7 +165,7 @@ describe('required', () => {
     const initialValue = ""
     const value = "checkbox_a"
 
-    it(`should add errors to onChange arguments with checked = true`, async () => {
+    it(`should add errors to onChange arguments with checked = true`, () => {
       function render() {
         const onChange = spy();
         const wrapper = shallow(
@@ -187,8 +182,6 @@ describe('required', () => {
       const [wrapper, onChange] = render();
       wrapper.find('input').simulate('change', {target: {value: value, checked: true}});
 
-      await nextTick();
-
       expect(onChange.calledOnce).toBe(true);
       const [ control, event ] = onChange.args[0]
       expect(control).toBeDefined()
@@ -202,7 +195,7 @@ describe('required', () => {
       expect(event.target.checked).toBe(true)
     });
 
-    it(`should add errors to onChange arguments with checked = false`, async () => {
+    it(`should add errors to onChange arguments with checked = false`, () => {
 
       function render() {
         const onChange = spy();
@@ -219,7 +212,6 @@ describe('required', () => {
 
       const [wrapper, onChange] = render();
       wrapper.find('input').simulate('change', {target: {value: value, checked: false}});
-      await nextTick();
 
       expect(onChange.calledOnce).toBe(true);
       const [ control, event ] = onChange.args[0]
@@ -243,7 +235,7 @@ describe('required', () => {
     const name = "test"
     const initialValue = ""
 
-    it(`should initially set value='' when no radio is checked`, async () => {
+    it(`should initially set value='' when no radio is checked`, () => {
       function render() {
         const onChange = spy();
         const wrapper = shallow(
@@ -261,7 +253,7 @@ describe('required', () => {
       const [wrapper, onChange] = render();
       const reform = wrapper.instance();
 
-      await reform.validateForm();
+      reform.validateForm();
 
       const control = reform.formState[name];
       expect(control.value).toBe('')
@@ -270,7 +262,7 @@ describe('required', () => {
       expect(control.errors.required).toBe(true);
     });
 
-    it(`should initially set value='opt2' (edit mode)`, async () => {
+    it(`should initially set value='opt2' (edit mode)`, () => {
       const onChange = spy();
       const wrapper = shallow(
         <Reform>
@@ -282,7 +274,7 @@ describe('required', () => {
       );
 
       const reform = wrapper.instance();
-      await reform.validateForm();
+      reform.validateForm();
 
       const control = reform.formState[name];
       expect(control.value).toBe('opt2')
@@ -291,7 +283,7 @@ describe('required', () => {
       expect(control.errors.required).toBe(false);
     });
 
-    it(`should add errors to onChange arguments with checked = true`, async () => {
+    it(`should add errors to onChange arguments with checked = true`, () => {
       function render() {
         const onChange = spy();
         const wrapper = shallow(
@@ -308,7 +300,6 @@ describe('required', () => {
 
       const [wrapper, onChange] = render();
       wrapper.find('#opt1').simulate('change', {target: {value: 'opt1', checked: true}});
-      await nextTick();
 
       expect(onChange.calledOnce).toBe(true);
       const [ control, event ] = onChange.args[0]
@@ -352,7 +343,6 @@ describe('required', () => {
 
   });
 
-  // TODO: this isn't working, we might need to go Enzyme Full DOM rendering to do this
   describe(`<Custom required />"`, () => {
     const name = "test"
     const initialValue = ""
@@ -374,13 +364,10 @@ describe('required', () => {
       return [wrapper, onChange]
     }
 
-    it(`should add errors to onChange arguments with value = "${successValue}"`, async () => {
-
-
+    it(`should add errors to onChange arguments with value = "${successValue}"`, () => {
       const [wrapper, onChange] = render();
 
       wrapper.find('Custom').simulate('change', {target: {value: successValue}});
-      await nextTick();
 
       expect(onChange.calledOnce).toBe(true);
       const [ control, event ] = onChange.args[0]
@@ -394,10 +381,9 @@ describe('required', () => {
       expect(event.target.value).toBe(successValue)
     });
 
-    it(`should add errors to onChange arguments with value = "${failureValue}"`, async () => {
+    it(`should add errors to onChange arguments with value = "${failureValue}"`, () => {
       const [wrapper, onChange] = render();
       wrapper.find('Custom').simulate('change', {target: {value: failureValue}});
-      await nextTick();
 
       expect(onChange.calledOnce).toBe(true);
       const [ control, event ] = onChange.args[0]

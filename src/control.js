@@ -2,6 +2,25 @@ import * as Element from './element';
 import * as officialValidators from './officialValidators';
 import * as validators from './validators';
 
+/*
+
+interface ValidationRules {
+  required: (controlState) => bool,
+  minLength: ...
+}
+
+interface ControlState {
+  elementType: string | function,
+  name: string,
+  value: any,
+  inputType: string | void,
+  errors: ReformErrors,
+  validationRules: ValidationRules
+}
+
+*/
+
+
 const defaultGetValue = event => event.target.value
 
 function mergeRulesSafely(obj1 = {}, obj2) {
@@ -85,7 +104,7 @@ export default class Control {
     }
   }
 
-  async validate(formState) {
+  validate(formState) {
     const validationRules = this.validationRules
 
     for (let ruleKey in validationRules) {
@@ -98,7 +117,11 @@ export default class Control {
         throw new Error(`Validator ${ruleKey} not found in control ${JSON.stringify(this)}`);
       }
 
-      this.errors[ruleKey] = await validator(this, formState)
+      if (typeof validator.then === 'function') {
+        throw new Error(`Async validators are not implemented yet`)
+      }
+
+      this.errors[ruleKey] = validator(this, formState)
     }
 
     return this.isValid();
@@ -147,23 +170,4 @@ export default class Control {
 
 
 }
-
-/*
-
-interface ValidationRules {
-  required: (controlState) => bool,
-  minLength: ...
-}
-
-interface ControlState {
-  elementType: string | function,
-  name: string,
-  value: any,
-  // TODO: this should be named to inputType
-  inputType: string | void,
-  errors: ReformErrors,
-  validationRules: ValidationRules
-}
-
-*/
 
