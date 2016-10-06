@@ -1,5 +1,5 @@
 {
-  "name": "reform",
+  "name": "@franleplant/reform",
   "version": "4.0.1",
   "private": false,
   "main": "main.js",
