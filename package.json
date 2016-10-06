@@ -1,6 +1,6 @@
 {
   "name": "@franleplant/reform",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "private": false,
   "dependencies": {
     "react": "^15.3.1"
