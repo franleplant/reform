@@ -1,6 +1,6 @@
 {
   "name": "@franleplant/reform",
-  "version": "4.2.5",
+  "version": "4.2.6",
   "private": false,
   "main": "build/index.js",
   "dependencies": {
