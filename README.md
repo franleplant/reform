@@ -191,13 +191,13 @@ is to provide as much freedom to you as you want to.
 
 TODO
 
-## Docs
+# Docs
 
-### API
+## API
 
 TODO: add keywords for better searching
 
-#### <Reform/>
+### `<Reform/>`
 > form, reform, component, entry point, onSubmit, top level api
 
 This is the entry point to the lib. The way to use it is as follow:
@@ -222,7 +222,7 @@ through `onSubmit` but you are free to do the way you want to.
 
 
 
-#### Control
+### `Control`
 > form control, form input, custom controls, field, input, select, textarea, radio, checkbox
 
 How do you access it?
