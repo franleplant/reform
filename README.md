@@ -11,11 +11,15 @@ by version `4.2.4` in reform-examples
 
 ## Quick Start
 
+Reform provides a very minimal and hopefully unobstrusive API that _mounts_ over regular Form Handling in React.
+Checkout React Controlled Components documentation to see the original API.
+
+
 ```javascript
-import React, { Component } from 'react';
+import React from 'react';
 import Reform from '@franleplant/reform';
 
-export default class LoginNative extends Component {
+export default class MyForm extends React.Component {
   constructor(props) {
     super(props)
 
@@ -23,20 +27,22 @@ export default class LoginNative extends Component {
     this.state = {
       fields: {
         username: '',
-        password: '',
       },
 
       errors: {
         username: {},
-        password: {},
       }
     }
   }
 
   /* 2st */
-  handleFieldChange(fieldName, control, event) {
+  handleUsernameChange(control, event) {
     this.setState(state => {
-      state.fields[fieldName] = control.value;
+      // Store the value of the field
+      state.fields.username = control.value;
+      // Optionally store the validation state, useful to display dynamic information as user types
+      state.errors.username = control.errors;
+
       return state
     })
   }
@@ -44,7 +50,9 @@ export default class LoginNative extends Component {
   /* 3rd */
   handleSubmit(form, event) {
     event.preventDefault();
+
     this.setState(state => {
+      // Store _all_ errors from the form
       state.errors = form.getErrorMap();
       return state
     });
@@ -55,36 +63,24 @@ export default class LoginNative extends Component {
   }
 
   render() {
-    const {fields, errors} = this.state;
-
-
-    const autocontrol = fieldName => {
-      return ({
-        name: fieldName,
-        value: fields[fieldName],
-        onChange: this.handleFieldChange.bind(this, fieldName),
-        style: {
-          borderColor: errors[fieldName].isInvalid ? 'red' : null,
-        },
-      })
-    }
-
-
     /* 4th */
     return (
       <Reform>
         <form onSubmit={this.handleSubmit.bind(this)}>
-          <div>
-            <input type="text" placeholder="username" minLength="3" required {...autocontrol('username')} />
-            {errors.username.minLength ? <p>User Name should have at least 3 characters</p> : null}
-            {errors.username.required ? <p>User Name is required</p> : null}
-          </div>
+          {/* Use HTML5 native validation rules */}
+          {/* The important part here is that Inputs must have a name, value and onChange to be hooked by Reform */}
+          <input
+            type="text"
+            placeholder="username"
+            minLength="3"
+            required
+            name="username"
+            value={this.state.fields.username}
+            onChange={this.handleUsernameChange.bind(this)}
+          />
 
-          <div>
-            <input type="password" placeholder="password" minLength="6" required {...autocontrol('password')} />
-            {errors.password.minLength ? <p>Password should have at least 6 characters</p> : null}
-            {errors.password.required ? <p>Password is required</p> : null}
-          </div>
+          {this.state.errors.username.minLength ? <p>User Name should have at least 3 characters</p> : null}
+          {this.state.errors.username.required ? <p>User Name is required</p> : null}
 
           <button type="submit">Submit</button>
         </form>
@@ -95,33 +91,30 @@ export default class LoginNative extends Component {
 ```
 
 
-1- Define your state with fields and errors
+1- Define a place in your state to store your fields and field errors
 
-> NOTE Reform does not care where you store your state. This is a good way but you should free
-to accomodate as you like it, in fact you could even go as far as storing Form state into Redux, but
-I would recommend against.
+> Reform does not have opinions where these should be
 
-2- Define your `onChange` handlers
-
-In here I show you how to create a generic `onChange` handler to be re-used in all fields (or at least in most)
+2- Define `onChange` handler
 
 > NOTE how the onChange receives a new paramater called `control`, that's Reform in the works :smile:
+`control` will provide the already calculated value (`event.target.value` by default) and the validation state
 
 3- Define your `onSubmit` handler
 
 It's important that your form has an `onSubmit` handler to Reform to work correctly
 
-Note how onSubmit receives a new parameter called `form`, that's Reform in the works :smile:
+> NOTE how onSubmit receives a new parameter called `form`, that's Reform in the works :smile:
+`form` will provide you with few useful APIs such as `isValid` and `getErrorMap`
 
 4- Render your form
 
 The important part here is that you need to wrap everything in `<Reform>`
 
 
-> NOTE that most of the steps is just React plain form and input handling, that's fine and that's the goal of Reform,
-we only add information to those hooks but the paradigm is the same.
 
-
+There are some techniques that we explore on the examples where we abstract a little bit the pumbling that's
+inherent to React Form Handling, but this is the big picture, as you see, the API is super minimal
 
 ## Index
 
