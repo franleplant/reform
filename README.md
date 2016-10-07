@@ -298,23 +298,28 @@ control = {
 
 Note that `errors.required` will be `false` because the control has a value so it's not in error state.
 
-TODO: show snippets of common form Controls
-
-#### Form
+### `Form`
 > form state, formState, isValid, access to all controls
 
 You can use this object to access all the controls in the form.
-It's useful when you want to do validations that take in account more than one field.
+You use typically use it to prevent the form from being submited if it's invalid
+and to update your Form Component error state.
+
+
+You access it inside the body of your `onSubmit` function:
+
+```javascript
+function handleSubmit(form, event) {...}
+```
+
+
+This is the type definition
 
 ```typescript
 type Form = {
   [fieldName: string]: Control;
 
   isValid: () => boolean;
-
-  // You will probably never use this method.
-  // It's used internally by Reform
-  validate: () => boolean;
 }
 ```
 
