@@ -225,10 +225,16 @@ through `onSubmit` but you are free to do the way you want to.
 ### `Control`
 > form control, form input, custom controls, field, input, select, textarea, radio, checkbox
 
-How do you access it?
+You access it from the `onChange` handlers like this:
+
+```javascript
+function handleChange(control, event) {...}
+```
+
+
+This is the type definition (in pseudo typescript)
 
 ```typescript
-
 type Control = {
   value: string | number | any;
   checked: boolean;
@@ -267,6 +273,30 @@ errors: {
 
 > Always `errors[validationRuleKey]` will be `true` if there is an **error**
 
+
+If you have a field like this
+```javascript
+<input
+  name="myControl"
+  required
+  value={this.state.myControl}
+  onChange={handleChange}
+/>
+```
+
+You will get a control like this in the `handleChange` whenever your input changes
+
+```javascript
+control = {
+  value: "the value that you just typed",
+  errors: {
+    required: false,
+  },
+  ...
+}
+```
+
+Note that `errors.required` will be `false` because the control has a value so it's not in error state.
 
 TODO: show snippets of common form Controls
 
