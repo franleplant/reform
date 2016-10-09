@@ -162,6 +162,7 @@ People familiar with Angular 1 forms will feel at home here.
 - Validates and maintain bookkeeping about the state of your form.
 - Provide input validation state on every `change` event.
 - Provide form validation state on every `submit` event.
+- Work well withe `react-bootstrap`
 
 The last two are the most visible change Reforms does to your code.
 
@@ -377,6 +378,7 @@ Use it to:
 
 - Define Custom Validators (ad hoc or global)
 - Custom `getValue`
+- Force a Component to be considered a `checkbox` or a `radio`
 
 ```javascript
 
@@ -403,6 +405,21 @@ GetValue: (first: Event | any, control: Control) => any
 
 
 TODO: example about this
+
+You can force a Custom Component to be considered by `Reform` as a `checkbox` or a `radio` like this:
+
+```
+<MyCustomComponent
+  name="myField"
+  value={this.state.fields.myField}
+  onChange={...}
+  data-reform={
+    inputType:"checkbox"
+  }
+```
+
+> NOTE We already work well with `react-bootstrap` so no extra verbosity needed there. Also, the plan is to support
+any view libraries' Custom Components so PR us or create an issue for anything lacking.
 
 ### Custom Validators
 > custom validators, validate, ad hoc, global validators, async validators
@@ -521,7 +538,6 @@ Reform will then look for a previously defined validator with that rule.
 
 ## Common solutions for common problems
 
-TODO: snippets of code showing how to `autocontrol`, reducing boilerplate, handle form state, etc
 
 ### How should I manage my field and error state?
 
@@ -670,8 +686,52 @@ Turns to this:
 
 ### How to display errors?
 
+As you've already seen, errors should be stored someplace in the state. We've been using
+`this.state.errors`.
 
+There are several ways of display erorrs, most of these techniques are not `Reform` specific so feel
+free to use your React knowledge the best you can.
 
+The simplest most verbose way is this one
+
+```javascript
+{
+  this.state.errors.myField.errorName ? 
+    <p>Your field is not valid</p>
+    :
+    null
+}
+```
+
+`myField` could be `username` and `errorName` could be `required` for example.
+
+> NOTE: this assumes you initialized `this.state.errors.myField = {}` otherwise you would also have to check if `this.state.errors.myField` is null.
+
+The problem with this approach is the ternary operation, the verbosity, and the ugglyness, but we can do better, how? Just use React components!
+
+```javascript
+
+const Error = ({error, children}) => {
+  if (!error) {
+    return null;
+  }
+  
+  return <p>{children}</p>
+}
+```
+
+And you could use it like this:
+
+```javascript
+<Error error={this.state.errors.myField.required}>
+  Input is required
+</Error> 
+```
+
+Note that this also assumes you initialized `this.state.errors.myField = {}`
+
+If you don't want to initialize `errors.myField` you could enhance `Error` component to
+run the checks for you, just do whatever React black magic you want to.
 
 ## Contributing
 
