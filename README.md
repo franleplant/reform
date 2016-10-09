@@ -241,6 +241,7 @@ through `onSubmit` but you are free to do the way you want to.
 
 ### `Errors`
 
+> getErrorMap, display errors
 Common interface for reporting errors for a particular `Control`.
 
 ```typescript
