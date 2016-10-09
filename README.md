@@ -441,7 +441,7 @@ Reform let's you define new validators and re-use them.
 Let's add `customMinLength` as a Global Validator
 
 ```javascript
-import { Validators } from '../main';
+import { Validators } from '@franleplant/reform';
 Validators.addRule('customMinLength', customMinLength);
 ```
 
