@@ -14,10 +14,13 @@ by version `4.2.4` in reform-examples
 - [Quick Start](#quick-start)
 - [Design Goals](#design-goals)
 - [Scope](#scope)
-  - [What does Reform do for you?](#what-does-reform-do-for-you)
-  - [What does Reform not do for you?](#what-does-reform-not-do-for-you)
 - [Examples](#examples)
 - [API](#api)
+  - [`<Reform/>`](#reform)
+  - [`Control`](#contro)
+  - [`Form`](#form)
+  - [`data-reform`](#data-reform)
+  - [Custom Validators](#custom-validators)
 - [Common solutions for common problems](#common-solutions-for-common-problems)
 - [Contributing](#contributing)
 
@@ -199,7 +202,7 @@ is to provide as much freedom to you as you want to.
 
 ## Examples
 
-TODO
+For now, the examples are in a separate [Repo](https://github.com/franleplant/reform-examples) so you can also see them running, the repo it's versioned so if you look for Examples for Reform version 4.2.x you will see them tagged like 4.2.x too
 
 # Docs
 > Documentation, docs
@@ -466,7 +469,8 @@ Let's use `CustomMinLength` defined before as an Ad Hoc Custom Validator
 
 ```
 
-> Ad Hoc means exactly..... TODO
+> Ad Hoc means _created or done for a particular purpose as necessary._
+
 
 > While you could create a simple function that acts as custom validator and pass it around
 like you will do with a regular function and use it ad hoc several times, you should avoid this
@@ -517,8 +521,42 @@ Reform will then look for a previously defined validator with that rule.
 
 ## Common solutions for common problems
 
-
 TODO: snippets of code showing how to `autocontrol`, reducing boilerplate, handle form state, etc
+
+### How should I manage my field and error state?
+
+Reform does not care about how you handle your form state.
+Reform only cares that you are working with [Controlled Components](https://facebook.github.io/react/docs/forms.html)
+
+The pattern that you are going to see in the examples is the one I use the most:
+
+```javascript
+this.state = {
+  // Fields will contain all form fields and no more
+  fields: {
+    field1: initialValue,
+    field2: initialValue,
+    ...
+  },
+  
+  // Field Errors. Initializing them as empty objects will prevent you from null checking
+  // every time you display an error
+  errors: {
+    field1: {},
+    field2: {},
+    ...
+  }
+}
+```
+
+
+
+### How can I reduce the boilerplate of React's Controlled Components?
+
+### How to display errors?
+
+
+
 
 ## Contributing
 
