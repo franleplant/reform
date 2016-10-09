@@ -553,6 +553,121 @@ this.state = {
 
 ### How can I reduce the boilerplate of React's Controlled Components?
 
+There are several techniques to do this and they are not exclusive to `Reform` but I will list some briefly.
+
+#### `autocontrol` pattern
+
+The `autocontrol` pattern is used to reduce the boilerplate needed in every single Form Control (think inputs) which are namely: `value` and `onChange`. Additionally we will also add `name` to these because it's required by `Reform`
+
+```javascript
+class Login extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      fields: {
+        username: '',
+        password: '',
+      },
+
+      errors: {
+        username: {},
+        password: {},
+      }
+    }
+  }
+
+  // In here we create a generic `onChange` handler that will be used later.
+  // The important parts here is that this is a function that saves the errors and the value
+  // for the `fieldName` field.
+  handleFieldChange(fieldName, control, event) {
+    this.setState(state => {
+      state.fields[fieldName] = control.value;
+      state.errors[fieldName] = control.errors;
+      return state
+    })
+  }
+
+  handleSubmit(form, event) {...}
+  render() {
+    // Handy aliases
+    const {fields, errors} = this.state;
+
+
+    // The body of the `autocontrol` pattern.
+    // This is just a function that accepts a `fieldName` and returns
+    // and object that represent the props of the `fieldName` Component.
+    const autocontrol = fieldName => {
+      return ({
+        // `name` prop required by `Reform`
+        name: fieldName,
+        // value prop that points out to `this.state.fields[fieldName]
+        value: fields[fieldName],
+        // onChange prop that is a partial application of the `handleFieldChange` method
+        // We partially apply it by binding it to the context `this` and to the `fieldName`
+        onChange: this.handleFieldChange.bind(this, fieldName),
+      })
+    }
+
+
+    return (
+      <Reform>
+        <form onSubmit={this.handleSubmit.bind(this)}>
+            <div>
+              {/* 
+              And finally in here we use the `autocontrol` function.
+              Remember, there's no magic in here, props is just an object that it's used as function parameter
+              and JSX is just sugar to these: `React.createElement('input', props, children)` so we are adding attributes
+              to the `props` with `autocontrol`, nothing more nothing less.
+              */}
+              <input type="text" placeholder="username" minLength="3" required {...autocontrol('username')} />
+              
+              {/* Error display ommited */}
+            </div>
+
+            <div>
+              {/* We use again the `autocontrol` function */}
+              <input type="password" placeholder="password" minLength="6" required {...autocontrol('password')} />
+              
+              {/* Error display ommited */}
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+      </Reform>
+    );
+  }
+}
+```
+
+There's nothing special with this but it's just a more succint way of doing the two way data bindings.
+
+This:
+
+```javascript
+<input
+  type="text"
+  placeholder="username"
+  minLength="3"
+  required
+  
+  {...autocontrol('username')}
+/>
+```
+
+Turns to this:
+```javascript
+<input
+  type="text"
+  placeholder="username"
+  minLength="3"
+  required
+  
+  name="username"
+  value={this.state.fields.username}
+  onChange={this.handleFieldChange.bind(this, 'username')}
+/>
+```
+
 ### How to display errors?
 
 
