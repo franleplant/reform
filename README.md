@@ -270,6 +270,12 @@ type Control = {
   // from the arguments of the onChange event handler.
   // Check `data-form` section for more information
   getValue: Function;
+  
+  // The parsed or forced inputType of the component
+  inputType: string;
+  
+  // The React element type
+  elementType: string | Function;
 }
 
 ```
