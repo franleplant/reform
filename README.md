@@ -17,6 +17,7 @@ by version `4.2.4` in reform-examples
 - [Examples](#examples)
 - [API](#api)
   - [`<Reform/>`](#reform)
+  - [`Errors`](#errors)
   - [`Control`](#contro)
   - [`Form`](#form)
   - [`data-reform`](#data-reform)
@@ -238,6 +239,75 @@ through `onSubmit` but you are free to do the way you want to.
 
 
 
+### `Errors`
+
+Common interface for reporting errors for a particular `Control`.
+
+```typescript
+type Errors = {
+  isValid: () => boolean;
+  
+  // Probably the single most important special attribute of this Type.
+  // Since this an attribute, you can safely check empty errors objects
+  // for their validity (they usually are initialy valid by default).
+  isInvalid: boolean;
+  
+  // This represents the results of each individual validation.
+  // validationRuleKey can be for example `required`, `min`, `maxLength` and
+  // any custom validators you might be using.
+  [validationRuleKey: string]: boolean;
+};
+
+```
+
+#### Example 1
+
+```javascript
+
+errors: {
+  required: true,
+  myCustomRule: false,
+}
+```
+
+- `true`: the rule has an error. The field is not valid
+- `false` the rule does not have an error. The field is Valid
+- each `validationRuleKey` is always related to a rule. So, for example, there's a rule (function) called `required` (built-in) which will be evaluated every time the input changes value and it's result will be stored in errors. 
+
+> Always `errors[validationRuleKey]` will be `true` if there is an **error**
+
+
+#### Example 2: errors and styling
+
+Suppose our error state is initialized like this
+
+```javascript
+this.state = {
+  fields: {...}
+  errors: {
+    field1: {},
+    ...
+  }
+}
+```
+
+Then you can style Controls accordingly like so:
+
+```javascript
+
+<input 
+ name="field1"
+ value={this.state.fields.field1}
+ onChange={...}
+ required
+ style={{
+  borderColor: this.state.errors.field1.isInvalid ? 'red': null
+ }}
+/>
+```
+
+See how useful the `isInvalid` attribute is, because it works well with empty objects.
+
 
 ### `Control`
 > form control, form input, custom controls, field, input, select, textarea, radio, checkbox
@@ -255,9 +325,9 @@ This is the type definition (in pseudo typescript)
 type Control = {
   value: string | number | any;
   checked: boolean;
-  errors: {
-    [validationRuleKey: string]: boolean;
-  };
+  errors: Errors;
+  
+  isValid: () => boolean;
 
   validationRules: {
     // For more info check the custom validator rules
@@ -280,21 +350,6 @@ type Control = {
 
 ```
 
-Example of errors
-
-```javascript
-
-errors: {
-  required: true,
-  myCustomRule: false,
-}
-```
-
-- `true`: the rule has an error. The field is not valid
-- `false` the rule does not have an error. The field is Valid
-- each `validationRuleKey` is always related to a rule. So, for example, there's a rule (function) called `required` (built-in) which will be evaluated every time the input changes value and it's result will be stored in errors. 
-
-> Always `errors[validationRuleKey]` will be `true` if there is an **error**
 
 
 If you have a field like this
@@ -314,6 +369,9 @@ control = {
   value: "the value that you just typed",
   errors: {
     required: false,
+    
+    // Special attribute
+    isInvalid: false,
   },
   ...
 }
