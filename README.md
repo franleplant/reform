@@ -124,7 +124,8 @@ It's important that your form has an `onSubmit` handler to Reform to work correc
 
 4- Render your form
 
-The important part here is that you need to wrap everything in `<Reform>`
+The important part here is that you need to wrap everything in `<Reform>` and that `Reform` only hooks
+Controlled Components with name i.e. they have `name`, `value` and `onChange` props
 
 
 
@@ -160,9 +161,10 @@ People familiar with Angular 1 forms will feel at home here.
 - Enables you to use validators in a declarative way (HTML5)
 - Enables you to display the errors anyway you like it to.
 - Validates and maintain bookkeeping about the state of your form.
+- Work well with `react-bootstrap`
 - Provide input validation state on every `change` event.
 - Provide form validation state on every `submit` event.
-- Work well withe `react-bootstrap`
+
 
 The last two are the most visible change Reforms does to your code.
 
