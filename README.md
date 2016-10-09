@@ -331,6 +331,36 @@ type Form = {
   [fieldName: string]: Control;
 
   isValid: () => boolean;
+  getErrorMap: () => { [fieldName]: Errors };
+}
+```
+
+
+This is an example of how to check form validity before call to a hipotetical API submitting the form:
+
+```javascript
+class MyComponent extends React.Component {
+  handleSubmit(form, event) {
+    event.preventDefault()
+  
+    // Store your error state, so you can display potential errors when your component renders
+    this.setState({ errors: form.getErrorMap() });
+
+    if (!form.isValid()) {
+      // If it's not valid, then do nothing and let react re render the component and
+      // display the errors wherever you want to
+      console.log('Form not valid');
+    }
+
+    // Everything's fine
+
+
+    // There are several ways to get the value of all your fields,
+    // for example (assuming you are storing your fields state there)
+    const data = this.state.fields;
+
+    MyAPI.submit(data);
+  }
 }
 ```
 
