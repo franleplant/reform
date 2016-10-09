@@ -9,6 +9,18 @@ We have a separate [Repo for examples](https://github.com/franleplant/reform-exa
 that's versioned in the same sequence at this main repo, so working Examples for version `4.2.4` will be tagged
 by version `4.2.4` in reform-examples
 
+## Index
+
+- [Quick Start](#quick-start)
+- [Design Goals](#design-goals)
+- [Scope](#scope)
+  - [What does Reform do for you?](#what-does-reform-do-for-you)
+  - [What does Reform not do for you?](#what-does-reform-not-do-for-you)
+- [Examples](#examples)
+- [API](#api)
+- [Common solutions for common problems](#common-solutions-for-common-problems)
+- [Contributing](#contributing)
+
 ## Quick Start
 
 Reform provides a very minimal and hopefully unobstrusive API that _mounts_ over regular Form Handling in React.
@@ -116,9 +128,7 @@ The important part here is that you need to wrap everything in `<Reform>`
 There are some techniques that we explore on the examples where we abstract a little bit the pumbling that's
 inherent to React Form Handling, but this is the big picture, as you see, the API is super minimal
 
-## Index
 
-TODO
 
 ## Design Goals
 
@@ -192,10 +202,9 @@ is to provide as much freedom to you as you want to.
 TODO
 
 # Docs
+> Documentation, docs
 
 ## API
-
-TODO: add keywords for better searching
 
 ### `<Reform/>`
 > form, reform, component, entry point, onSubmit, top level api
@@ -324,7 +333,7 @@ type Form = {
 ```
 
 
-#### data-reform
+### `data-reform`
 > configuration, config, manual, customization, custom validators, get value, parse
 
 `data-reform` is a custom prop used to config reform on a particular form control.
@@ -360,7 +369,7 @@ GetValue: (first: Event | any, control: Control) => any
 
 TODO: example about this
 
-#### Custom Validators
+### Custom Validators
 > custom validators, validate, ad hoc, global validators, async validators
 
 > Async validators are not supported! They are planned but right now they complicate things too
@@ -397,7 +406,7 @@ function customMinLength(control, formState) {
 > FormState gives you access to the rest of the form controls, so you can implement things such
 as password verification pretty easily
 
-##### Ad Hoc Custom Validators
+#### Ad Hoc Custom Validators
 
 This type of custom validators are defined in place of the control using it.
 They are similar to anonymous functions, they are intended for one time use.
@@ -432,7 +441,7 @@ like you will do with a regular function and use it ad hoc several times, you sh
 and use Global Validators instead.
 
 
-#### Global Validators
+### Global Validators
 
 When building a big application you will probably want to create a reusable
 pool of Custom Validators that are related to your app's domain.
@@ -474,7 +483,7 @@ Reform will then look for a previously defined validator with that rule.
 
 
 
-### Common solutions for common problems
+## Common solutions for common problems
 
 
 TODO: snippets of code showing how to `autocontrol`, reducing boilerplate, handle form state, etc
