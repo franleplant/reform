@@ -665,6 +665,10 @@ class Login extends Component {
   handleFieldChange(fieldName, control, event) {
     this.setState(state => {
       state.fields[fieldName] = control.value;
+      
+      // Note that we are updating the fields errors as the user types, so that means that we
+      // are display error information in real time, that might not be what you want and `Reform`
+      // does not care about it.
       state.errors[fieldName] = control.errors;
       return state
     })
