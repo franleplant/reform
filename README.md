@@ -824,7 +824,9 @@ I believe that the main reason not to call this pattern 2WDB is because it's muc
 you always clearly know what are the ways the data flow from the **View** to the **Model** and viceversa.
 
 
-![Diagram 1](docs/diagram1.jpg)
+<h3 align="center">
+  <img width="700" src="https://raw.githubusercontent.com/franleplant/reform/master/docs/diagram1.jpg" alt="Diagram 1">
+</h3>
 
 
 Reference:
@@ -873,7 +875,10 @@ This is all fine and both React and Reform work well with this.
 We've basically explained everything that Reforms does, the only detail is that `Reform` highjacks the **View -> Model** flow
 and adds **validation** data to the newValue or `event` that the **View** emits in the form of the `control` object.
 
-![Diagram 2](docs/diagram2.jpg)
+
+<h3 align="center">
+  <img width="700" src="https://raw.githubusercontent.com/franleplant/reform/master/docs/diagram2.jpg" alt="Diagram 2">
+</h3>
 
 So we see that `Reform` takes the `event` emitted by the **View** that contains the newValue of that particular Form Control
 and also emits a `control` data structure that contains validation information of that newValue.
