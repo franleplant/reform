@@ -23,6 +23,7 @@ by version `4.2.4` in reform-examples
   - [`data-reform`](#data-reform)
   - [Custom Validators](#custom-validators)
 - [Common solutions for common problems](#common-solutions-for-common-problems)
+- [Internals explained](#internals)
 - [Contributing](#contributing)
 
 ## Quick Start
@@ -467,11 +468,12 @@ from the onChange arguments.
 it's signature is:
 
 ```typescript
-GetValue: (first: Event | any, control: Control) => any
+type GetValue = (first: Event | any, control: Control) => any
 ```
 
+- `first` is an `event` for native `input` controls such as `input`, `select` and `textarea` but could also be anything that a Custom Control emits, such as a string, number, Date Object, Moment Object, Array, anything you can imagine. In fact, working with Custom Components is the main reason `getValue` exists.
+- `control` is the current state of the `control` so you have all the data of that control available such as the `inputType` for example.
 
-TODO: example about this
 
 You can force a Custom Component to be considered by `Reform` as a `checkbox` or a `radio` like this:
 
@@ -803,6 +805,146 @@ Note that this also assumes you initialized `this.state.errors.myField = {}`
 
 If you don't want to initialize `errors.myField` you could enhance `Error` component to
 run the checks for you, just do whatever React black magic you want to.
+
+
+# Internals
+> Inner workings, internals, how it works, design, contributors, contributing
+
+In this section we are going to explain how `Reform` works from the inside.
+This documentation is useful to 
+
+- Contributors that need to understand the core ideas of `Reform`
+- Users that want to desmistify the inner workings of `Reform`. It's not at all Black Magic.
+
+## React Controlled Components
+
+`Reform` mounts and enhances React Controlled Components, which is basically another way of naming Two Way Data Binding (2WDB).
+
+I believe that the main reason not to call this pattern 2WDB is because it's much less magical,
+you always clearly know what are the ways the data flow from the **View** to the **Model** and viceversa.
+
+
+DIAGRAM 1 HERE
+
+
+Reference:
+- **Model**: in React world is called `this.state`
+- **View**: in React world is basically what you return from your `render` function
+
+Let's analyse this slowly.
+
+### Model -> View
+
+This is the simplest to spot. On each `render`, React will fill the Input (Form Control) with the expression that you
+pass to the special `prop` named `value`.
+
+```javascript
+<input
+  value={this.state.myValue}
+  ...
+/>
+```
+
+In here we are filling the value with the Component's state, which is the most useful and common thing to do, but you could pass constants or anything in here.
+
+### View -> Model
+
+In here React let's you hook on the `change` event so you can update your **Model** (`this.state`) according to what the **View** says. The main mechanism in React world for this is the `onChange` prop.
+
+
+```javascript
+<input
+  onChange={event => {
+    // Update your state
+  }}
+  ...
+/>
+```
+
+This is one of the canonical uses of `this.setState` where you update your state to store the newest value of the given Input.
+
+> NOTE: native `input` controls like `text`, `password`, `select`, `textarea` emit an `event` when the value of that control changes and you typically access the newest value via `event.target.value` or `event.target.checked`.
+
+> This wont be necessary the case for Custom Controls, where you can directly emit the `newValue` instead of wrapping it in an event. Think of custom datepickers, timepickers, file selectors, or any custom Form Control you can imagine.
+This is all fine and both React and Reform work well with this.
+
+## Reform Controlled Components
+
+We've basically explained everything that Reforms does, the only detail is that `Reform` highjacks the **View -> Model** flow
+and adds **validation** data to the newValue or `event` that the **View** emits in the form of the `control` object.
+
+DIAGRAM 2 here
+
+So we see that `Reform` takes the `event` emitted by the **View** that contains the newValue of that particular Form Control
+and also emits a `control` data structure that contains validation information of that newValue.
+
+```javascript
+<input
+  onChange={(control, event) => {
+    // Update your state with the newest Value of your Form Control
+    const newestValue = control.value; // Which is the same as event.target.value
+    // Update your state with the newest errors of your Form Control
+    const newestErrors = control.errors;
+  }}
+  ...
+/>
+```
+
+This are the important changes here:
+
+```diff
+<input
+-  onChange={event} => {
++  onChange={(control, event) => {
+    // ....
+  }}
+  ...
+/>
+```
+
+The pattern that `Reform` uses tends to feels super natural to old React users 
+because it only adds information to the objects emitted by
+the `change` event of a particular Form Control.
+
+#### Why `control.value` if we already have `event.target.value`
+
+It's true that they are same for native Form Controls that emit an `event` when they change but it's not true
+for custom components that might emit a `value` without wrapping it inside an event object.
+
+So, the main benefits of `control.value` are:
+
+- Homogenous access to the new value (it enables patterns such as the `autocontrol` one)
+- `Reform`'s flexibility.
+
+Now, how does `Reform` know how to get the newValue from the `event` or whatever data structure the `change` event emits?
+
+Here is where the [`data-reform.getValue`](#data-reform) comes into play.
+
+`getValue` is a simple function that has this signature:
+
+```typescript
+type GetValue = (first: Event | any, control: Control) => any;
+```
+
+This is the default:
+
+```javascript
+function getValue(event) {
+  return event.target.value
+}
+```
+
+So, for native controls you are covered, but what about if I have a custom Control that emits a date in string format?
+
+Then you need to set `getValue` to this:
+
+```javascript
+function getValue(date) {
+  return date;
+}
+```
+
+So you can basically hook any Control that emits anything on `change` into `Reform`
 
 ## Contributing
 
