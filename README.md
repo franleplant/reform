@@ -977,6 +977,14 @@ Native validators often do different validations depending on the type of the In
 operates differently on an `input` `type="number"` and a `type="date"`.
 Custom validators can also do this differentiation using the second parameter of that Reform passes to them.
 
+## Remaining Parts
+
+There are a lot of untold details in the previous docs that I don't think it's worth describing here.
+
+The only thing that I really want to talk about is that we also hook into **Submit** mechanisms such as `<button>` and `<input>` as well
+as **onSubmit** handler. This completes the functionality of checking if the form is valid or informing the user about the
+errors she has on her form before submitting.
+
 ## Contributing
 
 TODO
