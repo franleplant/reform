@@ -951,6 +951,32 @@ function getValue(date) {
 
 So you can basically hook any Control that emits anything on `change` into `Reform`
 
+
+## Validation Hooks
+
+The only missing part is how does Reform knows how to validate a Control.
+
+First of all it will only operate on React Elements that have three magical props: `name`, `value` and `onChange`.
+Second, it will try to _parse_ the validation rules for the given Control.
+`Reform` does this via two main mechanisms:
+
+- Native props: `required`, `min`, `maxLength`, `type="date"`, and all the HTML5 validation rules.
+- Custom validators: via the special configuration prop called `data-reform` in its `validationRule` attribute.
+
+Once we _parse_ these rules we store them in a data structure for the given control and one the Control emits
+a `change` event we simply run all validators associated with those rules and assemble an Error Map (`Errors` type).
+
+So, basically, all `validationRules` have a `validator` function associated with them that basically return `true` if the Control does not fulfill that validation.
+
+Native validators are exactly the same as custom validators, they use the same API and return types, the only difference is that Reform
+already includes them wether custom validators are writen by the user.
+
+Native validators are writen to try to comply with w3c spec.
+
+Native validators often do different validations depending on the type of the Input or Control. For example the `min` native validator
+operates differently on an `input` `type="number"` and a `type="date"`.
+Custom validators can also do this differentiation using the second parameter of that Reform passes to them.
+
 ## Contributing
 
 TODO
