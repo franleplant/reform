@@ -806,6 +806,47 @@ Note that this also assumes you initialized `this.state.errors.myField = {}`
 If you don't want to initialize `errors.myField` you could enhance `Error` component to
 run the checks for you, just do whatever React black magic you want to.
 
+This is something I've been using a lot lately:
+
+```javascript
+
+// Useful component that evaluates the exp (should be a function)
+// and if either throws or is false then will return null, otherwise it will return
+// the children 
+const Try = ({exp, children}) => {
+ try {
+  const cond = exp();
+  if (!cond) {
+   throw new Error();
+  }
+  
+  return children;
+ } catch (err) {
+  return null;
+ }
+}
+
+// So later you could use it like this, inside your Form's render component
+
+<Try exp={_ => this.state.errors.myField.required}>
+  <p>myField is required, please output a value</p>
+</Try>
+```
+
+I though about creating a lib with this Component but I rather explain you how it works rather than ship it and maintain it.
+
+the magic that `Try` does is really simple, and abstracts this:
+
+```javascript
+{
+  this.state.errors && this.state.errors.myField && this.state.errors.myField.required &&
+  <p>myField is required, please output a value</p> 
+}
+```
+
+So you basically avoid those nasty checks and also abstract them and also avoid the need to initialize your
+error state and since you have full control of the `Try` component you can tunne it to your particular needs.
+
 
 # Internals
 > Inner workings, internals, how it works, design, contributors, contributing
