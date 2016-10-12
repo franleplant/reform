@@ -14,7 +14,7 @@ describe('minLength', () => {
   .forEach(inputType => {
     describe(`<input type="${inputType}" minLength=3 />"`, () => {
       const successConfig = {type: 'input', inputType: inputType, validator, value: "okk", error: false}
-      const failureConfig = {type: 'input', inputType: inputType, validator, value: "", error: true}
+      const failureConfig = {type: 'input', inputType: inputType, validator, value: "", error: false}
       controlIntialStateTest(failureConfig)
       controlOnChangeTest(failureConfig)
       controlOnChangeTest(successConfig)
@@ -23,7 +23,7 @@ describe('minLength', () => {
 
   describe(`<textarea minLength=3 />"`, () => {
     const successConfig = {type: 'textarea', validator, value: "okk", error: false}
-    const failureConfig = {type: 'textarea', validator, value: "", error: true}
+    const failureConfig = {type: 'textarea', validator, value: "", error: false}
     controlIntialStateTest(failureConfig)
     controlOnChangeTest(failureConfig)
     controlOnChangeTest(successConfig)

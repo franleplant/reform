@@ -4,6 +4,11 @@ export const supportedInputTypes = ['text', 'search', 'url', 'tel', 'email', 'pa
 
 
 export default function patternValidator(control) {
+  // Special case for empty values. This is the job of the `required` validator
+  if (!control.value) {
+    return false;
+  }
+
   const condition = control.isInputType(supportedInputTypes) || control.isFunctionType()
 
 

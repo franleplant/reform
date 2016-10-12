@@ -9,6 +9,11 @@ export const supportedInputTypes = [
 ]
 
 export default function minLengthValidator(control) {
+  // Special case for empty values. This is the job of the `required` validator
+  if (!control.value) {
+    return false;
+  }
+
   const condition =
     control.isInputType(supportedInputTypes) ||
     control.isFunctionType() ||

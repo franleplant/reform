@@ -14,7 +14,7 @@ describe('pattern', () => {
   .forEach(inputType => {
     describe(`<input type="${inputType}" pattern="apple|banana" />"`, () => {
       const successConfig = {type: 'input', inputType: inputType, validator, value: "banana", error: false}
-      const failureConfig = {type: 'input', inputType: inputType, validator, value: "", error: true}
+      const failureConfig = {type: 'input', inputType: inputType, validator, value: "", error: false}
       controlIntialStateTest(failureConfig)
       controlOnChangeTest(successConfig)
       controlOnChangeTest(failureConfig)

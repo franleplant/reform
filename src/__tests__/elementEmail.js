@@ -9,7 +9,7 @@ import { controlOnChangeTest, controlIntialStateTest } from '../testTemplates'
 describe('email', () => {
   const validator = {email: true}
   const successConfig = {type: 'input', inputType: 'email', validator, value: "a@ab.com", error: false}
-  const failureConfig = {type: 'input', inputType: 'email', validator, value: "", error: true}
+  const failureConfig = {type: 'input', inputType: 'email', validator, value: "", error: false}
   describe(`<input type="email" />"`, () => {
     controlIntialStateTest(failureConfig)
     controlOnChangeTest(failureConfig)

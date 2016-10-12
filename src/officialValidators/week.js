@@ -6,6 +6,11 @@ import { parseWeek } from '../utils';
 // TODO: this needs to be improved since some years have 52 weeks
 const MAX_WEEK = 53
 export default function weekValidator(control) {
+  // Special case for empty values. This is the job of the `required` validator
+  if (!control.value) {
+    return false;
+  }
+
   const value = control.value
   const [year, week] = parseWeek(value)
 

@@ -45,7 +45,7 @@ describe('reform onSubmit', () => {
       const errorMap = form.getErrorMap();
       expect(errorMap[name1].required).toBe(true);
       expect(errorMap[name2].required).toBe(true);
-      expect(errorMap[name2].email).toBe(true);
+      expect(errorMap[name2].email).toBe(false);
     });
 
     it('should be invalid when all the controls are invalid', () => {
@@ -74,7 +74,7 @@ describe('reform onSubmit', () => {
       const errorMap = form.getErrorMap();
       expect(errorMap[name1].required).toBe(false);
       expect(errorMap[name2].required).toBe(true);
-      expect(errorMap[name2].email).toBe(true);
+      expect(errorMap[name2].email).toBe(false);
     })
 
     it('should be invalid when some controls are invalid', () => {
@@ -150,7 +150,7 @@ describe('reform submit mechanisms', () => {
       const errorMap = form.getErrorMap();
       expect(errorMap[name1].required).toBe(true);
       expect(errorMap[name2].required).toBe(true);
-      expect(errorMap[name2].email).toBe(true);
+      expect(errorMap[name2].email).toBe(false);
     });
 
     it('should be invalid when all the controls are invalid', () => {
@@ -190,7 +190,7 @@ describe('reform submit mechanisms', () => {
       const errorMap = form.getErrorMap();
       expect(errorMap[name1].required).toBe(true);
       expect(errorMap[name2].required).toBe(true);
-      expect(errorMap[name2].email).toBe(true);
+      expect(errorMap[name2].email).toBe(false);
     });
 
     it('should be invalid when all the controls are invalid', () => {
@@ -230,7 +230,7 @@ describe('reform submit mechanisms', () => {
       const errorMap = form.getErrorMap();
       expect(errorMap[name1].required).toBe(true);
       expect(errorMap[name2].required).toBe(true);
-      expect(errorMap[name2].email).toBe(true);
+      expect(errorMap[name2].email).toBe(false);
     });
 
     it('should be invalid when all the controls are invalid', () => {
