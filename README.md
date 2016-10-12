@@ -448,14 +448,25 @@ Use it to:
 - Custom `getValue`
 - Force a Component to be considered a `checkbox` or a `radio`
 
-```javascript
 
-const dataReform = {
-  getValue: event => event.target.value.toUpperCase(),
-  validationRules: {
-    myRule1: ...
-  }
-}
+In the following example we use it to tell Reform that it should validate
+this control with a custom ad hoc validator called `myRule1` and also we tell
+Reform that the value that this input emits on `change` should be calculated as
+`event.target.value.toUpperCase()`.
+
+This gives you the flexibility to hook basically anything that has the three magical props:
+`name`, `value` and `onChange`.
+
+```javascript
+<input
+  ...
+  dataReform={{
+    getValue: event => event.target.value.toUpperCase(),
+    validationRules: {
+      myRule1: control => !control.value
+    }
+  }}
+/>
 ```
 
 
