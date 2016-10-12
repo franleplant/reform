@@ -80,13 +80,12 @@ export function controlIntialStateTest(params) {
   const inputType = params.inputType
   const validity = params.validity || true
 
-  const initialValue = params.intialValue || ""
-  const value = params.value || ""
+  const value = params.intialValue || params.value || ""
   const error = params.error
   const onChange = spy();
 
 
-  let props = Object.assign({ name, onChange, value: initialValue}, validator)
+  let props = Object.assign({ name, onChange, value }, validator)
 
   if (type === 'input') {
     props.type = inputType
@@ -102,7 +101,7 @@ export function controlIntialStateTest(params) {
   const control = reform.formState[name];
 
   it(`should set the correct value. control = { value: ${value} }`,  () => {
-    expect(control.value).toBe(initialValue)
+    expect(control.value).toBe(value)
   });
 
   it(`should set the correct errors map.`,  () => {

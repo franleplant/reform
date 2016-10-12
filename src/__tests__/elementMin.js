@@ -31,7 +31,7 @@ describe(validatorKey, () => {
 
   inputTypesAndValues
   .forEach(([inputType, min, successValue, failureValue]) => {
-    describe(`<input type="${inputType}" ${validatorKey}=${min} />" with failureValue = ${failureValue}}`, () => {
+    describe(`<input type="${inputType}" ${validatorKey}=${min} />"`, () => {
       const successConfig = {type: 'input', inputType: inputType, validator: {[validatorKey]: min}, value: successValue, error: false}
       const failureConfig = {type: 'input', inputType: inputType, validator: {[validatorKey]: min}, value: failureValue, error: true}
       controlIntialStateTest(failureConfig)
