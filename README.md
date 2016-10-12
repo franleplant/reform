@@ -814,16 +814,19 @@ This is something I've been using a lot lately:
 // and if either throws or is false then will return null, otherwise it will return
 // the children 
 const Try = ({exp, children}) => {
- try {
-  const cond = exp();
+  let cond;
+  try {
+    cond = exp();
+
+  } catch (err) {
+    return null;
+  }
+   
   if (!cond) {
-   throw new Error();
+    return null;
   }
   
   return children;
- } catch (err) {
-  return null;
- }
 }
 
 // So later you could use it like this, inside your Form's render component
