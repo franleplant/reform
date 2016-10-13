@@ -261,10 +261,9 @@ type Errors = {
 
 ```
 
-#### Example 1
-
+<hr/>
+#### Example: what it looks like in practice
 ```javascript
-
 errors: {
   required: true,
   myCustomRule: false,
@@ -276,9 +275,10 @@ errors: {
 - each `validationRuleKey` is always related to a rule. So, for example, there's a rule (function) called `required` (built-in) which will be evaluated every time the input changes value and it's result will be stored in errors. 
 
 > Always `errors[validationRuleKey]` will be `true` if there is an **error**
+<hr/>
 
-
-#### Example 2: errors and styling
+<hr/>
+###### Example: errors and styling
 
 Suppose our error state is initialized like this
 
@@ -309,9 +309,10 @@ Then you can style Controls accordingly like so:
 
 See how useful the `isInvalid` attribute is, because it works well with empty objects.
 
+<hr/>
 
 ### `Control`
-> form control, form input, custom controls, field, input, select, textarea, radio, checkbox
+> **Keywords:** form control, form input, custom controls, field, input, select, textarea, radio, checkbox
 
 You access it from the `onChange` handlers like this:
 
@@ -320,12 +321,14 @@ function handleChange(control, event) {...}
 ```
 
 
-This is the type definition (in pseudo typescript)
-
+Type definition:
 ```typescript
 type Control = {
+  // It's calculated via `getValues` (see data-reform)
   value: string | number | any;
+  
   checked: boolean;
+  
   errors: Errors;
   
   isValid: () => boolean;
@@ -336,7 +339,7 @@ type Control = {
     // using built-in standard rules (require, min, minLength, et al)
     [validationRuleKey: string]: boolean | Function;
   };
-
+  
   // This function tells Reform how to get the value of a Control Element
   // from the arguments of the onChange event handler.
   // Check `data-form` section for more information
@@ -347,11 +350,19 @@ type Control = {
   
   // The React element type
   elementType: string | Function;
+  
+  // Free space for users to pass custom data to custom Validators
+  params: any;
 }
-
 ```
 
+> **Important** `Control` should be considered a **read only** data structure. 
+The correct place to modify it is via `data-reform` and special props like native validator props
+and the three magical `name`, `value`, `onChange`.
 
+
+<hr/>
+###### Example
 
 If you have a field like this
 ```javascript
@@ -379,6 +390,7 @@ control = {
 ```
 
 Note that `errors.required` will be `false` because the control has a value so it's not in error state.
+<hr/>
 
 ### `Form`
 > **Keywords:** form state, formState, isValid, access to all controls
