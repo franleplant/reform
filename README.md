@@ -1,7 +1,6 @@
 # Reform [![Build Status](https://travis-ci.org/franleplant/reform.svg?branch=master)](https://travis-ci.org/franleplant/reform) [![Coverage Status](https://coveralls.io/repos/github/franleplant/reform/badge.svg?branch=master)](https://coveralls.io/github/franleplant/reform?branch=master)
 
-Form validation library for react
-
+Form validation library for React
 
 > This lib is in Alpha stage
 
@@ -504,9 +503,10 @@ You can force a Custom Component to be considered by `Reform` as a `checkbox` or
 > NOTE We already work well with `react-bootstrap` so no extra verbosity needed there. Also, the plan is to support
 any view libraries' Custom Components so PR us or create an issue for anything lacking.
 
+<hr/>
 ###### Example
 
-> In the following example we use it to tell Reform that it should validate
+In the following example we use it to tell Reform that it should validate
 this control with a custom ad hoc validator called `myRule1` and also we tell
 Reform that the value that this input emits on `change` should be calculated as
 `event.target.value.toUpperCase()`.
@@ -529,6 +529,7 @@ This gives you the flexibility to hook basically anything that has the three mag
   }}
 />
 ```
+<hr/>
 
 ### Custom Validators
 > custom validators, validate, ad hoc, global validators, async validators
