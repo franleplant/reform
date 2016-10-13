@@ -29,7 +29,7 @@ by version `4.2.4` in reform-examples
 
 ## Quick Start
 
-Reform provides a very minimal and hopefully unobstrusive API that _mounts_ over regular Form Handling in React.
+Reform provides a very minimal and hopefully unobtrusive API that _mounts_ over regular Form Handling in React.
 Checkout React Controlled Components documentation to see the original API.
 
 
@@ -214,7 +214,7 @@ For now, the examples are in a separate [Repo](https://github.com/franleplant/re
 > Documentation, docs
 
 ## `<Reform/>`
-> form, reform, component, entry point, onSubmit, top level api
+> **Keywords:** form, reform, component, entry point, onSubmit, top level api
 
 This is the entry point to the lib. The way to use it is as follow:
 
@@ -245,7 +245,7 @@ through `onSubmit` but you are free to do the way you want to.
 
 Common interface for reporting errors for a particular `Control`.
 
-Type Definition
+###### Type Definition
 ```typescript
 type Errors = {
   isValid: () => boolean;
@@ -325,7 +325,7 @@ function handleChange(control, event) {...}
 ```
 
 
-Type definition:
+###### Type definition
 ```typescript
 type Control = {
   // It's calculated via `getValues` (see data-reform)
@@ -401,7 +401,7 @@ Note that `errors.required` will be `false` because the control has a value so i
 > **Keywords:** form state, formState, isValid, access to all controls
 
 You can use this object to access all the controls in the form.
-You use typically use it to prevent the form from being submited if it's invalid
+You use typically use it to prevent the form from being submitted if it's invalid
 and to update your Form Component error state.
 
 
@@ -412,8 +412,7 @@ function handleSubmit(form, event) {...}
 ```
 
 
-This is the type definition
-
+### Type Definition
 ```typescript
 type Form = {
   [fieldName: string]: Control;
@@ -424,8 +423,8 @@ type Form = {
 ```
 
 
-###### Example
-This is an example of how to check form validity before call to a hipotetical API submitting the form:
+###### :black_large_square: Example
+This is an example of how to check form validity before call to a hypothetical API submitting the form:
 
 ```javascript
 class MyComponent extends React.Component {
@@ -469,7 +468,7 @@ Use it to:
 - Pass whatever data you need to custom validators via `params`
 
 
-It has the following signature:
+###### Type Definition
 ```typescript
 type DataReform = {
 
@@ -508,23 +507,8 @@ from the onChange arguments.
 - `control` is the current state of the `control` so you have all the data of that control available such as the `inputType` for example.
 
 
-You can force a Custom Component to be considered by `Reform` as a `checkbox` or a `radio` like this:
 
-```javascript
-<MyCustomComponent
-  name="myField"
-  value={this.state.fields.myField}
-  onChange={...}
-  data-reform={
-    inputType:"checkbox"
-  }
-/>
-```
-
-> NOTE We already work well with `react-bootstrap` so no extra verbosity needed there. Also, the plan is to support
-any view libraries' Custom Components so PR us or create an issue for anything lacking.
-
-###### Example
+###### :black_large_square: Example
 
 In the following example we use it to tell Reform that it should validate
 this control with a custom ad hoc validator called `myRule1` and also we tell
@@ -553,6 +537,30 @@ This gives you the flexibility to hook basically anything that has the three mag
   :black_large_square:
 </h6>
 
+###### :black_large_square: Example: Forcing Custom components as `checkbox` or `radio`
+
+You can force a Custom Component to be considered by `Reform` as a `checkbox` or a `radio` like this:
+
+```javascript
+<MyCustomComponent
+  name="myField"
+  value={this.state.fields.myField}
+  onChange={...}
+  data-reform={
+    inputType:"checkbox"
+  }
+/>
+```
+
+> NOTE We already work well with `react-bootstrap` so no extra verbosity needed there. Also, the plan is to support
+any view libraries' Custom Components so PR us or create an issue for anything lacking.
+
+
+
+<h6 align="right">
+  :black_large_square:
+</h6>
+
 ## Custom Validators
 > **Keywords:** custom validators, validate, ad hoc, global validators, async validators
 
@@ -567,14 +575,14 @@ Reform supports two forms of custom validators: Ad Hoc and Global.
 
 Validators are just functions with the following signature:
 
-Type Definition
+###### Type Definition
 ```typescript
 CustomValidator: (control: Control, formState: FormState) => boolean;
 ```
 
 If a validator returns `true` then that means that there is an error.
 
-###### Example
+###### :black_large_square: Example: writing a custom validator
 
 ```javascript
 function customMinLength(control, formState) {
@@ -590,19 +598,33 @@ function customMinLength(control, formState) {
 }
 ```
 
-
 > FormState gives you access to the rest of the form controls, so you can implement things such
 as password verification pretty easily
+
+
+In the following sections we are going to see how to use it.
+
 
 <h6 align="right">
   :black_large_square:
 </h6>
 
+
+**Important**
+
+If you add a custom validator with the same name as a Native Validator, that means, you are trying to
+overwrite a Native Validator then `Reform` is going to throw an error.
+
 ### Ad Hoc Custom Validators
+
+> Ad Hoc means _created or done for a particular purpose as necessary._
+
 
 This type of custom validators are defined in place of the control using it.
 They are similar to anonymous functions, they are intended for one time use.
 
+
+###### :black_large_square: Example
 
 Let's use `CustomMinLength` defined before as an Ad Hoc Custom Validator
 
@@ -625,8 +647,10 @@ Let's use `CustomMinLength` defined before as an Ad Hoc Custom Validator
 </Reform>
 
 ```
+<h6 align="right">
+  :black_large_square:
+</h6>
 
-> Ad Hoc means _created or done for a particular purpose as necessary._
 
 
 > While you could create a simple function that acts as custom validator and pass it around
@@ -639,6 +663,8 @@ and use Global Validators instead.
 When building a big application you will probably want to create a reusable
 pool of Custom Validators that are related to your app's domain.
 Reform let's you define new validators and re-use them.
+
+###### :black_large_square: Example
 
 Let's add `customMinLength` as a Global Validator
 
@@ -672,6 +698,10 @@ Now you can use it everywhere via `data-reform`
 
 > Note that instead of passing a function to `customMinLength` we are passing a simple boolean, 
 Reform will then look for a previously defined validator with that rule.
+
+<h6 align="right">
+  :black_large_square:
+</h6>
 
 
 
@@ -799,7 +829,7 @@ class Login extends Component {
 }
 ```
 
-There's nothing special with this but it's just a more succint way of doing the two way data bindings.
+There's nothing special with this but it's just a more succinct way of doing the two way data bindings.
 
 This:
 
@@ -828,12 +858,15 @@ Turns to this:
 />
 ```
 
+
+You could even go further and make it work with Checkboxes and Radios
+
 ### How to display errors?
 
 As you've already seen, errors should be stored someplace in the state. We've been using
 `this.state.errors`.
 
-There are several ways of display erorrs, most of these techniques are not `Reform` specific so feel
+There are several ways of display errors, most of these techniques are not `Reform` specific so feel
 free to use your React knowledge the best you can.
 
 The simplest most verbose way is this one
@@ -851,7 +884,7 @@ The simplest most verbose way is this one
 
 > NOTE: this assumes you initialized `this.state.errors.myField = {}` otherwise you would also have to check if `this.state.errors.myField` is null.
 
-The problem with this approach is the ternary operation, the verbosity, and the ugglyness, but we can do better, how? Just use React components!
+The problem with this approach is the ternary operation, the verbosity, and the ugliness, but we can do better, how? Just use React components!
 
 ```javascript
 
@@ -909,7 +942,7 @@ const Try = ({exp, children}) => {
 
 I though about creating a lib with this Component but I rather explain you how it works rather than ship it and maintain it.
 
-the magic that `Try` does is really simple, and abstracts this:
+The magic that `Try` does is really simple, and abstracts this:
 
 ```javascript
 {
@@ -919,7 +952,7 @@ the magic that `Try` does is really simple, and abstracts this:
 ```
 
 So you basically avoid those nasty checks and also abstract them and also avoid the need to initialize your
-error state and since you have full control of the `Try` component you can tunne it to your particular needs.
+error state and since you have full control of the `Try` component you can tune it to your particular needs.
 
 
 # Internals
@@ -929,14 +962,14 @@ In this section we are going to explain how `Reform` works from the inside.
 This documentation is useful to 
 
 - Contributors that need to understand the core ideas of `Reform`
-- Users that want to desmistify the inner workings of `Reform`. It's not at all Black Magic.
+- Users that want to demystify the inner workings of `Reform`. It's not at all Black Magic.
 
 ## React Controlled Components
 
 `Reform` mounts and enhances React Controlled Components, which is basically another way of naming Two Way Data Binding (2WDB).
 
 I believe that the main reason not to call this pattern 2WDB is because it's much less magical,
-you always clearly know what are the ways the data flow from the **View** to the **Model** and viceversa.
+you always clearly know what are the ways the data flow from the **View** to the **Model** and vice versa.
 
 
 <h3 align="center">
@@ -987,7 +1020,7 @@ This is all fine and both React and Reform work well with this.
 
 ## Reform Controlled Components
 
-We've basically explained everything that Reforms does, the only detail is that `Reform` highjacks the **View -> Model** flow
+We've basically explained everything that Reforms does, the only detail is that `Reform` hijacks the **View -> Model** flow
 and adds **validation** data to the newValue or `event` that the **View** emits in the form of the `control` object.
 
 
@@ -1084,9 +1117,9 @@ a `change` event we simply run all validators associated with those rules and as
 So, basically, all `validationRules` have a `validator` function associated with them that basically return `true` if the Control does not fulfill that validation.
 
 Native validators are exactly the same as custom validators, they use the same API and return types, the only difference is that Reform
-already includes them wether custom validators are writen by the user.
+already includes them whether custom validators are written by the user.
 
-Native validators are writen to try to comply with w3c spec.
+Native validators are written to try to comply with w3c spec.
 
 Native validators often do different validations depending on the type of the Input or Control. For example the `min` native validator
 operates differently on an `input` `type="number"` and a `type="date"`.
