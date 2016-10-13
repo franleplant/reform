@@ -262,7 +262,8 @@ type Errors = {
 };
 ```
 
-###### Example: what it looks like in practice
+
+###### :black_large_square: Example: what it looks like in practice
 ```javascript
 errors: {
   required: true,
@@ -280,7 +281,7 @@ errors: {
   :black_large_square:
 </h6>
 
-###### Example: errors and styling
+###### :black_large_square: Example: errors and styling
 
 Suppose our error state is initialized like this
 
@@ -364,7 +365,7 @@ The correct place to modify it is via `data-reform` and special props like nativ
 and the three magical `name`, `value`, `onChange`.
 
 
-###### Example
+###### :black_large_square: Example
 
 If you have a field like this
 ```javascript
