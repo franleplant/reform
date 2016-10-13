@@ -381,7 +381,7 @@ control = {
 Note that `errors.required` will be `false` because the control has a value so it's not in error state.
 
 ### `Form`
-> form state, formState, isValid, access to all controls
+> **Keywords:** form state, formState, isValid, access to all controls
 
 You can use this object to access all the controls in the form.
 You use typically use it to prevent the form from being submited if it's invalid
@@ -407,6 +407,8 @@ type Form = {
 ```
 
 
+<hr/>
+###### Example
 This is an example of how to check form validity before call to a hipotetical API submitting the form:
 
 ```javascript
@@ -434,7 +436,7 @@ class MyComponent extends React.Component {
   }
 }
 ```
-
+<hr/>
 
 ### `data-reform`
 > **Keywords:** configuration, config, manual, customization, custom validators, get value, parse
@@ -490,7 +492,7 @@ from the onChange arguments.
 
 You can force a Custom Component to be considered by `Reform` as a `checkbox` or a `radio` like this:
 
-```
+```javascript
 <MyCustomComponent
   name="myField"
   value={this.state.fields.myField}
@@ -498,6 +500,7 @@ You can force a Custom Component to be considered by `Reform` as a `checkbox` or
   data-reform={
     inputType:"checkbox"
   }
+/>
 ```
 
 > NOTE We already work well with `react-bootstrap` so no extra verbosity needed there. Also, the plan is to support
