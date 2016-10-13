@@ -14,7 +14,7 @@ by version `4.2.4` in reform-examples
 - [Design Goals](#design-goals)
 - [Scope](#scope)
 - [Examples](#examples)
-- [API](#api)
+- [API](#api-docs)
   - [`<Reform/>`](#reform)
   - [`Errors`](#errors)
   - [`Control`](#contro)
@@ -208,12 +208,10 @@ is to provide as much freedom to you as you want to.
 
 For now, the examples are in a separate [Repo](https://github.com/franleplant/reform-examples) so you can also see them running, the repo it's versioned so if you look for Examples for Reform version 4.2.x you will see them tagged like 4.2.x too
 
-# Docs
+# API Docs
 > Documentation, docs
 
-## API
-
-### `<Reform/>`
+## `<Reform/>`
 > form, reform, component, entry point, onSubmit, top level api
 
 This is the entry point to the lib. The way to use it is as follow:
@@ -239,11 +237,13 @@ through `onSubmit` but you are free to do the way you want to.
 
 
 
-### `Errors`
+## `Errors`
+> **Keywords:** getErrorMap, display errors
 
-> getErrorMap, display errors
+
 Common interface for reporting errors for a particular `Control`.
 
+Type Definition
 ```typescript
 type Errors = {
   isValid: () => boolean;
@@ -258,11 +258,10 @@ type Errors = {
   // any custom validators you might be using.
   [validationRuleKey: string]: boolean;
 };
-
 ```
 
 <hr/>
-#### Example: what it looks like in practice
+###### Example: what it looks like in practice
 ```javascript
 errors: {
   required: true,
@@ -275,6 +274,8 @@ errors: {
 - each `validationRuleKey` is always related to a rule. So, for example, there's a rule (function) called `required` (built-in) which will be evaluated every time the input changes value and it's result will be stored in errors. 
 
 > Always `errors[validationRuleKey]` will be `true` if there is an **error**
+
+
 <hr/>
 
 <hr/>
@@ -311,7 +312,7 @@ See how useful the `isInvalid` attribute is, because it works well with empty ob
 
 <hr/>
 
-### `Control`
+## `Control`
 > **Keywords:** form control, form input, custom controls, field, input, select, textarea, radio, checkbox
 
 You access it from the `onChange` handlers like this:
@@ -392,7 +393,7 @@ control = {
 Note that `errors.required` will be `false` because the control has a value so it's not in error state.
 <hr/>
 
-### `Form`
+## `Form`
 > **Keywords:** form state, formState, isValid, access to all controls
 
 You can use this object to access all the controls in the form.
@@ -450,7 +451,7 @@ class MyComponent extends React.Component {
 ```
 <hr/>
 
-### `data-reform`
+## `data-reform`
 > **Keywords:** configuration, config, manual, customization, custom validators, get value, parse
 
 `data-reform` is a custom prop used to config reform on a particular form control.
@@ -546,8 +547,11 @@ This gives you the flexibility to hook basically anything that has the three mag
 ```
 <hr/>
 
-### Custom Validators
-> custom validators, validate, ad hoc, global validators, async validators
+## Custom Validators
+> **Keywords:** custom validators, validate, ad hoc, global validators, async validators
+
+
+
 
 > Async validators are not supported! They are planned but right now they complicate things too
 much, if you need to work with async validators you can use them directly with React, Reform wont 
@@ -557,13 +561,15 @@ Reform supports two forms of custom validators: Ad Hoc and Global.
 
 Validators are just functions with the following signature:
 
+Type Definition
 ```typescript
 CustomValidator: (control: Control, formState: FormState) => boolean;
 ```
 
 If a validator returns `true` then that means that there is an error.
 
-Example
+<hr/>
+###### Example
 
 ```javascript
 function customMinLength(control, formState) {
@@ -583,7 +589,10 @@ function customMinLength(control, formState) {
 > FormState gives you access to the rest of the form controls, so you can implement things such
 as password verification pretty easily
 
-#### Ad Hoc Custom Validators
+
+<hr/>
+
+### Ad Hoc Custom Validators
 
 This type of custom validators are defined in place of the control using it.
 They are similar to anonymous functions, they are intended for one time use.
@@ -619,7 +628,7 @@ like you will do with a regular function and use it ad hoc several times, you sh
 and use Global Validators instead.
 
 
-### Global Validators
+## Global Validators
 
 When building a big application you will probably want to create a reusable
 pool of Custom Validators that are related to your app's domain.
