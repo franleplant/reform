@@ -227,7 +227,7 @@ This is the entry point to the lib. The way to use it is as follow:
 ```
 This Component does not receive any props, that's by design so we keep the interface as minimal and simple as possible.
 
-`Reform` will hook **all components that have a `name`, `value` and `onChange` props** that are children of it, no more no less.
+`Reform` will hook **all components that have the magical props `name`, `value` and `onChange`** that are children of it, no more no less.
 
 
 > If you do not provide the `onSubmit` in your `<form>` element then you should manually set `noValidate`
@@ -412,7 +412,7 @@ function handleSubmit(form, event) {...}
 ```
 
 
-### Type Definition
+###### Type Definition
 ```typescript
 type Form = {
   [fieldName: string]: Control;
