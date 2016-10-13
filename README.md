@@ -1,5 +1,7 @@
 # Reform [![Build Status](https://travis-ci.org/franleplant/reform.svg?branch=master)](https://travis-ci.org/franleplant/reform) [![Coverage Status](https://coveralls.io/repos/github/franleplant/reform/badge.svg?branch=master)](https://coveralls.io/github/franleplant/reform?branch=master)
 
+
+
 Form validation library for React
 
 > This lib is in Alpha stage
@@ -260,7 +262,6 @@ type Errors = {
 };
 ```
 
-<hr/>
 ###### Example: what it looks like in practice
 ```javascript
 errors: {
@@ -275,10 +276,10 @@ errors: {
 
 > Always `errors[validationRuleKey]` will be `true` if there is an **error**
 
+<h6 align="right">
+  :black_large_square:
+</h6>
 
-<hr/>
-
-<hr/>
 ###### Example: errors and styling
 
 Suppose our error state is initialized like this
@@ -309,8 +310,9 @@ Then you can style Controls accordingly like so:
 ```
 
 See how useful the `isInvalid` attribute is, because it works well with empty objects.
-
-<hr/>
+<h6 align="right">
+  :black_large_square:
+</h6>
 
 ## `Control`
 > **Keywords:** form control, form input, custom controls, field, input, select, textarea, radio, checkbox
@@ -362,7 +364,6 @@ The correct place to modify it is via `data-reform` and special props like nativ
 and the three magical `name`, `value`, `onChange`.
 
 
-<hr/>
 ###### Example
 
 If you have a field like this
@@ -391,7 +392,9 @@ control = {
 ```
 
 Note that `errors.required` will be `false` because the control has a value so it's not in error state.
-<hr/>
+<h6 align="right">
+  :black_large_square:
+</h6>
 
 ## `Form`
 > **Keywords:** form state, formState, isValid, access to all controls
@@ -420,7 +423,6 @@ type Form = {
 ```
 
 
-<hr/>
 ###### Example
 This is an example of how to check form validity before call to a hipotetical API submitting the form:
 
@@ -449,7 +451,9 @@ class MyComponent extends React.Component {
   }
 }
 ```
-<hr/>
+<h6 align="right">
+  :black_large_square:
+</h6>
 
 ## `data-reform`
 > **Keywords:** configuration, config, manual, customization, custom validators, get value, parse
@@ -519,7 +523,6 @@ You can force a Custom Component to be considered by `Reform` as a `checkbox` or
 > NOTE We already work well with `react-bootstrap` so no extra verbosity needed there. Also, the plan is to support
 any view libraries' Custom Components so PR us or create an issue for anything lacking.
 
-<hr/>
 ###### Example
 
 In the following example we use it to tell Reform that it should validate
@@ -545,7 +548,9 @@ This gives you the flexibility to hook basically anything that has the three mag
   }}
 />
 ```
-<hr/>
+<h6 align="right">
+  :black_large_square:
+</h6>
 
 ## Custom Validators
 > **Keywords:** custom validators, validate, ad hoc, global validators, async validators
@@ -568,7 +573,6 @@ CustomValidator: (control: Control, formState: FormState) => boolean;
 
 If a validator returns `true` then that means that there is an error.
 
-<hr/>
 ###### Example
 
 ```javascript
@@ -589,8 +593,9 @@ function customMinLength(control, formState) {
 > FormState gives you access to the rest of the form controls, so you can implement things such
 as password verification pretty easily
 
-
-<hr/>
+<h6 align="right">
+  :black_large_square:
+</h6>
 
 ### Ad Hoc Custom Validators
 
