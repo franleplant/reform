@@ -438,36 +438,44 @@ class MyComponent extends React.Component {
 
 
 ### `data-reform`
-> configuration, config, manual, customization, custom validators, get value, parse
+> **Keyword:** configuration, config, manual, customization, custom validators, get value, parse
 
 `data-reform` is a custom prop used to config reform on a particular form control.
 
 Use it to:
 
-- Define Custom Validators (ad hoc or global)
-- Custom `getValue`
-- Force a Component to be considered a `checkbox` or a `radio`
+- Define Custom Validators (ad hoc or global) via `validationRules`
+- Custom `getValue` via `getValue`
+- Force a Component to be considered a `checkbox` or a `radio` via `inputType`
+- Pass whatever data you need to custom validators via `params`
 
 
-In the following example we use it to tell Reform that it should validate
-this control with a custom ad hoc validator called `myRule1` and also we tell
-Reform that the value that this input emits on `change` should be calculated as
-`event.target.value.toUpperCase()`.
+It has the following signature:
+```typescript
+type DataReform = {
 
-This gives you the flexibility to hook basically anything that has the three magical props:
-`name`, `value` and `onChange`.
+  // Use it to define the way you calculate the control value
+  // from the data emitted via the `change` event
+  getValue: GetValue;
 
-```javascript
-<input
-  ...
-  dataReform={{
-    getValue: event => event.target.value.toUpperCase(),
-    validationRules: {
-      myRule1: control => !control.value
-    }
-  }}
-/>
+  // Use it to add Custom Validators either global or ad hoc
+  validationRules: {
+    [validationRuleName: string]: any;
+  };
+
+  // Use it to force Reform to treat a custom component as
+  // an input type such as a 'Radio'
+  inputType: string;
+
+  // Use it to pass data to your Custom Validators
+  params: any;
+}
 ```
+
+```typescript
+type GetValue = (first: Event | any, control: Control) => any
+```
+
 
 
 `getValue` is useful when you are trying to validate a custom component
@@ -476,11 +484,6 @@ invokes `onChange` with something else.
 This hooks let's you configure how Reform calculates the value of a given control
 from the onChange arguments.
 
-it's signature is:
-
-```typescript
-type GetValue = (first: Event | any, control: Control) => any
-```
 
 - `first` is an `event` for native `input` controls such as `input`, `select` and `textarea` but could also be anything that a Custom Control emits, such as a string, number, Date Object, Moment Object, Array, anything you can imagine. In fact, working with Custom Components is the main reason `getValue` exists.
 - `control` is the current state of the `control` so you have all the data of that control available such as the `inputType` for example.
@@ -500,6 +503,32 @@ You can force a Custom Component to be considered by `Reform` as a `checkbox` or
 
 > NOTE We already work well with `react-bootstrap` so no extra verbosity needed there. Also, the plan is to support
 any view libraries' Custom Components so PR us or create an issue for anything lacking.
+
+###### Example
+
+> In the following example we use it to tell Reform that it should validate
+this control with a custom ad hoc validator called `myRule1` and also we tell
+Reform that the value that this input emits on `change` should be calculated as
+`event.target.value.toUpperCase()`.
+We additionally use the `params` attribute to pass additional parameters to our custom Rule.
+This is very useful when used together with Global Validators because you can given them
+a generic form that accepts parameters.
+
+This gives you the flexibility to hook basically anything that has the three magical props:
+`name`, `value` and `onChange`.
+
+```javascript
+<input
+  ...
+  data-reform={{
+    getValue: event => event.target.value.toUpperCase(),
+    params: { name: 'Reform' },
+    validationRules: {
+      myRule1: control => control.value !== control.params.name
+    }
+  }}
+/>
+```
 
 ### Custom Validators
 > custom validators, validate, ad hoc, global validators, async validators

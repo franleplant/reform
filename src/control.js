@@ -13,9 +13,16 @@ interface ControlState {
   elementType: string | function,
   name: string,
   value: any,
-  inputType: string | void,
   errors: ReformErrors,
+  // Hackable
+  inputType: string | void,
+  // Hackable
   validationRules: ValidationRules
+  // Hackable
+  params: any;
+  // Hackable
+  getValue = Function;
+
 }
 
 */
@@ -71,7 +78,6 @@ export default class Control {
     let value = element.props.value
     //if it's a radio input then value should be set for the checked input if not it should be ''
     //warn user when not all radio buttons with the same name have the same validationRules
-    // TODO: from reform I need to check the correct value of the only checked radio button
     if (Element.isRadio(element)) {
       value = element.props.checked ? value : ''
     }
@@ -98,6 +104,8 @@ export default class Control {
     this.validationRules = mergeRulesSafely(Element.getValidationRules(element), config.validationRules);
     // Hackable
     this.getValue = config.getValue || defaultGetValue;
+    // Hackable
+    this.params = config.params;
 
     if (!this.name) {
       throw new Error(`All controlled inputs must have "name" props. In ${element}`)
