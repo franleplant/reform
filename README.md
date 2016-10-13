@@ -438,7 +438,7 @@ class MyComponent extends React.Component {
 
 
 ### `data-reform`
-> **Keyword:** configuration, config, manual, customization, custom validators, get value, parse
+> **Keywords:** configuration, config, manual, customization, custom validators, get value, parse
 
 `data-reform` is a custom prop used to config reform on a particular form control.
 
