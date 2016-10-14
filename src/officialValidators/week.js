@@ -20,32 +20,12 @@ function weekValidator(control) {
 }
 
 function weeksInYear(year) {
-  let lastDayOfTheYear = new Date(year, 11, 31);
-  const [, week] = getWeekNumber(lastDayOfTheYear);
-  if (week !== 1) {
-    return week;
-  }
+  const d = new Date(year, 0, 1);
+  const isLeap = new Date(year, 1, 29).getMonth() === 1;
 
-  const dayOfTheMonth = lastDayOfTheYear.setDate(24);
-  return getWeekNumber(dayOfTheMonth)[1];
+  // Check for a Jan 1 that's a Thursday or a leap year that has a
+  // Wednesday jan 1. Otherwise year has 52 weeks.
+  return d.getDay() === 4 || isLeap && d.getDay() === 3 ? 53 : 52
 }
 
-function getWeekNumber(d) {
-  // Copy date so don't modify original
-  let date = new Date(+d);
-  date.setHours(0, 0, 0);
-
-  // Set to nearest Thursday: current date + 4 - current day number
-  // Make Sunday's day number 7
-  date.setDate(date.getDate() + 4 - (date.getDay()||7));
-
-  // Get first day of year
-  const yearStart = new Date(date.getFullYear(),0,1);
-  // Calculate full weeks to nearest Thursday
-  const weekNo = Math.ceil(( ( (date - yearStart) / 86400000) + 1) / 7);
-
-  // Return array of year and week number
-  return [date.getFullYear(), weekNo];
-}
-
-export {weekValidator as default, weeksInYear, getWeekNumber}
+export {weekValidator as default, weeksInYear}
