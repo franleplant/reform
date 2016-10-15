@@ -3,7 +3,7 @@
 import { parseWeek } from '../utils';
 
 // Example week: "2016-W33"
-function weekValidator(control) {
+export default function weekValidator(control) {
   // Special case for empty values. This is the job of the `required` validator
   if (!control.value) {
     return false;
@@ -19,7 +19,7 @@ function weekValidator(control) {
   return !(0 < year && 1 <= week && week <= weeksInYear(year));
 }
 
-function weeksInYear(year) {
+export function weeksInYear(year) {
   const d = new Date(year, 0, 1);
   const isLeap = new Date(year, 1, 29).getMonth() === 1;
 
@@ -27,5 +27,3 @@ function weeksInYear(year) {
   // Wednesday jan 1. Otherwise year has 52 weeks.
   return d.getDay() === 4 || isLeap && d.getDay() === 3 ? 53 : 52
 }
-
-export {weekValidator as default, weeksInYear}
