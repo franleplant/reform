@@ -1,0 +1,40 @@
+{
+  "name": "reform",
+  "version": "5.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "test": "jest --watch",
+    "test:travis": "jest --coverage"
+  },
+  "author": "franleplant@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "6.0.51",
+    "@types/react": "0.14.50",
+    "@types/react-dom": "0.14.19",
+    "jest": "17.0.3",
+    "react": "15.4.1",
+    "react-dom": "15.4.1",
+    "source-map-loader": "0.1.5",
+    "ts-jest": "17.0.0",
+    "ts-loader": "1.2.2",
+    "tslint": "4.0.2",
+    "tslint-loader": "3.2.0",
+    "typescript": "2.0.10",
+    "webpack": "1.13.3"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "testResultsProcessor": "<rootDir>/node_modules/ts-jest/coverageprocessor.js",
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx)$",
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    }
+  }
+}

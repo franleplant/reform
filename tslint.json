@@ -1,0 +1,21 @@
+{
+  "rules": {
+    "class-name": true,
+    "indent": [true, "spaces"],
+    "no-duplicate-variable": true,
+    "no-trailing-whitespace": true,
+    "no-var-keyword": true,
+    "one-line": [true, "check-open-brace", "check-whitespace"],
+    "triple-equals": [true, "allow-null-check"],
+    "variable-name": [true, "ban-keywords"],
+    "no-namespace": [true, "allow-declarations"],
+    "no-unused-variable": [true, "react"],
+    "whitespace": [true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-separator",
+      "check-type"
+    ]
+  }
+}
