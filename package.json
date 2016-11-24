@@ -5,16 +5,19 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
+    "start": "webpack --watch",
     "test": "jest --watch",
     "test:travis": "jest --coverage"
   },
   "author": "franleplant@gmail.com",
   "license": "MIT",
   "dependencies": {
+    "@types/lodash": "4.14.40",
     "@types/node": "6.0.51",
     "@types/react": "0.14.50",
     "@types/react-dom": "0.14.19",
     "jest": "17.0.3",
+    "lodash": "4.3.0",
     "react": "15.4.1",
     "react-dom": "15.4.1",
     "source-map-loader": "0.1.5",

@@ -1,10 +1,32 @@
+// TODO use lodash.topairs and sort out ts nightmares
+import { toPairs } from 'lodash';
+import { ErrorMap, ErrorMapMap, Rules } from './types';
+import validatorInterface from './validators';
 
-function test(a: string) {
-  console.log(`hi mofo ${a} ${process.env.NODE_ENV}`);
+
+export function validateRules(rules: Rules, value: string | number): ErrorMap {
+  // Special case so when an input is missing, dont assert the rest of the rules
+  // since it does not make sense
+  if (value === '' && !rules.required) {
+    return {}
+  }
+
+  const errorMap = {};
+
+  toPairs(rules).forEach(([ruleKey, ruleValue]) => {
+    const validator = typeof ruleValue === 'function' ? ruleValue : validatorInterface.get(ruleKey);
+    const errorState = validator(value, ruleValue);
+    errorMap[ruleKey] = errorState;
+  });
+
+
+  return errorMap;
 }
 
-const a = "not used";
+export function mapHasErrors(errorMap: ErrorMap = {}): boolean {
+  return (Object as any).values(errorMap).some(Boolean);
+}
 
-function notUsed() {}
-
-test("fran")
+export function mapMapHasErrors(errorMapMap: ErrorMapMap): boolean {
+  return (Object as any).values(errorMapMap).some(mapHasErrors);
+}
