@@ -47,9 +47,13 @@ module.exports =
 
 	"use strict";
 	var types = __webpack_require__(1);
+	exports.types = types;
 	var core = __webpack_require__(2);
+	exports.core = core;
 	var validators_1 = __webpack_require__(5);
+	exports.validators = validators_1.default;
 	var reactHelpers = __webpack_require__(12);
+	exports.reactHelpers = reactHelpers;
 	var exposing = {
 	    types: types,
 	    core: core,

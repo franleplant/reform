@@ -1,14 +1,20 @@
 import * as types from './types';
 import * as core from './core';
-import validatorInterface from './validators';
+import {default as validators} from './validators';
 import * as reactHelpers from './reactHelpers';
 
+export {
+  types,
+  core,
+  reactHelpers,
+  validators,
+};
 
 const exposing = {
   types,
   core,
   reactHelpers,
-  validators: validatorInterface,
+  validators,
 };
 
 export default exposing;

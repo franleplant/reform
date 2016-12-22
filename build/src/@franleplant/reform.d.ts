@@ -3,7 +3,9 @@
 declare module '@franleplant/reform' {
     import * as types from '@franleplant/reform/types';
     import * as core from '@franleplant/reform/core';
+    import { default as validators } from '@franleplant/reform/validators';
     import * as reactHelpers from '@franleplant/reform/reactHelpers';
+    export { types, core, reactHelpers, validators };
     const exposing: {
         types: typeof types;
         core: typeof core;
@@ -47,6 +49,15 @@ declare module '@franleplant/reform/core' {
     export function validateRules(rules: Rules, value: string | number): ErrorMap;
     export function mapHasErrors(errorMap?: ErrorMap): boolean;
     export function mapMapHasErrors(errorMapMap: ErrorMapMap): boolean;
+}
+
+declare module '@franleplant/reform/validators' {
+    import { Validator } from '@franleplant/reform/types';
+    const validatorInterface: {
+        get(key: string): Validator;
+        set(key: string, value: Validator): void;
+    };
+    export default validatorInterface;
 }
 
 declare module '@franleplant/reform/reactHelpers' {

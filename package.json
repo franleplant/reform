@@ -5,7 +5,8 @@
   "main": "./build/index.js",
   "types": "./build/src/@franleplant/reform.d.ts",
   "scripts": {
-    "build": "webpack",
+    "dts": "dts-bundle --name @franleplant/reform --main build/src/index.d.ts",
+    "build": "webpack && npm run dts",
     "start": "webpack --watch",
     "test": "jest --watch",
     "test:travis": "jest --coverage"
@@ -15,6 +16,7 @@
   "dependencies": {
     "@types/lodash": "4.14.40",
     "@types/node": "6.0.51",
+    "dts-bundle": "0.6.1",
     "jest": "17.0.3",
     "lodash": "4.3.0",
     "source-map-loader": "0.1.5",
