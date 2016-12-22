@@ -1,9 +1,6 @@
-
-
 export interface Validator {
   (value: string | number | any, ruleValue?: any): boolean;
 }
-
 
 export interface ValidatorMap {
   [ruleKey: string]: Validator;
@@ -19,4 +16,14 @@ export interface ErrorMap {
 
 export interface ErrorMapMap {
   [fieldName: string]: ErrorMap;
+}
+
+export interface ValidationAbleInstance {
+  state: {
+    fields: any;
+    errors: any;
+    formIsDirty?: boolean;
+  };
+
+  setState: any;
 }

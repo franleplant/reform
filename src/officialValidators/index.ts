@@ -1,12 +1,14 @@
-import { ValidatorMap } from '../types';
+import { ValidatorMap, Validator } from '../types';
 import { url } from './url'
 import { time } from './time'
 import { month } from './month'
 import { week } from './week'
 
 
+//import min from './min'
+//import max from './max'
 
-const isNumber = value => !Number.isFinite(parseFloat(value));
+const isNumber: Validator = value => !Number.isFinite(parseFloat(value));
 
 const validatorMap: ValidatorMap = {
   required: value => !value,
@@ -16,7 +18,7 @@ const validatorMap: ValidatorMap = {
   pattern: (value: string, pattern: string) => !(new RegExp(pattern)).test(value),
   number: isNumber,
   range: isNumber,
-  color: value => !/^#[0-9A-F]{6}$/.test(control.value),
+  color: value => !/^#[0-9A-F]{6}$/.test(value),
   date: value => Number.isNaN(Date.parse(value)),
   time,
   url,
@@ -24,8 +26,6 @@ const validatorMap: ValidatorMap = {
   week,
 }
 
-export default ValidatorMap;
+export default validatorMap;
 
 
-import min from './min'
-import max from './max'

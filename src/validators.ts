@@ -1,5 +1,5 @@
 import { Validator } from './types';
-import validatorMap from './validatorMap';
+import validatorMap from './officialValidators';
 
 const validatorInterface = {
   get(key: string): Validator {

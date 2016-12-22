@@ -1,7 +1,7 @@
 // Official docs https://www.w3.org/TR/html5/infrastructure.html#valid-month-string
 import { parseMonth } from '../utils';
 
-export const month = value => {
+export const month = (value: string) => {
   const [ year, month ] = parseMonth(value)
 
   if (!year || !month) {

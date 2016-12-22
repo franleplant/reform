@@ -3,7 +3,7 @@
 import { parseWeek, weeksInYear } from '../utils';
 
 // Example week: "2016-W33"
-export const week = value => {
+export const week = (value: string) => {
   const [year, week] = parseWeek(value);
 
   if (!year || !week) {

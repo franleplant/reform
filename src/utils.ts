@@ -1,9 +1,9 @@
 
 // Return undef if something went wrong
-export function parseMonth(value) {
-  let [ year, month ] = value.split("-");
-  year = parseInt(year, 10)
-  month = parseInt(month, 10)
+export function parseMonth(value: string): number[] {
+  const [ yearStr, monthStr ] = value.split("-");
+  const year = parseInt(yearStr, 10)
+  const month = parseInt(monthStr, 10)
 
   if (!Number.isFinite(year) || !Number.isFinite(month)) {
     return [];
@@ -14,27 +14,27 @@ export function parseMonth(value) {
 
 
 // Return undef if something went wrong
-export function parseWeek(value) {
-  let [ year, weekstr ] = value.split("-");
-  year = parseInt(year, 10)
+export function parseWeek(value: string): number[] {
+  let [ yearStr, weekStr ] = value.split("-");
+  const year = parseInt(yearStr, 10)
 
   // Error if weekstr is not defined
-  if (!weekstr) {
+  if (!weekStr) {
     return [];
   }
 
   // We remove the "W" from "W33"
-  let week = weekstr.slice(1)
-  week = parseInt(week, 10)
+  weekStr = weekStr.slice(1)
+  const week = parseInt(weekStr, 10)
 
   if (!Number.isFinite(year) || !Number.isFinite(week)) {
-    return
+    return [];
   }
 
   return [year, week]
 }
 
-export function weeksInYear(year) {
+export function weeksInYear(year: number): number {
   const d = new Date(year, 0, 1);
   const isLeap = new Date(year, 1, 29).getMonth() === 1;
 

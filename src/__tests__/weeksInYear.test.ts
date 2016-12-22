@@ -1,4 +1,4 @@
-import { weeksInYear, getWeekNumber } from './week';
+import { weeksInYear } from '../utils';
 
 
 
