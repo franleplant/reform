@@ -10,6 +10,8 @@ We have a separate [Repo for examples](https://github.com/franleplant/reform-exa
 that's versioned in the same sequence at this main repo, so working Examples for version `4.2.4` will be tagged
 by version `4.2.4` in reform-examples
 
+> **Important** I have been working with version 5, and it's a big departure from the current version. More details comming soon!
+
 ## Index
 
 - [Quick Start](#quick-start)
