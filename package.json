@@ -3,7 +3,7 @@
   "version": "5.0.0",
   "description": "",
   "main": "./build/index.js",
-  "types": "./build/src/index.d.ts",
+  "types": "./build/src/@franleplant/reform.d.ts",
   "scripts": {
     "build": "webpack",
     "start": "webpack --watch",
