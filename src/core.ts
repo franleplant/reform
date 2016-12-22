@@ -1,5 +1,4 @@
-// TODO use lodash.topairs and sort out ts nightmares
-import { toPairs } from 'lodash';
+import { toPairs } from './utils';
 import { ErrorMap, ErrorMapMap, Rules } from './types';
 import validatorInterface from './validators';
 
