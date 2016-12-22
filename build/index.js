@@ -46,10 +46,12 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var core = __webpack_require__(1);
-	var validators_1 = __webpack_require__(4);
-	var reactHelpers = __webpack_require__(11);
+	var types = __webpack_require__(1);
+	var core = __webpack_require__(2);
+	var validators_1 = __webpack_require__(5);
+	var reactHelpers = __webpack_require__(12);
 	var exposing = {
+	    types: types,
 	    core: core,
 	    reactHelpers: reactHelpers,
 	    validators: validators_1.default,
@@ -60,18 +62,20 @@ module.exports =
 
 /***/ },
 /* 1 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+
+/***/ },
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	// TODO use lodash.topairs and sort out ts nightmares
-	var lodash_1 = __webpack_require__(2);
-	var validators_1 = __webpack_require__(4);
+	var lodash_1 = __webpack_require__(3);
+	var validators_1 = __webpack_require__(5);
 	function validateRules(rules, value) {
-	    // Special case so when an input is missing, dont assert the rest of the rules
-	    // since it does not make sense
-	    if (value === '' && !rules['required']) {
-	        return {};
-	    }
 	    var errorMap = {};
 	    lodash_1.toPairs(rules).forEach(function (_a) {
 	        var ruleKey = _a[0], ruleValue = _a[1];
@@ -94,7 +98,7 @@ module.exports =
 
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -14829,10 +14833,10 @@ module.exports =
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module), (function() { return this; }())))
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -14848,11 +14852,11 @@ module.exports =
 
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var officialValidators_1 = __webpack_require__(5);
+	var officialValidators_1 = __webpack_require__(6);
 	var validatorInterface = {
 	    get: function (key) {
 	        var validator = officialValidators_1.default[key];
@@ -14873,14 +14877,14 @@ module.exports =
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var url_1 = __webpack_require__(6);
-	var time_1 = __webpack_require__(7);
-	var month_1 = __webpack_require__(8);
-	var week_1 = __webpack_require__(10);
+	var url_1 = __webpack_require__(7);
+	var time_1 = __webpack_require__(8);
+	var month_1 = __webpack_require__(9);
+	var week_1 = __webpack_require__(11);
 	//import min from './min'
 	//import max from './max'
 	var isNumber = function (value) { return !Number.isFinite(parseFloat(value)); };
@@ -14904,7 +14908,7 @@ module.exports =
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -14914,7 +14918,7 @@ module.exports =
 
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports) {
 
 	// Official docs https://www.w3.org/TR/html5/infrastructure.html#valid-date-string
@@ -14927,12 +14931,12 @@ module.exports =
 
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	// Official docs https://www.w3.org/TR/html5/infrastructure.html#valid-month-string
-	var utils_1 = __webpack_require__(9);
+	var utils_1 = __webpack_require__(10);
 	exports.month = function (value) {
 	    var _a = utils_1.parseMonth(value), year = _a[0], month = _a[1];
 	    if (!year || !month) {
@@ -14943,7 +14947,7 @@ module.exports =
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -14986,13 +14990,13 @@ module.exports =
 
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	// Official docs https://www.w3.org/TR/html5/infrastructure.html
 	// 2.4.5.8 Weeks
-	var utils_1 = __webpack_require__(9);
+	var utils_1 = __webpack_require__(10);
 	// Example week: "2016-W33"
 	exports.week = function (value) {
 	    var _a = utils_1.parseWeek(value), year = _a[0], week = _a[1];
@@ -15004,11 +15008,11 @@ module.exports =
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var core = __webpack_require__(1);
+	var core = __webpack_require__(2);
 	function validate(fieldName, rules) {
 	    var value = this.state.fields[fieldName];
 	    var errors = core.validateRules(rules, value);
