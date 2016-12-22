@@ -1,4 +1,15 @@
 
+export function toPairs(obj: any) {
+  const result: Array<any> = [];
+  for (const key in obj) {
+    if (!obj.hasOwnProperty(key)) continue;
+
+    result.push([key, obj[key]])
+  }
+
+  return result;
+}
+
 // Return undef if something went wrong
 export function parseMonth(value: string): number[] {
   const [ yearStr, monthStr ] = value.split("-");

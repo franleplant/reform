@@ -4,7 +4,9 @@ import { ErrorMap, ErrorMapMap, Rules } from './types';
 import validatorInterface from './validators';
 
 
-export function validateRules(rules: Rules, value: string | number): ErrorMap {
+// TODO, each single validator must solve the case of empty values
+// for example, email validator usually does not want to throw an error if that email is void
+export function validateRules(rules: Rules = {}, value: string | number): ErrorMap {
   const errorMap = {};
 
   toPairs(rules).forEach(([ruleKey, ruleValue]) => {

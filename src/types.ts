@@ -19,9 +19,11 @@ export interface ErrorMapMap {
 }
 
 export interface ValidationAbleInstance {
+  validationRules: Rules;
+
   state: {
-    fields: any;
-    errors: any;
+    fields: { [fieldName: string]: any};
+    errors: { [fieldName: string]: any};
     formIsDirty?: boolean;
   };
 

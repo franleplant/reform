@@ -79,7 +79,10 @@ module.exports =
 	// TODO use lodash.topairs and sort out ts nightmares
 	var lodash_1 = __webpack_require__(3);
 	var validators_1 = __webpack_require__(5);
+	// TODO, each single validator must solve the case of empty values
+	// for example, email validator usually does not want to throw an error if that email is void
 	function validateRules(rules, value) {
+	    if (rules === void 0) { rules = {}; }
 	    var errorMap = {};
 	    lodash_1.toPairs(rules).forEach(function (_a) {
 	        var ruleKey = _a[0], ruleValue = _a[1];
@@ -14955,6 +14958,16 @@ module.exports =
 /***/ function(module, exports) {
 
 	"use strict";
+	function toPairs(obj) {
+	    var result = [];
+	    for (var key in obj) {
+	        if (!obj.hasOwnProperty(key))
+	            continue;
+	        result.push([key, obj[key]]);
+	    }
+	    return result;
+	}
+	exports.toPairs = toPairs;
 	// Return undef if something went wrong
 	function parseMonth(value) {
 	    var _a = value.split("-"), yearStr = _a[0], monthStr = _a[1];
@@ -15017,8 +15030,10 @@ module.exports =
 
 	"use strict";
 	var core = __webpack_require__(2);
-	function validate(fieldName, rules) {
-	    var value = this.state.fields[fieldName];
+	var utils_1 = __webpack_require__(10);
+	function validate(fieldName, value) {
+	    //TODO check validationRules exist , if not throw an error for javascripters
+	    var rules = this.validationRules[fieldName];
 	    var errors = core.validateRules(rules, value);
 	    this.setState(function (state) {
 	        state.formIsDirty = true;
@@ -15039,7 +15054,15 @@ module.exports =
 	}
 	exports.fieldHasErrors = fieldHasErrors;
 	function formHasErrors() {
-	    return core.mapMapHasErrors(this.state.errors);
+	    var _this = this;
+	    return utils_1.toPairs(this.state.fields)
+	        .map(function (_a) {
+	        var fieldName = _a[0], fieldValue = _a[1];
+	        var rules = _this.validationRules[fieldName];
+	        var errors = core.validateRules(rules, fieldValue);
+	        return core.mapHasErrors(errors);
+	    })
+	        .some(Boolean);
 	}
 	exports.formHasErrors = formHasErrors;
 
