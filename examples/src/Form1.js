@@ -48,7 +48,7 @@ export default class Form1 extends Component {
       <form>
         <div>
           <input type="email" value={this.state.fields.email} onChange={this.onChangeFactory('email')} />
-          <p>{JSON.stringify(this.state.errors.email)}</p>
+          <span>{JSON.stringify(this.state.errors.email)}</span>
           <ul>
             {
               this.getFieldErrors('email').map(([ruleKey, ruleArg], index) => {
@@ -62,7 +62,7 @@ export default class Form1 extends Component {
 
         <div>
           <input type="password" value={this.state.fields.password} onChange={this.onChangeFactory('password')} />
-          <p>{JSON.stringify(this.state.errors.password)}</p>
+          <span>{JSON.stringify(this.state.errors.password)}</span>
           <ul>
             {
               this.getFieldErrors('password').map(([ruleKey, ruleArg], index) => {
@@ -76,7 +76,24 @@ export default class Form1 extends Component {
 
         <div>
           <input type="password" value={this.state.fields.confirmPassword} onChange={this.onChangeFactory('confirmPassword')} />
-          <p>{JSON.stringify(this.state.errors.confirmPassword)}</p>
+          <span>{JSON.stringify(this.state.errors.confirmPassword)}</span>
+          <ul>
+            {
+              this.getFieldErrors('confirmPassword').map(([ruleKey, ruleArg], index) => {
+                let message;
+
+                if (ruleKey === 'mustMatch') {
+                  message = 'passwords must match';
+                } else {
+                   message = this.validationMessages[ruleKey](ruleArg);
+                }
+
+                return (
+                  <li key={index}>{message}</li>
+                );
+              })
+            }
+          </ul>
         </div>
         <button disabled={this.formHasErrors()}>Submit</button>
       </form>
