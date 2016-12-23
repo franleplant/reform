@@ -25,6 +25,14 @@ export function fieldHasErrors(this: ValidationAbleInstance, fieldName: string):
   return core.mapHasErrors(this.state.errors[fieldName]);
 }
 
+export function getFieldErrors(this: ValidationAbleInstance, fieldName: string) {
+  return toPairs(this.state.errors[fieldName])
+    .filter(([, value]) => Boolean(value))
+    .map(([ruleKey]) => {
+      return [ruleKey, this.validationRules[fieldName][ruleKey]];
+    })
+}
+
 
 export function formHasErrors(this: ValidationAbleInstance): boolean {
   return toPairs(this.state.fields)

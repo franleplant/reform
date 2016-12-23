@@ -139,6 +139,7 @@ module.exports =
 	var time_1 = __webpack_require__(8);
 	var month_1 = __webpack_require__(9);
 	var week_1 = __webpack_require__(11);
+	//TODO
 	//import min from './min'
 	//import max from './max'
 	var isNumber = function (value) { return !Number.isFinite(parseFloat(value)); };
@@ -300,6 +301,19 @@ module.exports =
 	    return core.mapHasErrors(this.state.errors[fieldName]);
 	}
 	exports.fieldHasErrors = fieldHasErrors;
+	function getFieldErrors(fieldName) {
+	    var _this = this;
+	    return utils_1.toPairs(this.state.errors[fieldName])
+	        .filter(function (_a) {
+	        var value = _a[1];
+	        return Boolean(value);
+	    })
+	        .map(function (_a) {
+	        var ruleKey = _a[0];
+	        return [ruleKey, _this.validationRules[fieldName][ruleKey]];
+	    });
+	}
+	exports.getFieldErrors = getFieldErrors;
 	function formHasErrors() {
 	    var _this = this;
 	    return utils_1.toPairs(this.state.fields)
