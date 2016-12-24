@@ -69,6 +69,7 @@ module.exports =
 /***/ function(module, exports) {
 
 	"use strict";
+	;
 
 
 /***/ },
@@ -101,6 +102,17 @@ module.exports =
 	    return Object.values(errorMapMap).some(mapHasErrors);
 	}
 	exports.mapMapHasErrors = mapMapHasErrors;
+	function formHasErrors(fields, rulesMap) {
+	    return utils_1.toPairs(fields)
+	        .map(function (_a) {
+	        var fieldName = _a[0], fieldValue = _a[1];
+	        var rules = rulesMap[fieldName];
+	        var errors = validateRules(rules, fieldValue);
+	        return mapHasErrors(errors);
+	    })
+	        .some(Boolean);
+	}
+	exports.formHasErrors = formHasErrors;
 
 
 /***/ },
@@ -142,17 +154,17 @@ module.exports =
 	//TODO
 	//import min from './min'
 	//import max from './max'
-	var isNumber = function (value) { return !Number.isFinite(parseFloat(value)); };
+	var isNumber = function (value) { return (!!value || value === 0) && !Number.isFinite(parseFloat(value)); };
 	var validatorMap = {
 	    required: function (value) { return !value; },
-	    email: function (value) { return !/\S+@\S+\.\S+/.test(value); },
-	    minLength: function (value, minLength) { return value.length < minLength; },
-	    maxLength: function (value, maxLength) { return value.length > maxLength; },
-	    pattern: function (value, pattern) { return !(new RegExp(pattern)).test(value); },
+	    email: function (value) { return !!value && !/\S+@\S+\.\S+/.test(value); },
+	    minLength: function (value, minLength) { return !!value && value.length < minLength; },
+	    maxLength: function (value, maxLength) { return !!value && value.length > maxLength; },
+	    pattern: function (value, re) { return !!value && !re.test(value); },
 	    number: isNumber,
 	    range: isNumber,
-	    color: function (value) { return !/^#[0-9A-F]{6}$/.test(value); },
-	    date: function (value) { return Number.isNaN(Date.parse(value)); },
+	    color: function (value) { return !!value && !/^#[0-9A-F]{6}$/.test(value); },
+	    date: function (value) { return !!value && Number.isNaN(Date.parse(value)); },
 	    time: time_1.time,
 	    url: url_1.url,
 	    month: month_1.month,
@@ -167,9 +179,9 @@ module.exports =
 /***/ function(module, exports) {
 
 	"use strict";
-	var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+	var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/i;
 	var re = new RegExp(expression);
-	exports.url = function (value) { return !re.test(value); };
+	exports.url = function (value) { return !!value && !re.test(value); };
 
 
 /***/ },
@@ -182,7 +194,7 @@ module.exports =
 	// Hack to make parsing times easier
 	// TODO: review this
 	var BASE_DATE = "1970-01-01";
-	exports.time = function (value) { return Number.isNaN(Date.parse(BASE_DATE + ' ' + value)); };
+	exports.time = function (value) { return !!value && Number.isNaN(Date.parse(BASE_DATE + ' ' + value)); };
 
 
 /***/ },
@@ -193,6 +205,9 @@ module.exports =
 	// Official docs https://www.w3.org/TR/html5/infrastructure.html#valid-month-string
 	var utils_1 = __webpack_require__(10);
 	exports.month = function (value) {
+	    if (!value) {
+	        return false;
+	    }
 	    var _a = utils_1.parseMonth(value), year = _a[0], month = _a[1];
 	    if (!year || !month) {
 	        return true;
@@ -264,6 +279,9 @@ module.exports =
 	var utils_1 = __webpack_require__(10);
 	// Example week: "2016-W33"
 	exports.week = function (value) {
+	    if (!value) {
+	        return false;
+	    }
 	    var _a = utils_1.parseWeek(value), year = _a[0], week = _a[1];
 	    if (!year || !week) {
 	        return true;
@@ -279,8 +297,29 @@ module.exports =
 	"use strict";
 	var core = __webpack_require__(2);
 	var utils_1 = __webpack_require__(10);
+	// Useful function for javascript land
+	// TODO: do not use it in prod? Check performance
+	function checkInstance(instance) {
+	    if (!instance.hasOwnProperty('validationRules')) {
+	        console.error("Reform: instance does not have validationRules attribute", instance);
+	        throw new Error("Reform: instance.validationRules not found");
+	    }
+	    if (!instance.hasOwnProperty('state')) {
+	        console.error("Reform: instance does not have state attribute", instance);
+	        throw new Error("Reform: instance.state not found");
+	    }
+	    if (!instance.state.hasOwnProperty('fields')) {
+	        console.error("Reform: instance does not have state.fields attribute", instance);
+	        throw new Error("Reform: instance.state.fields not found");
+	    }
+	    if (!instance.state.hasOwnProperty('errors')) {
+	        console.error("Reform: instance does not have state.errors attribute", instance);
+	        throw new Error("Reform: instance.state.errors not found");
+	    }
+	}
+	// onlyone that modifies the state
 	function validate(fieldName, value) {
-	    //TODO check validationRules exist , if not throw an error for javascripters
+	    checkInstance(this);
 	    var rules = this.validationRules[fieldName];
 	    var errors = core.validateRules(rules, value);
 	    this.setState(function (state) {
@@ -290,6 +329,12 @@ module.exports =
 	    });
 	}
 	exports.validate = validate;
+	// onlyone that modifies the state
+	function validateFromState(fieldName) {
+	    var value = this.state.fields[fieldName];
+	    validate.call(this, fieldName, value);
+	}
+	exports.validateFromState = validateFromState;
 	function fieldIfError(fieldName, errorKey) {
 	    if (this.state.errors[fieldName] && this.state.errors[fieldName][errorKey]) {
 	        return true;
@@ -297,10 +342,20 @@ module.exports =
 	    return false;
 	}
 	exports.fieldIfError = fieldIfError;
+	// This function will only use the already calculated errors, useful
+	// for not displaying the fields as invalid when the form is untouched
 	function fieldHasErrors(fieldName) {
 	    return core.mapHasErrors(this.state.errors[fieldName]);
 	}
 	exports.fieldHasErrors = fieldHasErrors;
+	function formHasErrors() {
+	    checkInstance(this);
+	    var fields = this.state.fields;
+	    var rules = this.validationRules;
+	    return core.formHasErrors(fields, rules);
+	}
+	exports.formHasErrors = formHasErrors;
+	// @Unstable
 	function getFieldErrors(fieldName) {
 	    var _this = this;
 	    return utils_1.toPairs(this.state.errors[fieldName])
@@ -314,18 +369,6 @@ module.exports =
 	    });
 	}
 	exports.getFieldErrors = getFieldErrors;
-	function formHasErrors() {
-	    var _this = this;
-	    return utils_1.toPairs(this.state.fields)
-	        .map(function (_a) {
-	        var fieldName = _a[0], fieldValue = _a[1];
-	        var rules = _this.validationRules[fieldName];
-	        var errors = core.validateRules(rules, fieldValue);
-	        return core.mapHasErrors(errors);
-	    })
-	        .some(Boolean);
-	}
-	exports.formHasErrors = formHasErrors;
 
 
 /***/ }

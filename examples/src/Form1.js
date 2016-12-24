@@ -4,6 +4,7 @@ import Reform from '../../build/index.js';
 export default class Form1 extends Component {
   state = {
     fields: {
+      name: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -13,6 +14,7 @@ export default class Form1 extends Component {
   }
 
   validationRules = {
+    name: { required: true, minLength: 2},
     email: { email: true, required: true},
     password: { required: true, minLength: 6},
     confirmPassword: {
@@ -30,6 +32,8 @@ export default class Form1 extends Component {
   validate = Reform.reactHelpers.validate;
   formHasErrors = Reform.reactHelpers.formHasErrors;
   getFieldErrors = Reform.reactHelpers.getFieldErrors;
+  fieldIfError = Reform.reactHelpers.fieldIfError;
+  fieldHasErrors = Reform.reactHelpers.fieldHasErrors;
 
   onChangeFactory = (fieldName) => {
     return event => {
@@ -47,8 +51,18 @@ export default class Form1 extends Component {
     return (
       <form>
         <div>
+          <p>Validate and if field is invalid the border will be red and an single error message displayed</p>
+          <input type="text" value={this.state.fields.name} onChange={this.onChangeFactory('name')}
+            style={{
+              border: this.fieldHasErrors('name') ? '2px solid red' : undefined,
+            }}
+          />
+          <p>{ this.fieldHasErrors('name') && `Incorrect field! Please do it right` } </p>
+        </div>
+
+        <div>
+          <p>Validate and display one error per failed rule with array helper</p>
           <input type="email" value={this.state.fields.email} onChange={this.onChangeFactory('email')} />
-          <span>{JSON.stringify(this.state.errors.email)}</span>
           <ul>
             {
               this.getFieldErrors('email').map(([ruleKey, ruleArg], index) => {
@@ -61,22 +75,22 @@ export default class Form1 extends Component {
         </div>
 
         <div>
+          <p>Validate and display one error per failed rule with conditional helper</p>
           <input type="password" value={this.state.fields.password} onChange={this.onChangeFactory('password')} />
-          <span>{JSON.stringify(this.state.errors.password)}</span>
           <ul>
-            {
-              this.getFieldErrors('password').map(([ruleKey, ruleArg], index) => {
-                return (
-                  <li key={index}>{this.validationMessages[ruleKey](ruleArg)}</li>
-                );
-              })
+            { this.fieldIfError('password', 'required') &&
+              <li>Password is required</li>
+            }
+
+            { this.fieldIfError('password', 'minLength') &&
+              <li>Password must be at least 6 characters long</li>
             }
           </ul>
         </div>
 
         <div>
+          <p>Validate and display one error per failed rule with array helper with special case</p>
           <input type="password" value={this.state.fields.confirmPassword} onChange={this.onChangeFactory('confirmPassword')} />
-          <span>{JSON.stringify(this.state.errors.confirmPassword)}</span>
           <ul>
             {
               this.getFieldErrors('confirmPassword').map(([ruleKey, ruleArg], index) => {

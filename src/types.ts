@@ -10,6 +10,10 @@ export interface Rules {
   [ruleKey: string]: boolean | string | Validator | any;
 }
 
+export interface RulesMap {
+  [fieldName: string]: Rules;
+}
+
 export interface ErrorMap {
   [ruleKey: string]: boolean;
 }
@@ -18,11 +22,13 @@ export interface ErrorMapMap {
   [fieldName: string]: ErrorMap;
 }
 
+export interface Fields { [fieldName: string]: any};
+
 export interface ValidationAbleInstance {
-  validationRules: Rules;
+  validationRules: RulesMap;
 
   state: {
-    fields: { [fieldName: string]: any};
+    fields: Fields;
     errors: { [fieldName: string]: any};
     formIsDirty?: boolean;
   };

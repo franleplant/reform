@@ -1,5 +1,5 @@
 import { toPairs } from './utils';
-import { ErrorMap, ErrorMapMap, Rules } from './types';
+import { Fields, ErrorMap, ErrorMapMap, Rules, RulesMap } from './types';
 import validatorInterface from './validators';
 
 
@@ -23,4 +23,14 @@ export function mapHasErrors(errorMap: ErrorMap = {}): boolean {
 
 export function mapMapHasErrors(errorMapMap: ErrorMapMap): boolean {
   return (Object as any).values(errorMapMap).some(mapHasErrors);
+}
+
+export function formHasErrors(fields: Fields, rulesMap: RulesMap): boolean {
+  return toPairs(fields)
+    .map(([fieldName, fieldValue]) => {
+      const rules = rulesMap[fieldName];
+      const errors = validateRules(rules, fieldValue);
+      return mapHasErrors(errors)
+    })
+    .some(Boolean);
 }

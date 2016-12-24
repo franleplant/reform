@@ -4,6 +4,9 @@ import { parseWeek, weeksInYear } from '../utils';
 
 // Example week: "2016-W33"
 export const week = (value: string) => {
+  if (!value) {
+    return false;
+  }
   const [year, week] = parseWeek(value);
 
   if (!year || !week) {

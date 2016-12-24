@@ -4,4 +4,4 @@
 // Hack to make parsing times easier
 // TODO: review this
 const BASE_DATE = "1970-01-01"
-export const time = (value: string) => Number.isNaN(Date.parse(BASE_DATE + ' ' + value));
+export const time = (value: string) => !!value && Number.isNaN(Date.parse(BASE_DATE + ' ' + value));

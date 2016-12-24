@@ -2,6 +2,9 @@
 import { parseMonth } from '../utils';
 
 export const month = (value: string) => {
+  if (!value) {
+    return false;
+  }
   const [ year, month ] = parseMonth(value)
 
   if (!year || !month) {
