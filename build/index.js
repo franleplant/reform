@@ -91,17 +91,6 @@ module.exports =
 	    return fieldErrors;
 	}
 	exports.validateField = validateField;
-	function validateForm(fieldsValues, rulesMap) {
-	    if (rulesMap === void 0) { rulesMap = {}; }
-	    var formErrors = {};
-	    for (var fieldName in fieldsValues) {
-	        var fieldValue = fieldsValues[fieldName];
-	        var fieldRules = rulesMap[fieldName];
-	        formErrors[fieldName] = validateField(fieldValue, fieldRules);
-	    }
-	    return formErrors;
-	}
-	exports.validateForm = validateForm;
 	function fieldIsValid() {
 	    var args = [];
 	    for (var _i = 0; _i < arguments.length; _i++) {
@@ -126,6 +115,17 @@ module.exports =
 	    var _a;
 	}
 	exports.fieldIsValid = fieldIsValid;
+	function validateForm(fieldsValues, rulesMap) {
+	    if (rulesMap === void 0) { rulesMap = {}; }
+	    var formErrors = {};
+	    for (var fieldName in fieldsValues) {
+	        var fieldValue = fieldsValues[fieldName];
+	        var fieldRules = rulesMap[fieldName];
+	        formErrors[fieldName] = validateField(fieldValue, fieldRules);
+	    }
+	    return formErrors;
+	}
+	exports.validateForm = validateForm;
 	function formIsValid() {
 	    var args = [];
 	    for (var _i = 0; _i < arguments.length; _i++) {

@@ -17,17 +17,6 @@ export function validateField(value: string | number, rules: Rules = {}): FieldE
   return fieldErrors;
 }
 
-export function validateForm(fieldsValues: Fields, rulesMap: RulesMap = {}): FormErrors {
-  const formErrors = {}
-
-  for (const fieldName in fieldsValues) {
-    const fieldValue = fieldsValues[fieldName];
-    const fieldRules = rulesMap[fieldName];
-    formErrors[fieldName] = validateField(fieldValue, fieldRules);
-  }
-
-  return formErrors;
-}
 
 
 export function fieldIsValid(value: string | number, rules: Rules) : boolean;
@@ -51,6 +40,18 @@ export function fieldIsValid(...args: Array<any>): any {
   }
 
   return result;
+}
+
+export function validateForm(fieldsValues: Fields, rulesMap: RulesMap = {}): FormErrors {
+  const formErrors = {}
+
+  for (const fieldName in fieldsValues) {
+    const fieldValue = fieldsValues[fieldName];
+    const fieldRules = rulesMap[fieldName];
+    formErrors[fieldName] = validateField(fieldValue, fieldRules);
+  }
+
+  return formErrors;
 }
 
 export function formIsValid(fieldsValues: Fields, rulesMap: RulesMap): boolean;

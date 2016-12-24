@@ -1,9 +1,9 @@
-import validatorMap from './index';
+import validators from '../validators';
 
 
 
 describe('required', () => {
-  const validator = validatorMap.required;
+  const validator = validators.get('required')
   it(`should work!`, () => {
     expect(validator("")).toBe(true);
     expect(validator("hello")).toBe(false);
@@ -12,7 +12,7 @@ describe('required', () => {
 });
 
 describe('email', () => {
-  const validator = validatorMap.email;
+  const validator = validators.get('email');
   it(`should work!`, () => {
     expect(validator("hellow")).toBe(true);
     expect(validator("hello@gmail.com")).toBe(false);
@@ -30,7 +30,7 @@ describe('email', () => {
 });
 
 describe('url', () => {
-  const validator = validatorMap.url;
+  const validator = validators.get('url')
   it(`should work!`, () => {
     expect(validator("hellow")).toBe(true);
     expect(validator("google")).toBe(true);
@@ -54,7 +54,7 @@ describe('url', () => {
 });
 
 describe('minLength', () => {
-  const validator = validatorMap.minLength;
+  const validator = validators.get('minLength')
   it(`should work!`, () => {
     expect(validator("12", 5)).toBe(true);
     expect(validator("12345")).toBe(false);
@@ -72,7 +72,7 @@ describe('minLength', () => {
 });
 
 describe('maxLength', () => {
-  const validator = validatorMap.maxLength;
+  const validator = validators.get('maxLength')
   it(`should work!`, () => {
     expect(validator("123456", 5)).toBe(true);
     expect(validator("12345")).toBe(false);
@@ -90,7 +90,7 @@ describe('maxLength', () => {
 });
 
 describe('pattern', () => {
-  const validator = validatorMap.pattern;
+  const validator = validators.get('pattern')
   const re = /banana|apple/
   it(`should work!`, () => {
     expect(validator("nothing", re)).toBe(true);
@@ -110,7 +110,7 @@ describe('pattern', () => {
 });
 
 describe('number', () => {
-  const validator = validatorMap.number;
+  const validator = validators.get('number')
   it(`should work!`, () => {
     expect(validator("not")).toBe(true);
     expect(validator("1")).toBe(false);
@@ -129,7 +129,7 @@ describe('number', () => {
 });
 
 describe('range', () => {
-  const validator = validatorMap.range;
+  const validator = validators.get('range')
   it(`should work!`, () => {
     expect(validator("not")).toBe(true);
     expect(validator("1")).toBe(false);
@@ -148,7 +148,7 @@ describe('range', () => {
 });
 
 describe('color', () => {
-  const validator = validatorMap.color;
+  const validator = validators.get('color')
   it(`should work!`, () => {
     expect(validator("not")).toBe(true);
     expect(validator("#GGGGGG")).toBe(true);
@@ -168,7 +168,7 @@ describe('color', () => {
 });
 
 describe('date', () => {
-  const validator = validatorMap.date;
+  const validator = validators.get('date')
   it(`should work!`, () => {
     expect(validator("not")).toBe(true);
     expect(validator("2016-13-56")).toBe(true);
@@ -190,7 +190,7 @@ describe('date', () => {
 
 
 describe('time', () => {
-  const validator = validatorMap.time;
+  const validator = validators.get('time')
   it(`should work!`, () => {
     expect(validator("not")).toBe(true);
     expect(validator("42:99")).toBe(true);
@@ -210,7 +210,7 @@ describe('time', () => {
 });
 
 describe('month', () => {
-  const validator = validatorMap.month;
+  const validator = validators.get('month')
   it(`should work!`, () => {
     expect(validator("not")).toBe(true);
     expect(validator("2016-53")).toBe(true);
@@ -233,7 +233,7 @@ describe('month', () => {
 });
 
 describe('week', () => {
-  const validator = validatorMap.week;
+  const validator = validators.get('week')
   it(`should work!`, () => {
     expect(validator("not")).toBe(true);
     expect(validator("2016-W00")).toBe(true);
