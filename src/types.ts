@@ -14,12 +14,12 @@ export interface RulesMap {
   [fieldName: string]: Rules;
 }
 
-export interface ErrorMap {
+export interface FieldErrors {
   [ruleKey: string]: boolean;
 }
 
-export interface ErrorMapMap {
-  [fieldName: string]: ErrorMap;
+export interface FormErrors {
+  [fieldName: string]: FieldErrors;
 }
 
 export interface Fields { [fieldName: string]: any};
@@ -29,7 +29,7 @@ export interface ValidationAbleInstance {
 
   state: {
     fields: Fields;
-    errors: { [fieldName: string]: any};
+    errors: FormErrors;
     formIsDirty?: boolean;
   };
 

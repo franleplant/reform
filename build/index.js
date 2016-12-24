@@ -77,42 +77,79 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var utils_1 = __webpack_require__(10);
 	var validators_1 = __webpack_require__(5);
-	// TODO, each single validator must solve the case of empty values
-	// for example, email validator usually does not want to throw an error if that email is void
-	function validateRules(rules, value) {
+	//TDO freeze
+	var EMPTY_OBJECT = {};
+	function validateField(value, rules) {
 	    if (rules === void 0) { rules = {}; }
-	    var errorMap = {};
-	    utils_1.toPairs(rules).forEach(function (_a) {
-	        var ruleKey = _a[0], ruleValue = _a[1];
+	    var fieldErrors = {};
+	    for (var ruleKey in rules) {
+	        var ruleValue = rules[ruleKey];
 	        var validator = typeof ruleValue === 'function' ? ruleValue : validators_1.default.get(ruleKey);
-	        var errorState = validator(value, ruleValue);
-	        errorMap[ruleKey] = errorState;
-	    });
-	    return errorMap;
+	        fieldErrors[ruleKey] = validator(value, ruleValue);
+	    }
+	    return fieldErrors;
 	}
-	exports.validateRules = validateRules;
-	function mapHasErrors(errorMap) {
-	    if (errorMap === void 0) { errorMap = {}; }
-	    return Object.values(errorMap).some(Boolean);
+	exports.validateField = validateField;
+	function validateForm(fieldsValues, rulesMap) {
+	    if (rulesMap === void 0) { rulesMap = {}; }
+	    var formErrors = {};
+	    for (var fieldName in fieldsValues) {
+	        var fieldValue = fieldsValues[fieldName];
+	        var fieldRules = rulesMap[fieldName];
+	        formErrors[fieldName] = validateField(fieldValue, fieldRules);
+	    }
+	    return formErrors;
 	}
-	exports.mapHasErrors = mapHasErrors;
-	function mapMapHasErrors(errorMapMap) {
-	    return Object.values(errorMapMap).some(mapHasErrors);
+	exports.validateForm = validateForm;
+	function fieldIsValid() {
+	    var args = [];
+	    for (var _i = 0; _i < arguments.length; _i++) {
+	        args[_i - 0] = arguments[_i];
+	    }
+	    var fieldErrors;
+	    if (args.length === 1) {
+	        _a = args[0], fieldErrors = _a === void 0 ? EMPTY_OBJECT : _a;
+	    }
+	    else {
+	        var value = args[0], _b = args[1], rules = _b === void 0 ? EMPTY_OBJECT : _b;
+	        fieldErrors = validateField(value, rules);
+	    }
+	    var result = true;
+	    for (var errorKey in fieldErrors) {
+	        var errorResult = fieldErrors[errorKey];
+	        if (errorResult) {
+	            return false;
+	        }
+	    }
+	    return result;
+	    var _a;
 	}
-	exports.mapMapHasErrors = mapMapHasErrors;
-	function formHasErrors(fields, rulesMap) {
-	    return utils_1.toPairs(fields)
-	        .map(function (_a) {
-	        var fieldName = _a[0], fieldValue = _a[1];
-	        var rules = rulesMap[fieldName];
-	        var errors = validateRules(rules, fieldValue);
-	        return mapHasErrors(errors);
-	    })
-	        .some(Boolean);
+	exports.fieldIsValid = fieldIsValid;
+	function formIsValid() {
+	    var args = [];
+	    for (var _i = 0; _i < arguments.length; _i++) {
+	        args[_i - 0] = arguments[_i];
+	    }
+	    var formErrors;
+	    if (args.length === 1) {
+	        _a = args[0], formErrors = _a === void 0 ? EMPTY_OBJECT : _a;
+	    }
+	    else {
+	        var fieldsValues = args[0], _b = args[1], rulesMap = _b === void 0 ? EMPTY_OBJECT : _b;
+	        formErrors = validateForm(fieldsValues, rulesMap);
+	    }
+	    var result = true;
+	    for (var fieldName in formErrors) {
+	        var fieldErrors = formErrors[fieldName];
+	        if (!fieldIsValid(fieldErrors)) {
+	            return false;
+	        }
+	    }
+	    return result;
+	    var _a;
 	}
-	exports.formHasErrors = formHasErrors;
+	exports.formIsValid = formIsValid;
 
 
 /***/ },
@@ -317,44 +354,59 @@ module.exports =
 	        throw new Error("Reform: instance.state.errors not found");
 	    }
 	}
-	// onlyone that modifies the state
-	function validate(fieldName, value) {
+	// Modified state
+	function validateField(fieldName, value) {
 	    checkInstance(this);
 	    var rules = this.validationRules[fieldName];
-	    var errors = core.validateRules(rules, value);
+	    var fieldErrors = core.validateField(value, rules);
 	    this.setState(function (state) {
 	        state.formIsDirty = true;
-	        state.errors[fieldName] = errors;
+	        state.errors[fieldName] = fieldErrors;
 	        return state;
 	    });
 	}
-	exports.validate = validate;
-	// onlyone that modifies the state
-	function validateFromState(fieldName) {
+	exports.validateField = validateField;
+	// Modified state
+	function validateFieldFromState(fieldName) {
 	    var value = this.state.fields[fieldName];
-	    validate.call(this, fieldName, value);
+	    validateField.call(this, fieldName, value);
 	}
-	exports.validateFromState = validateFromState;
-	function fieldIfError(fieldName, errorKey) {
-	    if (this.state.errors[fieldName] && this.state.errors[fieldName][errorKey]) {
-	        return true;
-	    }
-	    return false;
+	exports.validateFieldFromState = validateFieldFromState;
+	// Modified state
+	function validateForm(fieldsValues) {
+	    checkInstance(this);
+	    var rulesMap = this.validationRules;
+	    var formErrors = core.validateForm(fieldsValues, rulesMap);
+	    this.setState(function (state) {
+	        state.formIsDirty = true;
+	        state.errors = formErrors;
+	        return state;
+	    });
 	}
-	exports.fieldIfError = fieldIfError;
-	// This function will only use the already calculated errors, useful
-	// for not displaying the fields as invalid when the form is untouched
-	function fieldHasErrors(fieldName) {
-	    return core.mapHasErrors(this.state.errors[fieldName]);
+	exports.validateForm = validateForm;
+	// Modified state
+	function validateFormFromState() {
+	    var values = this.state.fields;
+	    validateForm.call(this, values);
 	}
-	exports.fieldHasErrors = fieldHasErrors;
-	function formHasErrors() {
+	exports.validateFormFromState = validateFormFromState;
+	// Important! This function will evaluate field validity based on the already
+	// calculated errors inside this.state.errors
+	// The naming is kind of contribed. This function only checks that there are no errors
+	// for the given field in this.state.errors
+	// while formIsValid calculated the validity of the form
+	function fieldIsValid(fieldName) {
+	    return core.fieldIsValid(this.state.errors[fieldName]);
+	}
+	exports.fieldIsValid = fieldIsValid;
+	// Calculates the validity of the form
+	function formIsValid() {
 	    checkInstance(this);
 	    var fields = this.state.fields;
 	    var rules = this.validationRules;
-	    return core.formHasErrors(fields, rules);
+	    return core.formIsValid(fields, rules);
 	}
-	exports.formHasErrors = formHasErrors;
+	exports.formIsValid = formIsValid;
 	// @Unstable
 	function getFieldErrors(fieldName) {
 	    var _this = this;
@@ -369,6 +421,20 @@ module.exports =
 	    });
 	}
 	exports.getFieldErrors = getFieldErrors;
+	function fieldIfError(fieldName, errorKey) {
+	    checkInstance(this);
+	    if (!this.state.fields.hasOwnProperty(fieldName)) {
+	        throw new Error("Field " + fieldName + " not found! Did you forget to initialize it?");
+	    }
+	    if (!this.validationRules.hasOwnProperty(fieldName)) {
+	        throw new Error("Field Rules " + fieldName + " not found! Did you forget to initialize them?");
+	    }
+	    if (this.state.errors[fieldName] && this.state.errors[fieldName][errorKey]) {
+	        return true;
+	    }
+	    return false;
+	}
+	exports.fieldIfError = fieldIfError;
 
 
 /***/ }

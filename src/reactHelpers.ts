@@ -1,4 +1,4 @@
-import { ValidationAbleInstance } from './types'
+import { ValidationAbleInstance, Fields } from './types'
 import * as core from './core';
 import {toPairs} from './utils';
 
@@ -28,44 +28,59 @@ function checkInstance(instance: any) {
 
 }
 
-// onlyone that modifies the state
-export function validate(this: ValidationAbleInstance, fieldName: string, value: any) {
+// Modified state
+export function validateField(this: ValidationAbleInstance, fieldName: string, value: any) {
   checkInstance(this);
   const rules = this.validationRules[fieldName];
-  const errors = core.validateRules(rules, value);
+  const fieldErrors = core.validateField(value, rules);
   this.setState((state: any) => {
     state.formIsDirty = true;
-    state.errors[fieldName] = errors;
+    state.errors[fieldName] = fieldErrors;
     return state;
   });
 }
 
-// onlyone that modifies the state
-export function validateFromState(this: ValidationAbleInstance, fieldName: string) {
+// Modified state
+export function validateFieldFromState(this: ValidationAbleInstance, fieldName: string) {
   const value = this.state.fields[fieldName];
-  validate.call(this, fieldName, value)
+  validateField.call(this, fieldName, value)
 }
 
-export function fieldIfError(this: ValidationAbleInstance, fieldName: string, errorKey: string): boolean {
-  if (this.state.errors[fieldName] && this.state.errors[fieldName][errorKey]) {
-    return true
-  }
-
-  return false
+// Modified state
+export function validateForm(this: ValidationAbleInstance, fieldsValues: Fields) {
+  checkInstance(this);
+  const rulesMap = this.validationRules;
+  const formErrors = core.validateForm(fieldsValues, rulesMap);
+  this.setState((state: any) => {
+    state.formIsDirty = true;
+    state.errors = formErrors;
+    return state;
+  });
 }
 
-// This function will only use the already calculated errors, useful
-// for not displaying the fields as invalid when the form is untouched
-export function fieldHasErrors(this: ValidationAbleInstance, fieldName: string): boolean {
-  return core.mapHasErrors(this.state.errors[fieldName]);
+// Modified state
+export function validateFormFromState(this: ValidationAbleInstance) {
+  const values = this.state.fields;
+  validateForm.call(this, values)
 }
 
 
-export function formHasErrors(this: ValidationAbleInstance): boolean {
+// Important! This function will evaluate field validity based on the already
+// calculated errors inside this.state.errors
+// The naming is kind of contribed. This function only checks that there are no errors
+// for the given field in this.state.errors
+// while formIsValid calculated the validity of the form
+export function fieldIsValid(this: ValidationAbleInstance, fieldName: string): boolean {
+  return core.fieldIsValid(this.state.errors[fieldName]);
+}
+
+
+// Calculates the validity of the form
+export function formIsValid(this: ValidationAbleInstance): boolean {
   checkInstance(this);
   const fields = this.state.fields;
   const rules = this.validationRules;
-  return core.formHasErrors(fields, rules);
+  return core.formIsValid(fields, rules);
 }
 
 // @Unstable
@@ -75,4 +90,21 @@ export function getFieldErrors(this: ValidationAbleInstance, fieldName: string) 
     .map(([ruleKey]) => {
       return [ruleKey, this.validationRules[fieldName][ruleKey]];
     })
+}
+
+export function fieldIfError(this: ValidationAbleInstance, fieldName: string, errorKey: string): boolean {
+  checkInstance(this);
+  if (!this.state.fields.hasOwnProperty(fieldName)) {
+    throw new Error(`Field ${fieldName} not found! Did you forget to initialize it?`)
+  }
+
+  if (!this.validationRules.hasOwnProperty(fieldName)) {
+    throw new Error(`Field Rules ${fieldName} not found! Did you forget to initialize them?`)
+  }
+
+  if (this.state.errors[fieldName] && this.state.errors[fieldName][errorKey]) {
+    return true
+  }
+
+  return false
 }

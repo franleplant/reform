@@ -29,11 +29,11 @@ export default class Form1 extends Component {
     minLength: minLength => `Field must be at least ${minLength} long`,
   }
 
-  validate = Reform.reactHelpers.validate;
-  formHasErrors = Reform.reactHelpers.formHasErrors;
+  validateField = Reform.reactHelpers.validateField;
+  formIsValid = Reform.reactHelpers.formIsValid;
   getFieldErrors = Reform.reactHelpers.getFieldErrors;
   fieldIfError = Reform.reactHelpers.fieldIfError;
-  fieldHasErrors = Reform.reactHelpers.fieldHasErrors;
+  fieldIsValid = Reform.reactHelpers.fieldIsValid;
 
   onChangeFactory = (fieldName) => {
     return event => {
@@ -42,7 +42,7 @@ export default class Form1 extends Component {
         state.fields[fieldName] = value;
         return state;
       });
-      this.validate(fieldName, value);
+      this.validateField(fieldName, value);
     }
   }
 
@@ -54,10 +54,10 @@ export default class Form1 extends Component {
           <p>Validate and if field is invalid the border will be red and an single error message displayed</p>
           <input type="text" value={this.state.fields.name} onChange={this.onChangeFactory('name')}
             style={{
-              border: this.fieldHasErrors('name') ? '2px solid red' : undefined,
+              border: !this.fieldIsValid('name') ? '2px solid red' : undefined,
             }}
           />
-          <p>{ this.fieldHasErrors('name') && `Incorrect field! Please do it right` } </p>
+          <p>{ !this.fieldIsValid('name') && `Incorrect field! Please do it right` } </p>
         </div>
 
         <div>
@@ -73,6 +73,7 @@ export default class Form1 extends Component {
             }
           </ul>
         </div>
+
 
         <div>
           <p>Validate and display one error per failed rule with conditional helper</p>
@@ -109,7 +110,7 @@ export default class Form1 extends Component {
             }
           </ul>
         </div>
-        <button disabled={this.formHasErrors()}>Submit</button>
+        <button disabled={!this.formIsValid()}>Submit</button>
       </form>
     );
   }

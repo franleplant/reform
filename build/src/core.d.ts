@@ -1,5 +1,7 @@
-import { Fields, ErrorMap, ErrorMapMap, Rules, RulesMap } from './types';
-export declare function validateRules(rules: Rules, value: string | number): ErrorMap;
-export declare function mapHasErrors(errorMap?: ErrorMap): boolean;
-export declare function mapMapHasErrors(errorMapMap: ErrorMapMap): boolean;
-export declare function formHasErrors(fields: Fields, rulesMap: RulesMap): boolean;
+import { Fields, FieldErrors, FormErrors, Rules, RulesMap } from './types';
+export declare function validateField(value: string | number, rules?: Rules): FieldErrors;
+export declare function validateForm(fieldsValues: Fields, rulesMap?: RulesMap): FormErrors;
+export declare function fieldIsValid(value: string | number, rules: Rules): boolean;
+export declare function fieldIsValid(fieldErrors: FieldErrors): boolean;
+export declare function formIsValid(fieldsValues: Fields, rulesMap: RulesMap): boolean;
+export declare function formIsValid(formErrors: FormErrors): boolean;
