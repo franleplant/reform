@@ -1,7 +1,4 @@
 language: node_js
-install:
-  - curl -o- -L https://yarnpkg.com/install.sh | bash
-  - yarn
 script: npm run build && npm run test:travis
 node_js:
     - "6"
