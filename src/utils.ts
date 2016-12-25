@@ -53,3 +53,9 @@ export function weeksInYear(year: number): number {
   // Wednesday jan 1. Otherwise year has 52 weeks.
   return d.getDay() === 4 || isLeap && d.getDay() === 3 ? 53 : 52
 }
+
+
+const baseDate = "1970-01-01"
+export function parseTime(time: string): number {
+  return Date.parse(`${baseDate} ${time}`);
+}

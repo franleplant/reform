@@ -9,11 +9,11 @@ import { minDate } from './minDate'
 import { maxDate } from './maxDate'
 import { minMonth } from './minMonth'
 import { maxMonth } from './maxMonth'
+import { minTime } from './minTime'
+import { maxTime } from './maxTime'
+import { minWeek } from './minWeek'
+import { maxWeek } from './maxWeek'
 
-
-//TODO
-//import min from './min'
-//import max from './max'
 
 const isNumber: Validator = value => (!!value || value === 0) && !Number.isFinite(parseFloat(value));
 
@@ -37,6 +37,10 @@ const validatorMap: ValidatorMap = {
   maxDate,
   minMonth,
   maxMonth,
+  minTime,
+  maxTime,
+  minWeek,
+  maxWeek,
 }
 
 export default validatorMap;

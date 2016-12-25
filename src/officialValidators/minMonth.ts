@@ -8,14 +8,13 @@ export const minMonth = (value: string, min: string) => {
   const [mYear, mMonth] = parseMonth(min);
 
   if (!mYear || !mMonth) {
-    throw new Error(`Reform minMonth should have a valid month as argument.`)
+    throw new Error(`Reform minMonth should have a valid month as argument. Found "${min}"`)
   }
 
   // Invalid week
   if (!vYear || !vMonth) {
-    return true
+    return false
   }
-
 
   let error = false;
 

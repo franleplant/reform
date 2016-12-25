@@ -5,11 +5,11 @@ export const minDate = (value: string, min: string) => {
   const valueDate = Date.parse(value)
 
   if (Number.isNaN(minDate)) {
-    throw new Error(`Reform minDate should have a valid date as argument.`);
+    throw new Error(`Reform minDate should have a valid date as argument. Found "${min}"`);
   }
 
   if (Number.isNaN(valueDate)) {
-    return true;
+    return false;
   }
 
   return valueDate < minDate;

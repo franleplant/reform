@@ -8,12 +8,12 @@ export const maxMonth = (value: string, max: string) => {
 
   // Invalid max
   if (!mYear || !mMonth) {
-    throw new Error(`Reform maxMonth should have a valid month as argument.`)
+    throw new Error(`Reform maxMonth should have a valid month as argument. Found ${max}`)
   }
 
   // Invalid week
   if (!vYear || !vMonth) {
-    return true
+    return false
   }
 
   let error = false;

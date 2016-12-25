@@ -261,3 +261,110 @@ describe('week', () => {
     expect(validator(undefined)).toBe(false);
   });
 });
+
+describe('minNumber', () => {
+  const validator = validators.get('minNumber')
+  it(`should work!`, () => {
+    expect(validator(1, 5)).toBe(true);
+    expect(validator("1", "5")).toBe(true);
+    expect(validator(5, 5)).toBe(false);
+    expect(validator("5", "5")).toBe(false);
+    expect(validator(6, 5)).toBe(false);
+    expect(validator("6", "5")).toBe(false);
+  });
+
+  it(`should not validate when no value`, () => {
+    expect(validator("", 5)).toBe(false);
+  });
+  it(`should not validate when value is null`, () => {
+    expect(validator(null, 5)).toBe(false);
+  });
+  it(`should not validate when value is undefined`, () => {
+    expect(validator(undefined, 5)).toBe(false);
+  });
+  it(`should not validate when value is malformed`, () => {
+    expect(validator("malformed", 5)).toBe(false);
+  });
+  it(`should not validate when argument is malformed`, () => {
+    expect(() => validator(1, "malformed")).toThrow();
+  });
+});
+
+describe('maxNumber', () => {
+  const validator = validators.get('maxNumber')
+  it(`should work!`, () => {
+    expect(validator(6, 5)).toBe(true);
+    expect(validator("6", "5")).toBe(true);
+    expect(validator(5, 5)).toBe(false);
+    expect(validator("5", "5")).toBe(false);
+    expect(validator(4, 5)).toBe(false);
+    expect(validator("4", "5")).toBe(false);
+  });
+
+  it(`should not validate when no value`, () => {
+    expect(validator("", 5)).toBe(false);
+  });
+  it(`should not validate when value is null`, () => {
+    expect(validator(null, 5)).toBe(false);
+  });
+  it(`should not validate when value is undefined`, () => {
+    expect(validator(undefined, 5)).toBe(false);
+  });
+  it(`should not validate when value is malformed`, () => {
+    expect(validator("malformed", 5)).toBe(false);
+  });
+  it(`should not validate when argument is malformed`, () => {
+    expect(() => validator(1, "malformed")).toThrow();
+  });
+});
+
+describe('minDate', () => {
+  const validator = validators.get('minDate')
+  it(`should work!`, () => {
+    expect(validator("2016-12-24", "2016-12-25")).toBe(true);
+    expect(validator("2016-12-25", "2016-12-25")).toBe(false);
+    expect(validator("2016-12-26", "2016-12-25")).toBe(false);
+  });
+
+  it(`should not validate when no value`, () => {
+    expect(validator("", "2016-12-25")).toBe(false);
+  });
+  it(`should not validate when value is null`, () => {
+    expect(validator(null, "2016-12-25")).toBe(false);
+  });
+  it(`should not validate when value is undefined`, () => {
+    expect(validator(undefined, "2016-12-25")).toBe(false);
+  });
+  it(`should not validate when value is malformed`, () => {
+    expect(validator("malformed", "2016-12-25")).toBe(false);
+  });
+  it(`should not validate when argument is malformed`, () => {
+    expect(() => validator("2016-12-25", "malformed")).toThrow();
+  });
+});
+
+describe('maxDate', () => {
+  const validator = validators.get('maxDate')
+  it(`should work!`, () => {
+    expect(validator("2016-12-26", "2016-12-25")).toBe(true);
+    expect(validator("2016-12-25", "2016-12-25")).toBe(false);
+    expect(validator("2016-12-24", "2016-12-25")).toBe(false);
+  });
+
+  it(`should not validate when no value`, () => {
+    expect(validator("", "2016-12-25")).toBe(false);
+  });
+  it(`should not validate when value is null`, () => {
+    expect(validator(null, "2016-12-25")).toBe(false);
+  });
+  it(`should not validate when value is undefined`, () => {
+    expect(validator(undefined, "2016-12-25")).toBe(false);
+  });
+  it(`should not validate when value is malformed`, () => {
+    expect(validator("malformed", "2016-12-25")).toBe(false);
+  });
+  it(`should not validate when argument is malformed`, () => {
+    expect(() => validator("2016-12-25", "malformed")).toThrow();
+  });
+});
+

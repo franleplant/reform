@@ -110,36 +110,55 @@ export function fieldIfError(this: ValidationAbleInstance, fieldName: string, er
 }
 
 
-// TODO This is going to be jsLand becausen Typescript sucks
-//const mixinProperties = [
-  //'validateField',
-  //'validateFieldFromState',
-  //'fieldIsValid',
-  //'validateForm',
-  //'validateFormFromState',
-  //'formIsValid',
-  //'getFieldErrors',
-  //'fieldIfError',
-//];
+const mixinProperties = [
+  'validateField',
+  'validateFieldFromState',
+  'fieldIsValid',
+  'validateForm',
+  'validateFormFromState',
+  'formIsValid',
+  'getFieldErrors',
+  'fieldIfError',
+];
 
-//export function reform(base: new() => ValidationAbleInstance) {
 
-  //mixinProperties.forEach(prop => {
-    //if (base[prop] != null) {
-      //// TODO: better error message
-      //throw new Error(`Wrapped Component already implements method, please use another one`)
-    //}
-  //})
+export interface Base {}
+export interface GenericClass<T> {
+  new (): T
+  readonly prototype: T;
+  displayName: string;
+}
 
-  //return class Reform extends base {
-    ////static displayName = `Reform(${base.displayName})`;
-    //validateField = validateField;
-    //validateFieldFromState = validateFieldFromState;
-    //fieldIsValid = fieldIsValid;
-    //validateForm = validateForm;
-    //validateFormFromState = validateFormFromState;
-    //formIsValid = formIsValid;
-    //getFieldErrors = getFieldErrors;
-    //fieldIfError = fieldIfError;
-  //}
-//}
+export interface Reform {
+  validateField: typeof validateField;
+  validateFieldFromState: typeof validateFieldFromState;
+  fieldIsValid: typeof fieldIsValid;
+  validateForm: typeof validateForm;
+  validateFormFromState: typeof validateFormFromState;
+  formIsValid: typeof formIsValid;
+  getFieldErrors: typeof getFieldErrors;
+  fieldIfError: typeof fieldIfError;
+}
+
+export function reform<T extends Base>(base: GenericClass<T>): GenericClass<T & Reform> {
+  mixinProperties.forEach(prop => {
+    if (base[prop] != null) {
+      // TODO: better error message
+      throw new Error(`Wrapped Component already implements method, please use another one`)
+    }
+  })
+
+  class ReformImpl extends (base as GenericClass<Base>) implements Reform {
+    static displayName = `Reform(${base.displayName})`;
+    validateField = validateField;
+    validateFieldFromState = validateFieldFromState;
+    fieldIsValid = fieldIsValid;
+    validateForm = validateForm;
+    validateFormFromState = validateFormFromState;
+    formIsValid = formIsValid;
+    getFieldErrors = getFieldErrors;
+    fieldIfError = fieldIfError;
+  }
+
+  return ReformImpl as GenericClass<T & Reform>;
+}
