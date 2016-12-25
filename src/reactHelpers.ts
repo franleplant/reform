@@ -89,6 +89,8 @@ export function getFieldErrors(this: ValidationAbleInstance, fieldName: string) 
     if (!errorResult) continue;
     result.push([ruleKey, this.validationRules[fieldName][ruleKey]])
   }
+
+  return result;
 }
 
 export function fieldIfError(this: ValidationAbleInstance, fieldName: string, errorKey: string): boolean {

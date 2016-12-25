@@ -688,6 +688,7 @@ module.exports =
 	            continue;
 	        result.push([ruleKey, this.validationRules[fieldName][ruleKey]]);
 	    }
+	    return result;
 	}
 	exports.getFieldErrors = getFieldErrors;
 	function fieldIfError(fieldName, errorKey) {

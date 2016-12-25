@@ -5,7 +5,7 @@ export declare function validateForm(this: ValidationAbleInstance, fieldsValues:
 export declare function validateFormFromState(this: ValidationAbleInstance): void;
 export declare function fieldIsValid(this: ValidationAbleInstance, fieldName: string): boolean;
 export declare function formIsValid(this: ValidationAbleInstance): boolean;
-export declare function getFieldErrors(this: ValidationAbleInstance, fieldName: string): void;
+export declare function getFieldErrors(this: ValidationAbleInstance, fieldName: string): any[][];
 export declare function fieldIfError(this: ValidationAbleInstance, fieldName: string, errorKey: string): boolean;
 export interface Reform {
     validateField: typeof validateField;
