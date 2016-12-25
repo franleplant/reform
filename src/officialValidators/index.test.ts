@@ -371,6 +371,7 @@ describe('maxDate', () => {
 describe('minMonth', () => {
   const validator = validators.get('minMonth')
   it(`should work!`, () => {
+    expect(validator("2015-9", "2016-11")).toBe(true);
     expect(validator("2016-9", "2016-11")).toBe(true);
     expect(validator("2016-10", "2016-11")).toBe(true);
     expect(validator("2016-11", "2016-11")).toBe(false);
@@ -398,6 +399,7 @@ describe('minMonth', () => {
 describe('maxMonth', () => {
   const validator = validators.get('maxMonth')
   it(`should work!`, () => {
+    expect(validator("2017-12", "2016-11")).toBe(true);
     expect(validator("2016-12", "2016-11")).toBe(true);
     expect(validator("2016-11", "2016-11")).toBe(false);
     expect(validator("2016-10", "2016-11")).toBe(false);
@@ -476,7 +478,7 @@ describe('maxTime', () => {
 describe('minWeek', () => {
   const validator = validators.get('minWeek')
   it(`should work!`, () => {
-    expect(validator("2016-W32", "2016-W33")).toBe(true);
+    expect(validator("2015-W32", "2016-W33")).toBe(true);
     expect(validator("2016-W33", "2016-W33")).toBe(false);
     expect(validator("2016-W34", "2016-W33")).toBe(false);
   });
@@ -503,6 +505,7 @@ describe('minWeek', () => {
 describe('maxWeek', () => {
   const validator = validators.get('maxWeek')
   it(`should work!`, () => {
+    expect(validator("2017-W34", "2016-W33")).toBe(true);
     expect(validator("2016-W34", "2016-W33")).toBe(true);
     expect(validator("2016-W33", "2016-W33")).toBe(false);
     expect(validator("2016-W32", "2016-W33")).toBe(false);
