@@ -188,6 +188,12 @@ module.exports =
 	var time_1 = __webpack_require__(8);
 	var month_1 = __webpack_require__(9);
 	var week_1 = __webpack_require__(11);
+	var minNumber_1 = __webpack_require__(13);
+	var maxNumber_1 = __webpack_require__(14);
+	var minDate_1 = __webpack_require__(15);
+	var maxDate_1 = __webpack_require__(16);
+	var minMonth_1 = __webpack_require__(17);
+	var maxMonth_1 = __webpack_require__(18);
 	//TODO
 	//import min from './min'
 	//import max from './max'
@@ -206,6 +212,12 @@ module.exports =
 	    url: url_1.url,
 	    month: month_1.month,
 	    week: week_1.week,
+	    minNumber: minNumber_1.minNumber,
+	    maxNumber: maxNumber_1.maxNumber,
+	    minDate: minDate_1.minDate,
+	    maxDate: maxDate_1.maxDate,
+	    minMonth: minMonth_1.minMonth,
+	    maxMonth: maxMonth_1.maxMonth,
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = validatorMap;
@@ -435,6 +447,183 @@ module.exports =
 	    return false;
 	}
 	exports.fieldIfError = fieldIfError;
+	// TODO This is going to be jsLand becausen Typescript sucks
+	//const mixinProperties = [
+	//'validateField',
+	//'validateFieldFromState',
+	//'fieldIsValid',
+	//'validateForm',
+	//'validateFormFromState',
+	//'formIsValid',
+	//'getFieldErrors',
+	//'fieldIfError',
+	//];
+	//export function reform(base: new() => ValidationAbleInstance) {
+	//mixinProperties.forEach(prop => {
+	//if (base[prop] != null) {
+	//// TODO: better error message
+	//throw new Error(`Wrapped Component already implements method, please use another one`)
+	//}
+	//})
+	//return class Reform extends base {
+	////static displayName = `Reform(${base.displayName})`;
+	//validateField = validateField;
+	//validateFieldFromState = validateFieldFromState;
+	//fieldIsValid = fieldIsValid;
+	//validateForm = validateForm;
+	//validateFormFromState = validateFormFromState;
+	//formIsValid = formIsValid;
+	//getFieldErrors = getFieldErrors;
+	//fieldIfError = fieldIfError;
+	//}
+	//}
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
+	"use strict";
+	exports.minNumber = function (value, min) {
+	    if (!value)
+	        return false;
+	    min = parseInt(min, 10);
+	    value = parseInt(value, 10);
+	    if (!Number.isFinite(min)) {
+	        throw new Error('Reform minNumber argument should be a valid a number or a number string');
+	    }
+	    if (!Number.isFinite(value)) {
+	        return true;
+	    }
+	    return value < min;
+	};
+
+
+/***/ },
+/* 14 */
+/***/ function(module, exports) {
+
+	"use strict";
+	exports.maxNumber = function (value, max) {
+	    if (!value)
+	        return false;
+	    max = parseInt(max, 10);
+	    value = parseInt(value, 10);
+	    if (!Number.isFinite(max)) {
+	        throw new Error('Reform maxNumber argument should be a valid a number or a number string');
+	    }
+	    if (!Number.isFinite(value)) {
+	        return true;
+	    }
+	    return value > max;
+	};
+
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	"use strict";
+	exports.minDate = function (value, min) {
+	    if (!value)
+	        return false;
+	    var minDate = Date.parse(min);
+	    var valueDate = Date.parse(value);
+	    if (Number.isNaN(minDate)) {
+	        throw new Error("Reform minDate should have a valid date as argument.");
+	    }
+	    if (Number.isNaN(valueDate)) {
+	        return true;
+	    }
+	    return valueDate < minDate;
+	};
+
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	"use strict";
+	exports.maxDate = function (value, max) {
+	    if (!value)
+	        return false;
+	    var maxDate = Date.parse(max);
+	    var valueDate = Date.parse(value);
+	    if (Number.isNaN(maxDate)) {
+	        throw new Error("Reform maxDate should have a valid date as argument.");
+	    }
+	    if (Number.isNaN(valueDate)) {
+	        return true;
+	    }
+	    return valueDate > maxDate;
+	};
+
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var utils_1 = __webpack_require__(10);
+	exports.minMonth = function (value, min) {
+	    if (!value)
+	        return false;
+	    var _a = utils_1.parseMonth(value), vYear = _a[0], vMonth = _a[1];
+	    var _b = utils_1.parseMonth(min), mYear = _b[0], mMonth = _b[1];
+	    if (!mYear || !mMonth) {
+	        throw new Error("Reform minMonth should have a valid month as argument.");
+	    }
+	    // Invalid week
+	    if (!vYear || !vMonth) {
+	        return true;
+	    }
+	    var error = false;
+	    if (vYear < mYear) {
+	        error = true;
+	    }
+	    else if (vYear > mYear) {
+	        error = false;
+	    }
+	    else if (vYear === mYear) {
+	        error = vMonth < mMonth;
+	    }
+	    ;
+	    return error;
+	};
+
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var utils_1 = __webpack_require__(10);
+	exports.maxMonth = function (value, max) {
+	    if (!value)
+	        return false;
+	    var _a = utils_1.parseMonth(value), vYear = _a[0], vMonth = _a[1];
+	    var _b = utils_1.parseMonth(max), mYear = _b[0], mMonth = _b[1];
+	    // Invalid max
+	    if (!mYear || !mMonth) {
+	        throw new Error("Reform maxMonth should have a valid month as argument.");
+	    }
+	    // Invalid week
+	    if (!vYear || !vMonth) {
+	        return true;
+	    }
+	    var error = false;
+	    if (vYear > mYear) {
+	        error = true;
+	    }
+	    else if (vYear < mYear) {
+	        error = false;
+	    }
+	    else if (vYear === mYear) {
+	        error = vMonth > mMonth;
+	    }
+	    ;
+	    return error;
+	};
 
 
 /***/ }

@@ -3,6 +3,12 @@ import { url } from './url'
 import { time } from './time'
 import { month } from './month'
 import { week } from './week'
+import { minNumber } from './minNumber'
+import { maxNumber } from './maxNumber'
+import { minDate } from './minDate'
+import { maxDate } from './maxDate'
+import { minMonth } from './minMonth'
+import { maxMonth } from './maxMonth'
 
 
 //TODO
@@ -25,6 +31,12 @@ const validatorMap: ValidatorMap = {
   url,
   month,
   week,
+  minNumber,
+  maxNumber,
+  minDate,
+  maxDate,
+  minMonth,
+  maxMonth,
 }
 
 export default validatorMap;

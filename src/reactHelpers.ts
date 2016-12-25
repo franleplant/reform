@@ -108,3 +108,38 @@ export function fieldIfError(this: ValidationAbleInstance, fieldName: string, er
 
   return false
 }
+
+
+// TODO This is going to be jsLand becausen Typescript sucks
+//const mixinProperties = [
+  //'validateField',
+  //'validateFieldFromState',
+  //'fieldIsValid',
+  //'validateForm',
+  //'validateFormFromState',
+  //'formIsValid',
+  //'getFieldErrors',
+  //'fieldIfError',
+//];
+
+//export function reform(base: new() => ValidationAbleInstance) {
+
+  //mixinProperties.forEach(prop => {
+    //if (base[prop] != null) {
+      //// TODO: better error message
+      //throw new Error(`Wrapped Component already implements method, please use another one`)
+    //}
+  //})
+
+  //return class Reform extends base {
+    ////static displayName = `Reform(${base.displayName})`;
+    //validateField = validateField;
+    //validateFieldFromState = validateFieldFromState;
+    //fieldIsValid = fieldIsValid;
+    //validateForm = validateForm;
+    //validateFormFromState = validateFormFromState;
+    //formIsValid = formIsValid;
+    //getFieldErrors = getFieldErrors;
+    //fieldIfError = fieldIfError;
+  //}
+//}
