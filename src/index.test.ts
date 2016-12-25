@@ -1,6 +1,8 @@
-//import {test as myFn} from './index';
+import Reform from './index';
 
-test('adds 1 + 2 to equal 3', () => {
-
-    expect(true).toBe(true);
+test('Reform main entry point', () => {
+  expect(Reform).toBeDefined();
+  expect(Reform.core).toBeDefined();
+  expect(Reform.reactHelpers).toBeDefined();
+  expect(Reform.validators).toBeDefined();
 });

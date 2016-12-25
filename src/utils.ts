@@ -1,16 +1,4 @@
-
-export function toPairs(obj: any) {
-  const result: Array<any> = [];
-  for (const key in obj) {
-    if (!obj.hasOwnProperty(key)) continue;
-
-    result.push([key, obj[key]])
-  }
-
-  return result;
-}
-
-// Return undef if something went wrong
+// Returns [] if something went wrong
 export function parseMonth(value: string): number[] {
   const [ yearStr, monthStr ] = value.split("-");
   const year = parseInt(yearStr, 10)
@@ -24,17 +12,16 @@ export function parseMonth(value: string): number[] {
 }
 
 
-// Return undef if something went wrong
+// Returns [] if something went wrong
 export function parseWeek(value: string): number[] {
   let [ yearStr, weekStr ] = value.split("-");
   const year = parseInt(yearStr, 10)
 
   // Error if weekstr is not defined
-  if (!weekStr) {
+  if (!weekStr || weekStr[0] !== 'W') {
     return [];
   }
 
-  // We remove the "W" from "W33"
   weekStr = weekStr.slice(1)
   const week = parseInt(weekStr, 10)
 

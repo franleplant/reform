@@ -1,7 +1,5 @@
 import { ValidationAbleInstance, Fields } from './types'
 import * as core from './core';
-import {toPairs} from './utils';
-
 
 // Useful function for javascript land
 // TODO: do not use it in prod? Check performance
@@ -85,11 +83,12 @@ export function formIsValid(this: ValidationAbleInstance): boolean {
 
 // @Unstable
 export function getFieldErrors(this: ValidationAbleInstance, fieldName: string) {
-  return toPairs(this.state.errors[fieldName])
-    .filter(([, value]) => Boolean(value))
-    .map(([ruleKey]) => {
-      return [ruleKey, this.validationRules[fieldName][ruleKey]];
-    })
+  const result = [];
+  for (const ruleKey in this.state.errors[fieldName]) {
+    const errorResult = this.state.errors[fieldName][ruleKey]
+    if (!errorResult) continue;
+    result.push([ruleKey, this.validationRules[fieldName][ruleKey]])
+  }
 }
 
 export function fieldIfError(this: ValidationAbleInstance, fieldName: string, errorKey: string): boolean {
@@ -121,14 +120,6 @@ const mixinProperties = [
   'fieldIfError',
 ];
 
-
-export interface Base {}
-export interface GenericClass<T> {
-  new (): T
-  readonly prototype: T;
-  displayName: string;
-}
-
 export interface Reform {
   validateField: typeof validateField;
   validateFieldFromState: typeof validateFieldFromState;
@@ -140,7 +131,16 @@ export interface Reform {
   fieldIfError: typeof fieldIfError;
 }
 
-export function reform<T extends Base>(base: GenericClass<T>): GenericClass<T & Reform> {
+
+export interface Base {}
+export interface GenericClass<T> {
+  new (): T
+  readonly prototype: T;
+  displayName: string;
+}
+
+
+export function reformClassMixin<T extends Base>(base: GenericClass<T>): GenericClass<T & Reform> {
   mixinProperties.forEach(prop => {
     if (base[prop] != null) {
       // TODO: better error message
@@ -161,4 +161,22 @@ export function reform<T extends Base>(base: GenericClass<T>): GenericClass<T & 
   }
 
   return ReformImpl as GenericClass<T & Reform>;
+}
+
+export function reformFunctionalMixin(instance: any) {
+  mixinProperties.forEach(prop => {
+    if (instance[prop] != null) {
+      // TODO: better error message
+      throw new Error(`Wrapped Component already implements method, please use another one`)
+    }
+  })
+
+  instance.validateField = validateField;
+  instance.validateFieldFromState = validateFieldFromState;
+  instance.fieldIsValid = fieldIsValid;
+  instance.validateForm = validateForm;
+  instance.validateFormFromState = validateFormFromState;
+  instance.formIsValid = formIsValid;
+  instance.getFieldErrors = getFieldErrors;
+  instance.fieldIfError = fieldIfError;
 }

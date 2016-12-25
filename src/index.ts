@@ -18,4 +18,3 @@ const exposing = {
 };
 
 export default exposing;
-

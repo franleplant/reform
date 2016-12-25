@@ -1,5 +1,5 @@
 import { parseMonth } from '../utils';
-
+import { month } from './month';
 
 export const minMonth = (value: string, min: string) => {
   if (!value) return false
@@ -7,7 +7,8 @@ export const minMonth = (value: string, min: string) => {
   const [vYear, vMonth] = parseMonth(value);
   const [mYear, mMonth] = parseMonth(min);
 
-  if (!mYear || !mMonth) {
+  // Check that the min month is a valid month
+  if (!mYear || !mMonth || month(min)) {
     throw new Error(`Reform minMonth should have a valid month as argument. Found "${min}"`)
   }
 
@@ -25,8 +26,6 @@ export const minMonth = (value: string, min: string) => {
   } else if (vYear === mYear) {
     error = vMonth < mMonth
   };
-
-
 
   return  error;
 }

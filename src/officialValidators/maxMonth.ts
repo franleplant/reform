@@ -1,4 +1,5 @@
 import { parseMonth } from '../utils';
+import { month } from './month';
 
 export const maxMonth = (value: string, max: string) => {
   if (!value) return false
@@ -7,7 +8,7 @@ export const maxMonth = (value: string, max: string) => {
   const [mYear, mMonth] = parseMonth(max);
 
   // Invalid max
-  if (!mYear || !mMonth) {
+  if (!mYear || !mMonth || month(max)) {
     throw new Error(`Reform maxMonth should have a valid month as argument. Found ${max}`)
   }
 

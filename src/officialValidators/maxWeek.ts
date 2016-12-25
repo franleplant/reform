@@ -1,4 +1,5 @@
 import { parseWeek } from '../utils';
+import { week } from './week'
 
 export const maxWeek = (value: string, max: string) => {
   if (!value) return false
@@ -7,7 +8,7 @@ export const maxWeek = (value: string, max: string) => {
   const [mYear, mWeek] = parseWeek(max);
 
   // Invalid max
-  if (!mYear || !mWeek) {
+  if (!mYear || !mWeek || week(max)) {
     throw new Error(`Reform maxWeek should have a valid week as value. Found ${max}.`);
   }
 

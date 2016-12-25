@@ -1,5 +1,5 @@
 import { parseWeek } from '../utils';
-
+import { week } from './week'
 
 export const minWeek = (value: string, min: string) => {
   if (!value) return false
@@ -8,7 +8,7 @@ export const minWeek = (value: string, min: string) => {
   const [mYear, mWeek] = parseWeek(min);
 
   // Invalid min
-  if (!mYear || !mWeek) {
+  if (!mYear || !mWeek || week(min)) {
     throw new Error(`Reform minWeek should have a valid week as value. Found ${min}.`);
   }
 

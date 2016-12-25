@@ -368,3 +368,160 @@ describe('maxDate', () => {
   });
 });
 
+describe('minMonth', () => {
+  const validator = validators.get('minMonth')
+  it(`should work!`, () => {
+    expect(validator("2016-9", "2016-11")).toBe(true);
+    expect(validator("2016-10", "2016-11")).toBe(true);
+    expect(validator("2016-11", "2016-11")).toBe(false);
+    expect(validator("2016-12", "2016-11")).toBe(false);
+  });
+
+  it(`should not validate when no value`, () => {
+    expect(validator("", "2016-11")).toBe(false);
+  });
+  it(`should not validate when value is null`, () => {
+    expect(validator(null, "2016-11")).toBe(false);
+  });
+  it(`should not validate when value is undefined`, () => {
+    expect(validator(undefined, "2016-11")).toBe(false);
+  });
+  it(`should not validate when value is malformed`, () => {
+    expect(validator("malformed", "2016-11")).toBe(false);
+  });
+  it(`should not validate when argument is malformed`, () => {
+    expect(() => validator("2016-11", "malformed")).toThrow();
+    expect(() => validator("2016-11", "2016-54")).toThrow();
+  });
+});
+
+describe('maxMonth', () => {
+  const validator = validators.get('maxMonth')
+  it(`should work!`, () => {
+    expect(validator("2016-12", "2016-11")).toBe(true);
+    expect(validator("2016-11", "2016-11")).toBe(false);
+    expect(validator("2016-10", "2016-11")).toBe(false);
+  });
+
+  it(`should not validate when no value`, () => {
+    expect(validator("", "2016-11")).toBe(false);
+  });
+  it(`should not validate when value is null`, () => {
+    expect(validator(null, "2016-11")).toBe(false);
+  });
+  it(`should not validate when value is undefined`, () => {
+    expect(validator(undefined, "2016-11")).toBe(false);
+  });
+  it(`should not validate when value is malformed`, () => {
+    expect(validator("malformed", "2016-11")).toBe(false);
+  });
+  it(`should not validate when argument is malformed`, () => {
+    expect(() => validator("2016-11", "malformed")).toThrow();
+    expect(() => validator("2016-11", "2016-54")).toThrow();
+  });
+});
+
+describe('minTime', () => {
+  const validator = validators.get('minTime')
+  it(`should work!`, () => {
+    expect(validator("17:45", "17:50")).toBe(true);
+    expect(validator("17:50", "17:50")).toBe(false);
+    expect(validator("17:55", "17:50")).toBe(false);
+  });
+
+  it(`should not validate when no value`, () => {
+    expect(validator("", "17:50")).toBe(false);
+  });
+  it(`should not validate when value is null`, () => {
+    expect(validator(null, "17:50")).toBe(false);
+  });
+  it(`should not validate when value is undefined`, () => {
+    expect(validator(undefined, "17:50")).toBe(false);
+  });
+  it(`should not validate when value is malformed`, () => {
+    expect(validator("malformed", "17:50")).toBe(false);
+  });
+  it(`should not validate when argument is malformed`, () => {
+    expect(() => validator("17:50", "malformed")).toThrow();
+    expect(() => validator("17:50", "45:89")).toThrow();
+  });
+});
+
+describe('maxTime', () => {
+  const validator = validators.get('maxTime')
+  it(`should work!`, () => {
+    expect(validator("17:55", "17:50")).toBe(true);
+    expect(validator("17:50", "17:50")).toBe(false);
+    expect(validator("17:45", "17:50")).toBe(false);
+  });
+
+  it(`should not validate when no value`, () => {
+    expect(validator("", "17:50")).toBe(false);
+  });
+  it(`should not validate when value is null`, () => {
+    expect(validator(null, "17:50")).toBe(false);
+  });
+  it(`should not validate when value is undefined`, () => {
+    expect(validator(undefined, "17:50")).toBe(false);
+  });
+  it(`should not validate when value is malformed`, () => {
+    expect(validator("malformed", "17:50")).toBe(false);
+  });
+  it(`should not validate when argument is malformed`, () => {
+    expect(() => validator("17:50", "malformed")).toThrow();
+    expect(() => validator("17:50", "45:89")).toThrow();
+  });
+});
+
+describe('minWeek', () => {
+  const validator = validators.get('minWeek')
+  it(`should work!`, () => {
+    expect(validator("2016-W32", "2016-W33")).toBe(true);
+    expect(validator("2016-W33", "2016-W33")).toBe(false);
+    expect(validator("2016-W34", "2016-W33")).toBe(false);
+  });
+
+  it(`should not validate when no value`, () => {
+    expect(validator("", "2016-W33")).toBe(false);
+  });
+  it(`should not validate when value is null`, () => {
+    expect(validator(null, "2016-W33")).toBe(false);
+  });
+  it(`should not validate when value is undefined`, () => {
+    expect(validator(undefined, "2016-W33")).toBe(false);
+  });
+  it(`should not validate when value is malformed`, () => {
+    expect(validator("malformed", "2016-W33")).toBe(false);
+  });
+  it(`should not validate when argument is malformed`, () => {
+    expect(() => validator("2016-W33", "malformed")).toThrow();
+    expect(() => validator("2016-W33", "2016-W99")).toThrow();
+  });
+});
+
+
+describe('maxWeek', () => {
+  const validator = validators.get('maxWeek')
+  it(`should work!`, () => {
+    expect(validator("2016-W34", "2016-W33")).toBe(true);
+    expect(validator("2016-W33", "2016-W33")).toBe(false);
+    expect(validator("2016-W32", "2016-W33")).toBe(false);
+  });
+
+  it(`should not validate when no value`, () => {
+    expect(validator("", "2016-W33")).toBe(false);
+  });
+  it(`should not validate when value is null`, () => {
+    expect(validator(null, "2016-W33")).toBe(false);
+  });
+  it(`should not validate when value is undefined`, () => {
+    expect(validator(undefined, "2016-W33")).toBe(false);
+  });
+  it(`should not validate when value is malformed`, () => {
+    expect(validator("malformed", "2016-W33")).toBe(false);
+  });
+  it(`should not validate when argument is malformed`, () => {
+    expect(() => validator("2016-W33", "malformed")).toThrow();
+    expect(() => validator("2016-W33", "2016-W99")).toThrow();
+  });
+});

@@ -5,15 +5,8 @@ export declare function validateForm(this: ValidationAbleInstance, fieldsValues:
 export declare function validateFormFromState(this: ValidationAbleInstance): void;
 export declare function fieldIsValid(this: ValidationAbleInstance, fieldName: string): boolean;
 export declare function formIsValid(this: ValidationAbleInstance): boolean;
-export declare function getFieldErrors(this: ValidationAbleInstance, fieldName: string): any[][];
+export declare function getFieldErrors(this: ValidationAbleInstance, fieldName: string): void;
 export declare function fieldIfError(this: ValidationAbleInstance, fieldName: string, errorKey: string): boolean;
-export interface Base {
-}
-export interface GenericClass<T> {
-    new (): T;
-    readonly prototype: T;
-    displayName: string;
-}
 export interface Reform {
     validateField: typeof validateField;
     validateFieldFromState: typeof validateFieldFromState;
@@ -24,4 +17,12 @@ export interface Reform {
     getFieldErrors: typeof getFieldErrors;
     fieldIfError: typeof fieldIfError;
 }
-export declare function reform<T extends Base>(base: GenericClass<T>): GenericClass<T & Reform>;
+export interface Base {
+}
+export interface GenericClass<T> {
+    new (): T;
+    readonly prototype: T;
+    displayName: string;
+}
+export declare function reformClassMixin<T extends Base>(base: GenericClass<T>): GenericClass<T & Reform>;
+export declare function reformFunctionalMixin(instance: any): void;

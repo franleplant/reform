@@ -52,7 +52,7 @@ module.exports =
 	exports.core = core;
 	var validators_1 = __webpack_require__(3);
 	exports.validators = validators_1.default;
-	var reactHelpers = __webpack_require__(16);
+	var reactHelpers = __webpack_require__(20);
 	exports.reactHelpers = reactHelpers;
 	var exposing = {
 	    types: types,
@@ -192,10 +192,10 @@ module.exports =
 	var maxDate_1 = __webpack_require__(13);
 	var minMonth_1 = __webpack_require__(14);
 	var maxMonth_1 = __webpack_require__(15);
-	var minTime_1 = __webpack_require__(17);
-	var maxTime_1 = __webpack_require__(18);
-	var minWeek_1 = __webpack_require__(19);
-	var maxWeek_1 = __webpack_require__(20);
+	var minTime_1 = __webpack_require__(16);
+	var maxTime_1 = __webpack_require__(17);
+	var minWeek_1 = __webpack_require__(18);
+	var maxWeek_1 = __webpack_require__(19);
 	var isNumber = function (value) { return (!!value || value === 0) && !Number.isFinite(parseFloat(value)); };
 	var validatorMap = {
 	    required: function (value) { return !value; },
@@ -238,15 +238,13 @@ module.exports =
 
 /***/ },
 /* 6 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// Official docs https://www.w3.org/TR/html5/infrastructure.html#valid-date-string
 	"use strict";
+	// Official docs https://www.w3.org/TR/html5/infrastructure.html#valid-date-string
+	var utils_1 = __webpack_require__(8);
 	// Example "02:00"
-	// Hack to make parsing times easier
-	// TODO: review this
-	var BASE_DATE = "1970-01-01";
-	exports.time = function (value) { return !!value && Number.isNaN(Date.parse(BASE_DATE + ' ' + value)); };
+	exports.time = function (value) { return !!value && Number.isNaN(utils_1.parseTime(value)); };
 
 
 /***/ },
@@ -257,9 +255,8 @@ module.exports =
 	// Official docs https://www.w3.org/TR/html5/infrastructure.html#valid-month-string
 	var utils_1 = __webpack_require__(8);
 	exports.month = function (value) {
-	    if (!value) {
+	    if (!value)
 	        return false;
-	    }
 	    var _a = utils_1.parseMonth(value), year = _a[0], month = _a[1];
 	    if (!year || !month) {
 	        return true;
@@ -273,17 +270,7 @@ module.exports =
 /***/ function(module, exports) {
 
 	"use strict";
-	function toPairs(obj) {
-	    var result = [];
-	    for (var key in obj) {
-	        if (!obj.hasOwnProperty(key))
-	            continue;
-	        result.push([key, obj[key]]);
-	    }
-	    return result;
-	}
-	exports.toPairs = toPairs;
-	// Return undef if something went wrong
+	// Returns [] if something went wrong
 	function parseMonth(value) {
 	    var _a = value.split("-"), yearStr = _a[0], monthStr = _a[1];
 	    var year = parseInt(yearStr, 10);
@@ -294,15 +281,14 @@ module.exports =
 	    return [year, month];
 	}
 	exports.parseMonth = parseMonth;
-	// Return undef if something went wrong
+	// Returns [] if something went wrong
 	function parseWeek(value) {
 	    var _a = value.split("-"), yearStr = _a[0], weekStr = _a[1];
 	    var year = parseInt(yearStr, 10);
 	    // Error if weekstr is not defined
-	    if (!weekStr) {
+	    if (!weekStr || weekStr[0] !== 'W') {
 	        return [];
 	    }
-	    // We remove the "W" from "W33"
 	    weekStr = weekStr.slice(1);
 	    var week = parseInt(weekStr, 10);
 	    if (!Number.isFinite(year) || !Number.isFinite(week)) {
@@ -433,12 +419,14 @@ module.exports =
 
 	"use strict";
 	var utils_1 = __webpack_require__(8);
+	var month_1 = __webpack_require__(7);
 	exports.minMonth = function (value, min) {
 	    if (!value)
 	        return false;
 	    var _a = utils_1.parseMonth(value), vYear = _a[0], vMonth = _a[1];
 	    var _b = utils_1.parseMonth(min), mYear = _b[0], mMonth = _b[1];
-	    if (!mYear || !mMonth) {
+	    // Check that the min month is a valid month
+	    if (!mYear || !mMonth || month_1.month(min)) {
 	        throw new Error("Reform minMonth should have a valid month as argument. Found \"" + min + "\"");
 	    }
 	    // Invalid week
@@ -466,13 +454,14 @@ module.exports =
 
 	"use strict";
 	var utils_1 = __webpack_require__(8);
+	var month_1 = __webpack_require__(7);
 	exports.maxMonth = function (value, max) {
 	    if (!value)
 	        return false;
 	    var _a = utils_1.parseMonth(value), vYear = _a[0], vMonth = _a[1];
 	    var _b = utils_1.parseMonth(max), mYear = _b[0], mMonth = _b[1];
 	    // Invalid max
-	    if (!mYear || !mMonth) {
+	    if (!mYear || !mMonth || month_1.month(max)) {
 	        throw new Error("Reform maxMonth should have a valid month as argument. Found " + max);
 	    }
 	    // Invalid week
@@ -499,13 +488,124 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	var utils_1 = __webpack_require__(8);
+	exports.minTime = function (value, min) {
+	    if (!value)
+	        return false;
+	    var minDate = utils_1.parseTime(min);
+	    var valueDate = utils_1.parseTime(value);
+	    if (Number.isNaN(minDate)) {
+	        throw new Error("Reform minTime should have a valid time as value. Found " + min);
+	    }
+	    if (Number.isNaN(valueDate)) {
+	        return false;
+	    }
+	    return valueDate < minDate;
+	};
+
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var utils_1 = __webpack_require__(8);
+	exports.maxTime = function (value, max) {
+	    if (!value)
+	        return false;
+	    var maxDate = utils_1.parseTime(max);
+	    var valueDate = utils_1.parseTime(value);
+	    if (Number.isNaN(maxDate)) {
+	        throw new Error("Reform maxTime should have a valid time as value. Found " + max);
+	    }
+	    if (Number.isNaN(valueDate)) {
+	        return false;
+	    }
+	    return valueDate > maxDate;
+	};
+
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var utils_1 = __webpack_require__(8);
+	var week_1 = __webpack_require__(9);
+	exports.minWeek = function (value, min) {
+	    if (!value)
+	        return false;
+	    var _a = utils_1.parseWeek(value), vYear = _a[0], vWeek = _a[1];
+	    var _b = utils_1.parseWeek(min), mYear = _b[0], mWeek = _b[1];
+	    // Invalid min
+	    if (!mYear || !mWeek || week_1.week(min)) {
+	        throw new Error("Reform minWeek should have a valid week as value. Found " + min + ".");
+	    }
+	    // Invalid week
+	    if (!vYear || !vWeek) {
+	        return false;
+	    }
+	    var error = false;
+	    if (vYear < mYear) {
+	        error = true;
+	    }
+	    else if (vYear > mYear) {
+	        error = false;
+	    }
+	    else if (vYear === mYear) {
+	        error = vWeek < mWeek;
+	    }
+	    ;
+	    return error;
+	};
+
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var utils_1 = __webpack_require__(8);
+	var week_1 = __webpack_require__(9);
+	exports.maxWeek = function (value, max) {
+	    if (!value)
+	        return false;
+	    var _a = utils_1.parseWeek(value), vYear = _a[0], vWeek = _a[1];
+	    var _b = utils_1.parseWeek(max), mYear = _b[0], mWeek = _b[1];
+	    // Invalid max
+	    if (!mYear || !mWeek || week_1.week(max)) {
+	        throw new Error("Reform maxWeek should have a valid week as value. Found " + max + ".");
+	    }
+	    // Invalid week
+	    if (!vYear || !vWeek) {
+	        return false;
+	    }
+	    var error = false;
+	    if (vYear > mYear) {
+	        error = true;
+	    }
+	    else if (vYear < mYear) {
+	        error = false;
+	    }
+	    else if (vYear === mYear) {
+	        error = vWeek > mWeek;
+	    }
+	    ;
+	    return error;
+	};
+
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var core = __webpack_require__(2);
-	var utils_1 = __webpack_require__(8);
 	// Useful function for javascript land
 	// TODO: do not use it in prod? Check performance
 	function checkInstance(instance) {
@@ -581,16 +681,13 @@ module.exports =
 	exports.formIsValid = formIsValid;
 	// @Unstable
 	function getFieldErrors(fieldName) {
-	    var _this = this;
-	    return utils_1.toPairs(this.state.errors[fieldName])
-	        .filter(function (_a) {
-	        var value = _a[1];
-	        return Boolean(value);
-	    })
-	        .map(function (_a) {
-	        var ruleKey = _a[0];
-	        return [ruleKey, _this.validationRules[fieldName][ruleKey]];
-	    });
+	    var result = [];
+	    for (var ruleKey in this.state.errors[fieldName]) {
+	        var errorResult = this.state.errors[fieldName][ruleKey];
+	        if (!errorResult)
+	            continue;
+	        result.push([ruleKey, this.validationRules[fieldName][ruleKey]]);
+	    }
 	}
 	exports.getFieldErrors = getFieldErrors;
 	function fieldIfError(fieldName, errorKey) {
@@ -617,7 +714,7 @@ module.exports =
 	    'getFieldErrors',
 	    'fieldIfError',
 	];
-	function reform(base) {
+	function reformClassMixin(base) {
 	    mixinProperties.forEach(function (prop) {
 	        if (base[prop] != null) {
 	            // TODO: better error message
@@ -643,117 +740,24 @@ module.exports =
 	    ReformImpl.displayName = "Reform(" + base.displayName + ")";
 	    return ReformImpl;
 	}
-	exports.reform = reform;
-
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var utils_1 = __webpack_require__(8);
-	exports.minTime = function (value, min) {
-	    if (!value)
-	        return false;
-	    var minDate = utils_1.parseTime(min);
-	    var valueDate = utils_1.parseTime(value);
-	    if (Number.isNaN(minDate)) {
-	        throw new Error("Reform minTime should have a valid time as value. Found " + min);
-	    }
-	    if (Number.isNaN(valueDate)) {
-	        return false;
-	    }
-	    return valueDate < minDate;
-	};
-
-
-/***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var utils_1 = __webpack_require__(8);
-	exports.maxTime = function (value, max) {
-	    if (!value)
-	        return false;
-	    var maxDate = utils_1.parseTime(max);
-	    var valueDate = utils_1.parseTime(value);
-	    if (Number.isNaN(maxDate)) {
-	        throw new Error("Reform maxTime should have a valid time as value. Found " + max);
-	    }
-	    if (Number.isNaN(valueDate)) {
-	        return false;
-	    }
-	    return valueDate > maxDate;
-	};
-
-
-/***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var utils_1 = __webpack_require__(8);
-	exports.minWeek = function (value, min) {
-	    if (!value)
-	        return false;
-	    var _a = utils_1.parseWeek(value), vYear = _a[0], vWeek = _a[1];
-	    var _b = utils_1.parseWeek(min), mYear = _b[0], mWeek = _b[1];
-	    // Invalid min
-	    if (!mYear || !mWeek) {
-	        throw new Error("Reform minWeek should have a valid week as value. Found " + min + ".");
-	    }
-	    // Invalid week
-	    if (!vYear || !vWeek) {
-	        return false;
-	    }
-	    var error = false;
-	    if (vYear < mYear) {
-	        error = true;
-	    }
-	    else if (vYear > mYear) {
-	        error = false;
-	    }
-	    else if (vYear === mYear) {
-	        error = vWeek < mWeek;
-	    }
-	    ;
-	    return error;
-	};
-
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var utils_1 = __webpack_require__(8);
-	exports.maxWeek = function (value, max) {
-	    if (!value)
-	        return false;
-	    var _a = utils_1.parseWeek(value), vYear = _a[0], vWeek = _a[1];
-	    var _b = utils_1.parseWeek(max), mYear = _b[0], mWeek = _b[1];
-	    // Invalid max
-	    if (!mYear || !mWeek) {
-	        throw new Error("Reform maxWeek should have a valid week as value. Found " + max + ".");
-	    }
-	    // Invalid week
-	    if (!vYear || !vWeek) {
-	        return false;
-	    }
-	    var error = false;
-	    if (vYear > mYear) {
-	        error = true;
-	    }
-	    else if (vYear < mYear) {
-	        error = false;
-	    }
-	    else if (vYear === mYear) {
-	        error = vWeek > mWeek;
-	    }
-	    ;
-	    return error;
-	};
+	exports.reformClassMixin = reformClassMixin;
+	function reformFunctionalMixin(instance) {
+	    mixinProperties.forEach(function (prop) {
+	        if (instance[prop] != null) {
+	            // TODO: better error message
+	            throw new Error("Wrapped Component already implements method, please use another one");
+	        }
+	    });
+	    instance.validateField = validateField;
+	    instance.validateFieldFromState = validateFieldFromState;
+	    instance.fieldIsValid = fieldIsValid;
+	    instance.validateForm = validateForm;
+	    instance.validateFormFromState = validateFormFromState;
+	    instance.formIsValid = formIsValid;
+	    instance.getFieldErrors = getFieldErrors;
+	    instance.fieldIfError = fieldIfError;
+	}
+	exports.reformFunctionalMixin = reformFunctionalMixin;
 
 
 /***/ }
