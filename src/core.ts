@@ -2,8 +2,7 @@ import { Fields, FieldErrors, FormErrors, Rules, RulesMap } from './types';
 import validatorInterface from './validators';
 
 
-//TDO freeze
-const EMPTY_OBJECT = {};
+const EMPTY_OBJECT = Object.freeze({});
 
 export function validateField(value: string | number, rules: Rules = {}): FieldErrors {
   const fieldErrors = {};
@@ -16,7 +15,6 @@ export function validateField(value: string | number, rules: Rules = {}): FieldE
 
   return fieldErrors;
 }
-
 
 
 export function fieldIsValid(value: string | number, rules: Rules) : boolean;

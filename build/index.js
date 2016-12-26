@@ -78,8 +78,7 @@ module.exports =
 
 	"use strict";
 	var validators_1 = __webpack_require__(3);
-	//TDO freeze
-	var EMPTY_OBJECT = {};
+	var EMPTY_OBJECT = Object.freeze({});
 	function validateField(value, rules) {
 	    if (rules === void 0) { rules = {}; }
 	    var fieldErrors = {};
@@ -636,12 +635,13 @@ module.exports =
 	        state.errors[fieldName] = fieldErrors;
 	        return state;
 	    });
+	    return core.fieldIsValid(fieldErrors);
 	}
 	exports.validateField = validateField;
 	// Modified state
 	function validateFieldFromState(fieldName) {
 	    var value = this.state.fields[fieldName];
-	    validateField.call(this, fieldName, value);
+	    return validateField.call(this, fieldName, value);
 	}
 	exports.validateFieldFromState = validateFieldFromState;
 	// Modified state
@@ -654,12 +654,13 @@ module.exports =
 	        state.errors = formErrors;
 	        return state;
 	    });
+	    return core.formIsValid(formErrors);
 	}
 	exports.validateForm = validateForm;
 	// Modified state
 	function validateFormFromState() {
 	    var values = this.state.fields;
-	    validateForm.call(this, values);
+	    return validateForm.call(this, values);
 	}
 	exports.validateFormFromState = validateFormFromState;
 	// Important! This function will evaluate field validity based on the already
@@ -671,7 +672,7 @@ module.exports =
 	    return core.fieldIsValid(this.state.errors[fieldName]);
 	}
 	exports.fieldIsValid = fieldIsValid;
-	// Calculates the validity of the form
+	// ReCalculates the validity of the form
 	function formIsValid() {
 	    checkInstance(this);
 	    var fields = this.state.fields;
@@ -680,6 +681,7 @@ module.exports =
 	}
 	exports.formIsValid = formIsValid;
 	// @Unstable
+	//TODO rename to mapErrors
 	function getFieldErrors(fieldName) {
 	    var result = [];
 	    for (var ruleKey in this.state.errors[fieldName]) {
@@ -742,6 +744,10 @@ module.exports =
 	    return ReformImpl;
 	}
 	exports.reformClassMixin = reformClassMixin;
+	// TODO
+	// what if we let the user do this?
+	//
+	// Object.assign(this, helpers);
 	function reformFunctionalMixin(instance) {
 	    mixinProperties.forEach(function (prop) {
 	        if (instance[prop] != null) {

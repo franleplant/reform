@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Form1 from './Form1'
+import Form2 from './Form2'
 
 export default class App extends Component {
   render() {
@@ -20,7 +21,8 @@ export default class App extends Component {
           padding: 10,
           flex: 1,
         }}>
-          <h3>Validate onSubmit</h3>
+          <h3>Validate onSubmit (HTML5 mode)</h3>
+          <Form2/>
         </div>
       </div>
     );

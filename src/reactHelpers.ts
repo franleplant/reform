@@ -27,7 +27,7 @@ function checkInstance(instance: any) {
 }
 
 // Modified state
-export function validateField(this: ValidationAbleInstance, fieldName: string, value: any) {
+export function validateField(this: ValidationAbleInstance, fieldName: string, value: any): boolean {
   checkInstance(this);
   const rules = this.validationRules[fieldName];
   const fieldErrors = core.validateField(value, rules);
@@ -36,16 +36,18 @@ export function validateField(this: ValidationAbleInstance, fieldName: string, v
     state.errors[fieldName] = fieldErrors;
     return state;
   });
+
+  return core.fieldIsValid(fieldErrors);
 }
 
 // Modified state
-export function validateFieldFromState(this: ValidationAbleInstance, fieldName: string) {
+export function validateFieldFromState(this: ValidationAbleInstance, fieldName: string): boolean {
   const value = this.state.fields[fieldName];
-  validateField.call(this, fieldName, value)
+  return validateField.call(this, fieldName, value)
 }
 
 // Modified state
-export function validateForm(this: ValidationAbleInstance, fieldsValues: Fields) {
+export function validateForm(this: ValidationAbleInstance, fieldsValues: Fields): boolean {
   checkInstance(this);
   const rulesMap = this.validationRules;
   const formErrors = core.validateForm(fieldsValues, rulesMap);
@@ -54,12 +56,14 @@ export function validateForm(this: ValidationAbleInstance, fieldsValues: Fields)
     state.errors = formErrors;
     return state;
   });
+
+  return core.formIsValid(formErrors);
 }
 
 // Modified state
-export function validateFormFromState(this: ValidationAbleInstance) {
+export function validateFormFromState(this: ValidationAbleInstance): boolean {
   const values = this.state.fields;
-  validateForm.call(this, values)
+  return validateForm.call(this, values)
 }
 
 
@@ -73,7 +77,7 @@ export function fieldIsValid(this: ValidationAbleInstance, fieldName: string): b
 }
 
 
-// Calculates the validity of the form
+// ReCalculates the validity of the form
 export function formIsValid(this: ValidationAbleInstance): boolean {
   checkInstance(this);
   const fields = this.state.fields;
@@ -82,6 +86,7 @@ export function formIsValid(this: ValidationAbleInstance): boolean {
 }
 
 // @Unstable
+//TODO rename to mapErrors
 export function getFieldErrors(this: ValidationAbleInstance, fieldName: string) {
   const result = [];
   for (const ruleKey in this.state.errors[fieldName]) {
@@ -165,6 +170,10 @@ export function reformClassMixin<T extends Base>(base: GenericClass<T>): Generic
   return ReformImpl as GenericClass<T & Reform>;
 }
 
+// TODO
+// what if we let the user do this?
+//
+// Object.assign(this, helpers);
 export function reformFunctionalMixin(instance: any) {
   mixinProperties.forEach(prop => {
     if (instance[prop] != null) {
