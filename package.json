@@ -9,7 +9,8 @@
     "build": "webpack && npm run dts",
     "start": "webpack --watch",
     "test": "jest --watch",
-    "test:travis": "jest --coverage"
+    "test:travis": "jest --coverage",
+    "build:readme": "node replaceFile.js"
   },
   "author": "franleplant@gmail.com",
   "license": "MIT",
