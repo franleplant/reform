@@ -56,6 +56,10 @@ npm install --save @franleplant/reform
 yarn add @franleplant/reform
 ```
 
+## Quick Start
+
+
+This is a complete working example of a React Form plus Reform validation
 
 ```javascript
 ```replaceFile
@@ -64,7 +68,6 @@ yarn add @franleplant/reform
 ```
 
 
-TODO quick start
 
 ## core
 

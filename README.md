@@ -56,6 +56,10 @@ npm install --save @franleplant/reform
 yarn add @franleplant/reform
 ```
 
+## Quick Start
+
+
+This is a complete working example of a React Form plus Reform validation
 
 ```javascript
 import React, { Component } from 'react';
@@ -190,7 +194,6 @@ export default class GettingStarted extends Component {
 ```
 
 
-TODO quick start
 
 ## core
 
