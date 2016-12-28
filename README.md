@@ -118,7 +118,7 @@ export default class GettingStarted extends Component {
   }
 
   /*
-   onSubmit hanlde
+   onSubmit handler
   */
   onSubmit = (e) => {
     e.preventDefault();
