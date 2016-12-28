@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import Reform from '../../build/index.js';
 
-export default class Form1 extends Component {
+export default class Form2 extends Component {
+  constructor(props) {
+    super(props)
+    Reform.reactMixins.functionalMixin(this);
+  }
+
   state = {
     message: '',
     fields: {
@@ -31,18 +36,6 @@ export default class Form1 extends Component {
     mustMatch: _ => 'Passwords must match',
     default: _ => 'Field is invalid',
   }
-  //TODO
-  // abstract this into a helper function
-  mapRulesToMessages = ([ruleKey, ruleValue]) => {
-    const creator = this.validationMessages[ruleKey] || this.validationMessages['default'];
-    return creator(ruleValue)
-  }
-
-  validateFormFromState = Reform.reactHelpers.validateFormFromState;
-  formIsValid = Reform.reactHelpers.formIsValid;
-  getFieldErrors = Reform.reactHelpers.getFieldErrors;
-  fieldIfError = Reform.reactHelpers.fieldIfError;
-  fieldIsValid = Reform.reactHelpers.fieldIsValid;
 
   onChangeFactory = (fieldName) => {
     return event => {
@@ -79,8 +72,7 @@ export default class Form1 extends Component {
           />
           <ul>
             {
-              this.getFieldErrors('name')
-              .map(this.mapRulesToMessages)
+              this.mapFieldErrors('name')
               .map((message, index) => (
                 <li key={index}>{message}</li>
               ))
@@ -93,8 +85,7 @@ export default class Form1 extends Component {
           <input type="email" value={this.state.fields.email} onChange={this.onChangeFactory('email')} />
           <ul>
             {
-              this.getFieldErrors('email')
-              .map(this.mapRulesToMessages)
+              this.mapFieldErrors('email')
               .map((message, index) => {
                 return (
                   <li key={index}>{message}</li>
@@ -124,8 +115,7 @@ export default class Form1 extends Component {
           <input type="password" value={this.state.fields.confirmPassword} onChange={this.onChangeFactory('confirmPassword')} />
           <ul>
             {
-              this.getFieldErrors('confirmPassword')
-              .map(this.mapRulesToMessages)
+              this.mapFieldErrors('confirmPassword')
               .map((message, index) => {
                 return (
                   <li key={index}>{message}</li>

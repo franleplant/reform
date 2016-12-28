@@ -59,7 +59,7 @@ yarn add @franleplant/reform
 
 ```javascript
 ```replaceFile
-./examples/src/Form2.js
+./examples/src/GettingStarted.js
 ```
 ```
 

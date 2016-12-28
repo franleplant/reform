@@ -85,18 +85,6 @@ export function formIsValid(this: ValidationAbleInstance): boolean {
   return core.formIsValid(fields, rules);
 }
 
-// @Unstable
-//TODO rename to mapErrors
-export function getFieldErrors(this: ValidationAbleInstance, fieldName: string) {
-  const result = [];
-  for (const ruleKey in this.state.errors[fieldName]) {
-    const errorResult = this.state.errors[fieldName][ruleKey]
-    if (!errorResult) continue;
-    result.push([ruleKey, this.validationRules[fieldName][ruleKey]])
-  }
-
-  return result;
-}
 
 export function fieldIfError(this: ValidationAbleInstance, fieldName: string, errorKey: string): boolean {
   checkInstance(this);
@@ -115,79 +103,25 @@ export function fieldIfError(this: ValidationAbleInstance, fieldName: string, er
   return false
 }
 
-
-const mixinProperties = [
-  'validateField',
-  'validateFieldFromState',
-  'fieldIsValid',
-  'validateForm',
-  'validateFormFromState',
-  'formIsValid',
-  'getFieldErrors',
-  'fieldIfError',
-];
-
-export interface Reform {
-  validateField: typeof validateField;
-  validateFieldFromState: typeof validateFieldFromState;
-  fieldIsValid: typeof fieldIsValid;
-  validateForm: typeof validateForm;
-  validateFormFromState: typeof validateFormFromState;
-  formIsValid: typeof formIsValid;
-  getFieldErrors: typeof getFieldErrors;
-  fieldIfError: typeof fieldIfError;
-}
-
-
-export interface Base {}
-export interface GenericClass<T> {
-  new (): T
-  readonly prototype: T;
-  displayName: string;
-}
-
-
-export function reformClassMixin<T extends Base>(base: GenericClass<T>): GenericClass<T & Reform> {
-  mixinProperties.forEach(prop => {
-    if (base[prop] != null) {
-      // TODO: better error message
-      throw new Error(`Wrapped Component already implements method, please use another one`)
-    }
-  })
-
-  class ReformImpl extends (base as GenericClass<Base>) implements Reform {
-    static displayName = `Reform(${base.displayName})`;
-    validateField = validateField;
-    validateFieldFromState = validateFieldFromState;
-    fieldIsValid = fieldIsValid;
-    validateForm = validateForm;
-    validateFormFromState = validateFormFromState;
-    formIsValid = formIsValid;
-    getFieldErrors = getFieldErrors;
-    fieldIfError = fieldIfError;
+// @Unstable
+export function fieldErrors(this: ValidationAbleInstance, fieldName: string): Array<Array<any>> {
+  const result = [];
+  for (const ruleKey in this.state.errors[fieldName]) {
+    const errorResult = this.state.errors[fieldName][ruleKey]
+    if (!errorResult) continue;
+    result.push([ruleKey, this.validationRules[fieldName][ruleKey]])
   }
 
-  return ReformImpl as GenericClass<T & Reform>;
+  return result;
 }
 
-// TODO
-// what if we let the user do this?
-//
-// Object.assign(this, helpers);
-export function reformFunctionalMixin(instance: any) {
-  mixinProperties.forEach(prop => {
-    if (instance[prop] != null) {
-      // TODO: better error message
-      throw new Error(`Wrapped Component already implements method, please use another one`)
-    }
-  })
-
-  instance.validateField = validateField;
-  instance.validateFieldFromState = validateFieldFromState;
-  instance.fieldIsValid = fieldIsValid;
-  instance.validateForm = validateForm;
-  instance.validateFormFromState = validateFormFromState;
-  instance.formIsValid = formIsValid;
-  instance.getFieldErrors = getFieldErrors;
-  instance.fieldIfError = fieldIfError;
+//@unstable
+export function mapFieldErrors(this: ValidationAbleInstance, fieldName: string): Array<string> {
+  //TODO check this.validationMessages exist
+  //TODO check this.validationMessages default exist
+  return fieldErrors.call(this, 'email')
+    .map(([ruleKey, ruleValue]: Array<any>) => {
+      const creator = this.validationMessages[ruleKey] || this.validationMessages['default'];
+      return creator(ruleValue, ruleKey, fieldName)
+    })
 }

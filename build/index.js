@@ -54,11 +54,14 @@ module.exports =
 	exports.validators = validators_1.default;
 	var reactHelpers = __webpack_require__(20);
 	exports.reactHelpers = reactHelpers;
+	var reactMixins = __webpack_require__(21);
+	exports.reactMixins = reactMixins;
 	var exposing = {
 	    types: types,
 	    core: core,
-	    reactHelpers: reactHelpers,
 	    validators: validators_1.default,
+	    reactHelpers: reactHelpers,
+	    reactMixins: reactMixins,
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = exposing;
@@ -183,7 +186,7 @@ module.exports =
 	"use strict";
 	var url_1 = __webpack_require__(5);
 	var time_1 = __webpack_require__(6);
-	var month_1 = __webpack_require__(7);
+	var month_1 = __webpack_require__(8);
 	var week_1 = __webpack_require__(9);
 	var minNumber_1 = __webpack_require__(10);
 	var maxNumber_1 = __webpack_require__(11);
@@ -241,31 +244,13 @@ module.exports =
 
 	"use strict";
 	// Official docs https://www.w3.org/TR/html5/infrastructure.html#valid-date-string
-	var utils_1 = __webpack_require__(8);
+	var utils_1 = __webpack_require__(7);
 	// Example "02:00"
 	exports.time = function (value) { return !!value && Number.isNaN(utils_1.parseTime(value)); };
 
 
 /***/ },
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	// Official docs https://www.w3.org/TR/html5/infrastructure.html#valid-month-string
-	var utils_1 = __webpack_require__(8);
-	exports.month = function (value) {
-	    if (!value)
-	        return false;
-	    var _a = utils_1.parseMonth(value), year = _a[0], month = _a[1];
-	    if (!year || !month) {
-	        return true;
-	    }
-	    return !(0 < year && 1 <= month && month <= 12);
-	};
-
-
-/***/ },
-/* 8 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -312,13 +297,31 @@ module.exports =
 
 
 /***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	// Official docs https://www.w3.org/TR/html5/infrastructure.html#valid-month-string
+	var utils_1 = __webpack_require__(7);
+	exports.month = function (value) {
+	    if (!value)
+	        return false;
+	    var _a = utils_1.parseMonth(value), year = _a[0], month = _a[1];
+	    if (!year || !month) {
+	        return true;
+	    }
+	    return !(0 < year && 1 <= month && month <= 12);
+	};
+
+
+/***/ },
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	// Official docs https://www.w3.org/TR/html5/infrastructure.html
 	// 2.4.5.8 Weeks
-	var utils_1 = __webpack_require__(8);
+	var utils_1 = __webpack_require__(7);
 	// Example week: "2016-W33"
 	exports.week = function (value) {
 	    if (!value) {
@@ -417,8 +420,8 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var utils_1 = __webpack_require__(8);
-	var month_1 = __webpack_require__(7);
+	var utils_1 = __webpack_require__(7);
+	var month_1 = __webpack_require__(8);
 	exports.minMonth = function (value, min) {
 	    if (!value)
 	        return false;
@@ -452,8 +455,8 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var utils_1 = __webpack_require__(8);
-	var month_1 = __webpack_require__(7);
+	var utils_1 = __webpack_require__(7);
+	var month_1 = __webpack_require__(8);
 	exports.maxMonth = function (value, max) {
 	    if (!value)
 	        return false;
@@ -487,7 +490,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var utils_1 = __webpack_require__(8);
+	var utils_1 = __webpack_require__(7);
 	exports.minTime = function (value, min) {
 	    if (!value)
 	        return false;
@@ -508,7 +511,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var utils_1 = __webpack_require__(8);
+	var utils_1 = __webpack_require__(7);
 	exports.maxTime = function (value, max) {
 	    if (!value)
 	        return false;
@@ -529,7 +532,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var utils_1 = __webpack_require__(8);
+	var utils_1 = __webpack_require__(7);
 	var week_1 = __webpack_require__(9);
 	exports.minWeek = function (value, min) {
 	    if (!value)
@@ -564,7 +567,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var utils_1 = __webpack_require__(8);
+	var utils_1 = __webpack_require__(7);
 	var week_1 = __webpack_require__(9);
 	exports.maxWeek = function (value, max) {
 	    if (!value)
@@ -599,11 +602,6 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
 	var core = __webpack_require__(2);
 	// Useful function for javascript land
 	// TODO: do not use it in prod? Check performance
@@ -680,19 +678,6 @@ module.exports =
 	    return core.formIsValid(fields, rules);
 	}
 	exports.formIsValid = formIsValid;
-	// @Unstable
-	//TODO rename to mapErrors
-	function getFieldErrors(fieldName) {
-	    var result = [];
-	    for (var ruleKey in this.state.errors[fieldName]) {
-	        var errorResult = this.state.errors[fieldName][ruleKey];
-	        if (!errorResult)
-	            continue;
-	        result.push([ruleKey, this.validationRules[fieldName][ruleKey]]);
-	    }
-	    return result;
-	}
-	exports.getFieldErrors = getFieldErrors;
 	function fieldIfError(fieldName, errorKey) {
 	    checkInstance(this);
 	    if (!this.state.fields.hasOwnProperty(fieldName)) {
@@ -707,17 +692,47 @@ module.exports =
 	    return false;
 	}
 	exports.fieldIfError = fieldIfError;
-	var mixinProperties = [
-	    'validateField',
-	    'validateFieldFromState',
-	    'fieldIsValid',
-	    'validateForm',
-	    'validateFormFromState',
-	    'formIsValid',
-	    'getFieldErrors',
-	    'fieldIfError',
-	];
-	function reformClassMixin(base) {
+	// @Unstable
+	function fieldErrors(fieldName) {
+	    var result = [];
+	    for (var ruleKey in this.state.errors[fieldName]) {
+	        var errorResult = this.state.errors[fieldName][ruleKey];
+	        if (!errorResult)
+	            continue;
+	        result.push([ruleKey, this.validationRules[fieldName][ruleKey]]);
+	    }
+	    return result;
+	}
+	exports.fieldErrors = fieldErrors;
+	//@unstable
+	function mapFieldErrors(fieldName) {
+	    var _this = this;
+	    //TODO check this.validationMessages exist
+	    //TODO check this.validationMessages default exist
+	    return fieldErrors.call(this, 'email')
+	        .map(function (_a) {
+	        var ruleKey = _a[0], ruleValue = _a[1];
+	        var creator = _this.validationMessages[ruleKey] || _this.validationMessages['default'];
+	        return creator(ruleValue, ruleKey, fieldName);
+	    });
+	}
+	exports.mapFieldErrors = mapFieldErrors;
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	//import { ValidationAbleInstance, Fields } from './types'
+	var helpers = __webpack_require__(20);
+	var mixinProperties = Object.keys(helpers);
+	function classMixin(base) {
 	    mixinProperties.forEach(function (prop) {
 	        if (base[prop] != null) {
 	            // TODO: better error message
@@ -728,14 +743,15 @@ module.exports =
 	        __extends(ReformImpl, _super);
 	        function ReformImpl() {
 	            var _this = _super.apply(this, arguments) || this;
-	            _this.validateField = validateField;
-	            _this.validateFieldFromState = validateFieldFromState;
-	            _this.fieldIsValid = fieldIsValid;
-	            _this.validateForm = validateForm;
-	            _this.validateFormFromState = validateFormFromState;
-	            _this.formIsValid = formIsValid;
-	            _this.getFieldErrors = getFieldErrors;
-	            _this.fieldIfError = fieldIfError;
+	            _this.validateField = helpers.validateField;
+	            _this.validateFieldFromState = helpers.validateFieldFromState;
+	            _this.fieldIsValid = helpers.fieldIsValid;
+	            _this.validateForm = helpers.validateForm;
+	            _this.validateFormFromState = helpers.validateFormFromState;
+	            _this.formIsValid = helpers.formIsValid;
+	            _this.fieldErrors = helpers.fieldErrors;
+	            _this.fieldIfError = helpers.fieldIfError;
+	            _this.mapFieldErrors = helpers.mapFieldErrors;
 	            return _this;
 	        }
 	        return ReformImpl;
@@ -743,28 +759,25 @@ module.exports =
 	    ReformImpl.displayName = "Reform(" + base.displayName + ")";
 	    return ReformImpl;
 	}
-	exports.reformClassMixin = reformClassMixin;
-	// TODO
-	// what if we let the user do this?
-	//
-	// Object.assign(this, helpers);
-	function reformFunctionalMixin(instance) {
+	exports.classMixin = classMixin;
+	function functionalMixin(instance) {
 	    mixinProperties.forEach(function (prop) {
 	        if (instance[prop] != null) {
 	            // TODO: better error message
 	            throw new Error("Wrapped Component already implements method, please use another one");
 	        }
 	    });
-	    instance.validateField = validateField;
-	    instance.validateFieldFromState = validateFieldFromState;
-	    instance.fieldIsValid = fieldIsValid;
-	    instance.validateForm = validateForm;
-	    instance.validateFormFromState = validateFormFromState;
-	    instance.formIsValid = formIsValid;
-	    instance.getFieldErrors = getFieldErrors;
-	    instance.fieldIfError = fieldIfError;
+	    instance.validateField = helpers.validateField;
+	    instance.validateFieldFromState = helpers.validateFieldFromState;
+	    instance.fieldIsValid = helpers.fieldIsValid;
+	    instance.validateForm = helpers.validateForm;
+	    instance.validateFormFromState = helpers.validateFormFromState;
+	    instance.formIsValid = helpers.formIsValid;
+	    instance.fieldErrors = helpers.fieldErrors;
+	    instance.fieldIfError = helpers.fieldIfError;
+	    instance.mapFieldErrors = helpers.mapFieldErrors;
 	}
-	exports.reformFunctionalMixin = reformFunctionalMixin;
+	exports.functionalMixin = functionalMixin;
 
 
 /***/ }

@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import Reform from '../../build/index.js';
 
 export default class Form1 extends Component {
+  constructor(props) {
+    super(props)
+    Reform.reactMixins.functionalMixin(this);
+  }
+
   state = {
     fields: {
       name: '',
@@ -29,11 +34,6 @@ export default class Form1 extends Component {
     minLength: minLength => `Field must be at least ${minLength} long`,
   }
 
-  validateField = Reform.reactHelpers.validateField;
-  formIsValid = Reform.reactHelpers.formIsValid;
-  getFieldErrors = Reform.reactHelpers.getFieldErrors;
-  fieldIfError = Reform.reactHelpers.fieldIfError;
-  fieldIsValid = Reform.reactHelpers.fieldIsValid;
 
   onChangeFactory = (fieldName) => {
     return event => {
@@ -65,11 +65,9 @@ export default class Form1 extends Component {
           <input type="email" value={this.state.fields.email} onChange={this.onChangeFactory('email')} />
           <ul>
             {
-              this.getFieldErrors('email').map(([ruleKey, ruleArg], index) => {
-                return (
-                  <li key={index}>{this.validationMessages[ruleKey](ruleArg)}</li>
-                );
-              })
+              this.mapFieldErrors('email').map((message, index) => (
+                <li key={index}>{message}</li>
+              ))
             }
           </ul>
         </div>
@@ -94,19 +92,9 @@ export default class Form1 extends Component {
           <input type="password" value={this.state.fields.confirmPassword} onChange={this.onChangeFactory('confirmPassword')} />
           <ul>
             {
-              this.getFieldErrors('confirmPassword').map(([ruleKey, ruleArg], index) => {
-                let message;
-
-                if (ruleKey === 'mustMatch') {
-                  message = 'passwords must match';
-                } else {
-                   message = this.validationMessages[ruleKey](ruleArg);
-                }
-
-                return (
-                  <li key={index}>{message}</li>
-                );
-              })
+              this.mapFieldErrors('confirmPassword').map((message, index) => (
+                <li key={index}>{message}</li>
+              ))
             }
           </ul>
         </div>
