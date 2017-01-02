@@ -10,7 +10,7 @@
     "start": "webpack --watch",
     "test": "jest --watch",
     "test:travis": "jest --coverage",
-    "build:readme": "node replaceFile.js"
+    "build:docs": "typedoc --out ./docs --name Reform --module commonjs --json docsContent.json src/index.ts && node docs-src/build.js"
   },
   "author": "franleplant@gmail.com",
   "license": "MIT",
@@ -39,5 +39,9 @@
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     }
+  },
+  "devDependencies": {
+    "handlebars": "^4.0.6",
+    "typedoc": "^0.5.3"
   }
 }

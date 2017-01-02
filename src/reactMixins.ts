@@ -2,6 +2,9 @@
 import * as helpers from './reactHelpers';
 
 
+/**
+ *  @hidden
+ */
 const mixinProperties = Object.keys(helpers);
 
 export interface Reform {

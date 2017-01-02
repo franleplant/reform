@@ -1,10 +1,23 @@
 import * as types from './types';
 import * as core from './core';
-import { default as validators } from './validators';
+import validators from './validators';
 import * as reactHelpers from './reactHelpers';
 import * as reactMixins from './reactMixins';
 export { types, core, validators, reactHelpers, reactMixins };
-declare const exposing: {
+/**
+ *  `default` export for the entire library.
+ *
+ *  ```javascript
+ *  // using the default export
+ *  import Reform from '@franleplant/reform'
+ *
+ *  // importing only the needed parts
+ *  import { reactMixins } from '@franleplant/reform'
+ *
+ *  ```
+ *
+ */
+declare const Reform: {
     types: typeof types;
     core: typeof core;
     validators: {
@@ -14,4 +27,4 @@ declare const exposing: {
     reactHelpers: typeof reactHelpers;
     reactMixins: typeof reactMixins;
 };
-export default exposing;
+export default Reform;

@@ -56,7 +56,20 @@ module.exports =
 	exports.reactHelpers = reactHelpers;
 	var reactMixins = __webpack_require__(21);
 	exports.reactMixins = reactMixins;
-	var exposing = {
+	/**
+	 *  `default` export for the entire library.
+	 *
+	 *  ```javascript
+	 *  // using the default export
+	 *  import Reform from '@franleplant/reform'
+	 *
+	 *  // importing only the needed parts
+	 *  import { reactMixins } from '@franleplant/reform'
+	 *
+	 *  ```
+	 *
+	 */
+	var Reform = {
 	    types: types,
 	    core: core,
 	    validators: validators_1.default,
@@ -64,7 +77,7 @@ module.exports =
 	    reactMixins: reactMixins,
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = exposing;
+	exports.default = Reform;
 
 
 /***/ },
@@ -81,7 +94,41 @@ module.exports =
 
 	"use strict";
 	var validators_1 = __webpack_require__(3);
+	/**
+	 *  @hidden
+	 */
 	var EMPTY_OBJECT = Object.freeze({});
+	/**
+	 * Validate `value` against `rules` and return which rules are valid with a value `false`
+	 * and which rules ar invalid with a value of `true`.
+	 *
+	 * One of the central functions in `Reform.core`.
+	 * Accepts inline, ad-hoc, validators as well as available ones (`required`, `pattern`, etc).
+	 *
+	 * Example
+	 *
+	 * ```javascript
+	 * // a required empty value should be invalid.
+	 * const fieldErrors = validateField('', {required: true});
+	 * assert(fieldErrors, {required: true});
+	 *
+	 * // an invalid email value
+	 * const fieldErrors = validateField('not an email', {email: true});
+	 * assert(fieldErrors, {email: true});
+	 * // a valid email value
+	 * const fieldErrors = validateField('email@domain.com', {email: true});
+	 * assert(fieldErrors, {email: false});
+	 *
+	 * // And of course you can combine them
+	 * const fieldErrors = validateField('email@domain.com', {required: true, email: true});
+	 * assert(fieldErrors, {required: false, email: false});
+	 * ```
+	 *
+	 * The most important part is that the result of this function, which is of the type `FieldErrors`
+	 * will be an object that has rule names as keys with boolean values. If the value is `true` it means
+	 * that there is an error, otherwise, it does not have an error, and that rule is passing.
+	 *
+	 */
 	function validateField(value, rules) {
 	    if (rules === void 0) { rules = {}; }
 	    var fieldErrors = {};
@@ -117,6 +164,13 @@ module.exports =
 	    var _a;
 	}
 	exports.fieldIsValid = fieldIsValid;
+	/**
+	 * A simple generalization of `validateField` but for an entire form.
+	 * It will basically run `validateField` on each `value` and each `rules`
+	 * indexed by `fieldName` and return `FormErrors` which is, an object that has
+	 * fieldNames as keys and `FieldErrors` as values.
+	 *
+	 */
 	function validateForm(fieldsValues, rulesMap) {
 	    if (rulesMap === void 0) { rulesMap = {}; }
 	    var formErrors = {};
@@ -200,6 +254,10 @@ module.exports =
 	var maxWeek_1 = __webpack_require__(19);
 	var isNumber = function (value) { return (!!value || value === 0) && !Number.isFinite(parseFloat(value)); };
 	var validatorMap = {
+	    /**
+	     *  Something to tell about required
+	     *  `alkasdlkasd`
+	     */
 	    required: function (value) { return !value; },
 	    email: function (value) { return !!value && !/\S+@\S+\.\S+/.test(value); },
 	    minLength: function (value, minLength) { return !!value && value.length < minLength; },
@@ -603,8 +661,12 @@ module.exports =
 
 	"use strict";
 	var core = __webpack_require__(2);
-	// Useful function for javascript land
-	// TODO: do not use it in prod? Check performance
+	/**
+	 * Useful function for javascript land (which needs dynamic checking)
+	 * @hidden
+	 * @TODO do not use it in prod? Check performance
+	 *
+	 */
 	function checkInstance(instance) {
 	    if (!instance.hasOwnProperty('validationRules')) {
 	        console.error("Reform: instance does not have validationRules attribute", instance);
@@ -623,7 +685,38 @@ module.exports =
 	        throw new Error("Reform: instance.state.errors not found");
 	    }
 	}
-	// Modified state
+	/**
+	 * Calculate the validity of a field, by `fieldName`, with a new value and store it in the
+	 * `this.state.errors[fieldName]`
+	 *
+	 * Will return, to improve usability, whether that field is valid or not.
+	 *
+	 * Use it if you are validating `onChange`, because `this.state.fields[fieldName]` (field's value)
+	 * wont be already set.
+	 *
+	 *
+	 * **Important**: This function needs to be executed in the context of a `ValidationAbleInstance`
+	 * and will **not** save the `value` of the field in the state, that's your job.
+	 *
+	 * You can either use `Reform.reactMixins` to automatically bind this function to your instance (`this` inside your Component)
+	 * and use them as regular methods, or you can use `bind`, `apply` and `call` to run them as functions.
+	 *
+	 * ```javascript
+	 * // Create a new bounded function (very similar to what `reactMixins` do)
+	 * const boundedFunction = Reform.reactHelpers.validateField.bind(this)
+	 *
+	 * // Run it in the proper context
+	 * const isValid = Reform.reactHelpers.validateField.call(this, 'myField', 'new value');
+	 * ```
+	 *
+	 * Ultimately, the way you use it does not matter as long as it fits your style.
+	 * However, if you are undecided, I suggest you start by using `React.reactMixins`
+	 *
+	 * **Important** this function **will modify your component state**
+	 *
+	 * This function will also set your form to `dirty` in `this.state.formIsDirty`
+	 *
+	 */
 	function validateField(fieldName, value) {
 	    checkInstance(this);
 	    var rules = this.validationRules[fieldName];
@@ -636,13 +729,32 @@ module.exports =
 	    return core.fieldIsValid(fieldErrors);
 	}
 	exports.validateField = validateField;
-	// Modified state
+	/**
+	 * A minimal variant of `validateField` but with the particularity of using the `value` already set in
+	 * your component's state.
+	 *
+	 * Use it if you are validating **after** updating your state, i.e.: `onBlur`, `onSubmit` et al,
+	 *
+	 * **Important** this function **will modify your component's state**
+	 *
+	 * This function will also set your form to `dirty` in `this.state.formIsDirty`
+	 *
+	 */
 	function validateFieldFromState(fieldName) {
 	    var value = this.state.fields[fieldName];
 	    return validateField.call(this, fieldName, value);
 	}
 	exports.validateFieldFromState = validateFieldFromState;
-	// Modified state
+	/**
+	 * Calculate the validity of your form from `fieldsValues` as parameters, update your state, and
+	 * return whether your form is valid or not.
+	 *
+	 * Unless you have a very specific use case, most of the time you should be using `validateFormFromState`.
+	 *
+	 * **Important** this function **will modify your component's state**
+	 *
+	 * This function will also set your form to `dirty` in `this.state.formIsDirty`
+	 */
 	function validateForm(fieldsValues) {
 	    checkInstance(this);
 	    var rulesMap = this.validationRules;
@@ -655,22 +767,42 @@ module.exports =
 	    return core.formIsValid(formErrors);
 	}
 	exports.validateForm = validateForm;
-	// Modified state
+	/**
+	 * Calculate the validity of your form from `fieldsValues` as parameters, update your state, and
+	 * return whether your form is valid or not.
+	 *
+	 * Use it `onSubmit`.
+	 *
+	 * **Important** this function **will modify your component's state**
+	 *
+	 * This function will also set your form to `dirty` in `this.state.formIsDirty`
+	 */
 	function validateFormFromState() {
 	    var values = this.state.fields;
 	    return validateForm.call(this, values);
 	}
 	exports.validateFormFromState = validateFormFromState;
-	// Important! This function will evaluate field validity based on the already
-	// calculated errors inside this.state.errors
-	// The naming is kind of contribed. This function only checks that there are no errors
-	// for the given field in this.state.errors
-	// while formIsValid calculated the validity of the form
+	/**
+	 * Calculate whether a field is valid or not depending on the already calculated
+	 * `fieldErrors` stored in the state.
+	 *
+	 * Use it to render _invalid_ state in your inputs.
+	 *
+	 * **Important** this function will **not re calculate your field's validity**
+	 */
 	function fieldIsValid(fieldName) {
 	    return core.fieldIsValid(this.state.errors[fieldName]);
 	}
 	exports.fieldIsValid = fieldIsValid;
-	// ReCalculates the validity of the form
+	/**
+	 *  Calculate the form's validity from the `values` in `this.state.fields` and
+	 *  the rules in `this.validationRules`.
+	 *
+	 *  This function, in contrast to `fieldIsValid`, **will effectively re-calculate your form's validity**
+	 *
+	 *  Use it to disable the submit button, or to prevent `onSubmit` callback from normal
+	 *  processing of the form.
+	 */
 	function formIsValid() {
 	    checkInstance(this);
 	    var fields = this.state.fields;
@@ -678,6 +810,17 @@ module.exports =
 	    return core.formIsValid(fields, rules);
 	}
 	exports.formIsValid = formIsValid;
+	/**
+	 * Simple helper to make conditional displaying field errors more ergonomic.
+	 *
+	 * Use it if to render field errors only if that field has a particular failed rule.
+	 *
+	 * ```javascript
+	 * { this.fieldIfError('myField', 'required') && <span> myField is required! </span>
+	 * ```
+	 *
+	 * This function is purely for ergonomic purposes.
+	 */
 	function fieldIfError(fieldName, errorKey) {
 	    checkInstance(this);
 	    if (!this.state.fields.hasOwnProperty(fieldName)) {
@@ -692,8 +835,30 @@ module.exports =
 	    return false;
 	}
 	exports.fieldIfError = fieldIfError;
-	// @Unstable
+	/**
+	 *
+	 * Another error helper to make displaying field errors easier. Instead of `fieldIfError` which
+	 * is more procedural, use this helper if you have an structured way of displaying your errors.
+	 *
+	 * It returns an Array of Failed Rules.
+	 * Each Failed Rule will be, in turn, an array of the form `['ruleName', 'ruleArgument']`.
+	 *
+	 * Where `ruleName` will be the name of a failed rule, for example `required`, `minLenght, etc.
+	 * And `ruleArgument` will be the value of the rule, as defined by the user. For example `true`, '6', etc, respectively.
+	 *
+	 * This will enable you to create functions, or components, that will render your errors _automatically_ for you.
+	 *
+	 * Check mapFieldErrors for an even more easier way.
+	 *
+	 * ```javascript
+	 * const errors = this.fieldErrors('myField')
+	 * assert(errors, [['required', true], ['minLenght', 6], ['pattern', 'banana|apple'])
+	 * ```
+	 *
+	 * @Unstable
+	 */
 	function fieldErrors(fieldName) {
+	    checkInstance(this);
 	    var result = [];
 	    for (var ruleKey in this.state.errors[fieldName]) {
 	        var errorResult = this.state.errors[fieldName][ruleKey];
@@ -704,11 +869,51 @@ module.exports =
 	    return result;
 	}
 	exports.fieldErrors = fieldErrors;
-	//@unstable
+	/**
+	 *
+	 * An abstraction of `fieldErrors` for structured field error rendering.
+	 * Use it if you have a very standard way of displaying field errors.
+	 *
+	 * This function will use the `MessageCreator` map defined in `this.validationMessages`.
+	 * It will map over the failed rules of a given field and create messages for you to display
+	 * how ever you want.
+	 *
+	 * ```javascript
+	 * //Define your validationMessages
+	 * this.validationMessages = {
+	 *   // Define a per-rule message creator
+	 *   minLenght: (ruleValue, ruleKey, fieldName) => `${fieldName} must have at least ${ruleValue} characters`
+	 *   // Define a fall back for missing message creators
+	 *   default: (ruleValue, ruleKey, fieldName) => `{fieldName} is invalid according to rule ${ruleKey}: ${ruleValue}`
+	 * }
+	 *
+	 * // Example validationRules
+	 * this.validationRules = {
+	 *   myField: {minLength: 6}
+	 * }
+	 *
+	 * // Use inside your render function
+	 * {this.mapFieldErrors('myField')
+	 *    .map(message => (
+	 *      <span>{message}</span>
+	 *    ))
+	 * }
+	 *
+	 * //In our example it will render something like this
+	 * <span>myField must have at least 6 characters</span>
+	 * ```
+	 *
+	 * @Unstable
+	 *
+	 */
 	function mapFieldErrors(fieldName) {
 	    var _this = this;
-	    //TODO check this.validationMessages exist
-	    //TODO check this.validationMessages default exist
+	    if (!this.hasOwnProperty('validationMessages')) {
+	        throw new Error("\"this.validationMessages\" is required when using \"mapFieldErrors\"");
+	    }
+	    if (!this.validationMessages.hasOwnProperty('default')) {
+	        throw new Error("\"this.validationMessages.default\" must be defined when using \"mapFieldErrors\"");
+	    }
 	    return fieldErrors.call(this, 'email')
 	        .map(function (_a) {
 	        var ruleKey = _a[0], ruleValue = _a[1];
@@ -731,6 +936,9 @@ module.exports =
 	};
 	//import { ValidationAbleInstance, Fields } from './types'
 	var helpers = __webpack_require__(20);
+	/**
+	 *  @hidden
+	 */
 	var mixinProperties = Object.keys(helpers);
 	function classMixin(base) {
 	    mixinProperties.forEach(function (prop) {
