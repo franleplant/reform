@@ -15,8 +15,14 @@ import { minWeek } from './minWeek'
 import { maxWeek } from './maxWeek'
 
 
+/**
+ * @hidden
+ */
 const isNumber: Validator = value => (!!value || value === 0) && !Number.isFinite(parseFloat(value));
 
+/**
+ * @hidden
+ */
 const validatorMap: ValidatorMap = {
   required: value => !value,
   email: (value: string) => !!value && !/\S+@\S+\.\S+/.test(value),

@@ -10,7 +10,7 @@ const FIRST_CHILDREN_ORDER = {
   'validators': 6,
   'types': 7,
   'officialValidators/index': 8,
-  'utils': 9,
+  'utils': 200,
 }
 
 const removeQuotes = str => str.replace(/"/g, '')
@@ -21,9 +21,9 @@ function removeQuotesFromName(module) {
 
 function ignoredModules(module) {
   //TODO dont ignore but push the bottom
-  if (module.name.includes('officialValidators') && module.name !== 'officialValidators/index') {
-    return false;
-  }
+  //if (module.name.includes('officialValidators') && module.name !== 'officialValidators/index') {
+    //return false;
+  //}
 
   return true
 }
@@ -45,7 +45,7 @@ docsContent.children = docsContent.children
     return a_order > b_order ? 1 : -1;
   })
   .map(module => {
-    module.children = module.children
+    module.children = (module.children || [])
       .filter(hiddenDeclarations)
 
     return module;

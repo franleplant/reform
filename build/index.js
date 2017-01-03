@@ -240,7 +240,13 @@ module.exports =
 	const maxTime_1 = __webpack_require__(17);
 	const minWeek_1 = __webpack_require__(18);
 	const maxWeek_1 = __webpack_require__(19);
+	/**
+	 * @hidden
+	 */
 	const isNumber = value => (!!value || value === 0) && !Number.isFinite(parseFloat(value));
+	/**
+	 * @hidden
+	 */
 	const validatorMap = {
 	    required: value => !value,
 	    email: (value) => !!value && !/\S+@\S+\.\S+/.test(value),
@@ -275,7 +281,13 @@ module.exports =
 /***/ function(module, exports) {
 
 	"use strict";
+	/**
+	 * @hidden
+	 */
 	const expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/i;
+	/**
+	 * @hidden
+	 */
 	const re = new RegExp(expression);
 	exports.url = (value) => !!value && !re.test(value);
 

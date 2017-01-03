@@ -465,43 +465,146 @@ validationRules: [RulesMap](#user-content-#12)
 </big></pre>
 # officialValidators/index <small>Module [src](./src/officialValidators/index.ts#L1)</small> <a id="#124"></a>
 
-## isNumber <small>Function [src](./src/officialValidators/index.ts#L18)</small> <a id="#125"></a>
+# officialValidators/minMonth <small>Module [src](./src/officialValidators/minMonth.ts#L1)</small> <a id="#94"></a>
+
+## minMonth <small>Function [src](./src/officialValidators/minMonth.ts#L4)</small> <a id="#95"></a>
 
 
 
 <big><pre>
-isNumber(value: any): boolean
+minMonth(value: string, min: string): boolean
 </pre></big>
 
-## validatorMap <small>Object literal [src](./src/officialValidators/index.ts#L20)</small> <a id="#128"></a>
+# officialValidators/minNumber <small>Module [src](./src/officialValidators/minNumber.ts#L1)</small> <a id="#74"></a>
+
+## minNumber <small>Function [src](./src/officialValidators/minNumber.ts#L1)</small> <a id="#75"></a>
+
+
 
 <big><pre>
-{
-maxDate: Function
-maxMonth: Function
-maxNumber: Function
-maxTime: Function
-maxWeek: Function
-minDate: Function
-minMonth: Function
-minNumber: Function
-minTime: Function
-minWeek: Function
-month: Function
-number: [Validator](#user-content-#2)
-range: [Validator](#user-content-#2)
-time: Function
-url: Function
-week: Function
-color: color(value: any): boolean
-date: date(value: any): boolean
-email: email(value: string): boolean
-maxLength: maxLength(value: string, maxLength: number): boolean
-minLength: minLength(value: string, minLength: number): boolean
-pattern: pattern(value: string, re: RegExp): boolean
-required: required(value: any): boolean
-}
-</big></pre>
+minNumber(value: number | string, min: number | string): boolean
+</pre></big>
+
+# officialValidators/maxMonth <small>Module [src](./src/officialValidators/maxMonth.ts#L1)</small> <a id="#99"></a>
+
+## maxMonth <small>Function [src](./src/officialValidators/maxMonth.ts#L4)</small> <a id="#100"></a>
+
+
+
+<big><pre>
+maxMonth(value: string, max: string): boolean
+</pre></big>
+
+# officialValidators/minWeek <small>Module [src](./src/officialValidators/minWeek.ts#L1)</small> <a id="#114"></a>
+
+## minWeek <small>Function [src](./src/officialValidators/minWeek.ts#L4)</small> <a id="#115"></a>
+
+
+
+<big><pre>
+minWeek(value: string, min: string): boolean
+</pre></big>
+
+# officialValidators/minDate <small>Module [src](./src/officialValidators/minDate.ts#L1)</small> <a id="#84"></a>
+
+## minDate <small>Function [src](./src/officialValidators/minDate.ts#L1)</small> <a id="#85"></a>
+
+
+
+<big><pre>
+minDate(value: string, min: string): boolean
+</pre></big>
+
+# officialValidators/time <small>Module [src](./src/officialValidators/time.ts#L1)</small> <a id="#62"></a>
+
+## time <small>Function [src](./src/officialValidators/time.ts#L5)</small> <a id="#63"></a>
+
+
+
+<big><pre>
+time(value: string): boolean
+</pre></big>
+
+# officialValidators/url <small>Module [src](./src/officialValidators/url.ts#L1)</small> <a id="#42"></a>
+
+## url <small>Function [src](./src/officialValidators/url.ts#L12)</small> <a id="#45"></a>
+
+
+
+<big><pre>
+url(value: string): boolean
+</pre></big>
+
+# officialValidators/week <small>Module [src](./src/officialValidators/week.ts#L1)</small> <a id="#70"></a>
+
+## week <small>Function [src](./src/officialValidators/week.ts#L6)</small> <a id="#71"></a>
+
+
+
+<big><pre>
+week(value: string): boolean
+</pre></big>
+
+# officialValidators/maxDate <small>Module [src](./src/officialValidators/maxDate.ts#L1)</small> <a id="#89"></a>
+
+## maxDate <small>Function [src](./src/officialValidators/maxDate.ts#L1)</small> <a id="#90"></a>
+
+
+
+<big><pre>
+maxDate(value: string, max: string): boolean
+</pre></big>
+
+# officialValidators/maxWeek <small>Module [src](./src/officialValidators/maxWeek.ts#L1)</small> <a id="#119"></a>
+
+## maxWeek <small>Function [src](./src/officialValidators/maxWeek.ts#L4)</small> <a id="#120"></a>
+
+
+
+<big><pre>
+maxWeek(value: string, max: string): boolean
+</pre></big>
+
+# officialValidators/maxNumber <small>Module [src](./src/officialValidators/maxNumber.ts#L1)</small> <a id="#79"></a>
+
+## maxNumber <small>Function [src](./src/officialValidators/maxNumber.ts#L1)</small> <a id="#80"></a>
+
+
+
+<big><pre>
+maxNumber(value: number | string, max: number | string): boolean
+</pre></big>
+
+# officialValidators/maxTime <small>Module [src](./src/officialValidators/maxTime.ts#L1)</small> <a id="#109"></a>
+
+## maxTime <small>Function [src](./src/officialValidators/maxTime.ts#L4)</small> <a id="#110"></a>
+
+
+
+<big><pre>
+maxTime(value: string, max: string): boolean
+</pre></big>
+
+# officialValidators/minTime <small>Module [src](./src/officialValidators/minTime.ts#L1)</small> <a id="#104"></a>
+
+## minTime <small>Function [src](./src/officialValidators/minTime.ts#L4)</small> <a id="#105"></a>
+
+
+
+<big><pre>
+minTime(value: string, min: string): boolean
+</pre></big>
+
+# officialValidators/month <small>Module [src](./src/officialValidators/month.ts#L1)</small> <a id="#66"></a>
+
+## month <small>Function [src](./src/officialValidators/month.ts#L4)</small> <a id="#67"></a>
+
+
+
+<big><pre>
+month(value: string): boolean
+</pre></big>
+
 # utils <small>Module [src](./src/utils.ts#L1)</small> <a id="#48"></a>
 
 ## parseMonth <small>Function [src](./src/utils.ts#L2)</small> <a id="#49"></a>
