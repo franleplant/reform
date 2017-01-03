@@ -456,7 +456,13 @@ validationRules: [RulesMap](#user-content-#12)
 \[ruleKey: string\]: [Validator](#user-content-#2)
 }
 </big></pre>
+## MessageCreator <small>Type alias [src](./src/types.ts#L27)</small> <a id="#36"></a>
 
+<big><pre>
+{
+(ruleArgument: any, ruleKey: string, fieldName: string): string
+}
+</big></pre>
 # officialValidators/index <small>Module [src](./src/officialValidators/index.ts#L1)</small> <a id="#124"></a>
 
 ## isNumber <small>Function [src](./src/officialValidators/index.ts#L18)</small> <a id="#125"></a>

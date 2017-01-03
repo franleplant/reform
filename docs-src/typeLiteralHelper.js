@@ -1,6 +1,7 @@
 const typeHelper = require('./typeHelper');
 const commentsHelper = require('./commentsHelper')
 const itemTitleHelper = require('./itemTitleHelper');
+const fnHelper = require('./fnHelper')
 
 module.exports =
 function typeLiteralHelper(item = {}, inline, indent = 0) {
@@ -27,6 +28,14 @@ function typeLiteralHelper(item = {}, inline, indent = 0) {
       return `\\[${param.name}: ${require('./typeHelper')(param.type, true)}\\]: ${require('./typeHelper')(ind.type)}`
     })
     .join(';\n')
+    )
+  }
+
+  if (item.signatures) {
+    content.push(item.signatures.map(sig => {
+        return `${fnHelper.fnSignatureHelper(sig)}`;
+      })
+      .join(';\n')
     )
   }
 

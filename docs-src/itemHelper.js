@@ -24,6 +24,8 @@ function itemHelper(item, inline = false, indent = 0) {
       return propertyHelper(item, inline, indent)
     case 'Type literal':
       return typeLiteralHelper(item, inline, indent)
+    case 'Type alias':
+      return require('./typeAliasHelper')(item, inline)
     default:
       return ''
   }
