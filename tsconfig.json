@@ -9,6 +9,7 @@
     "jsx": "react",
     "noUnusedParameters": true,
     "noUnusedLocals": true,
+    "types": ["node"],
     "suppressImplicitAnyIndexErrors": true
   },
 
