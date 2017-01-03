@@ -35,7 +35,7 @@ function typeHelper(type = {}, inline, indent = 0) {
 
   let typeStr;
   if (type.id) {
-    typeStr = `[${type.name}](#${type.id})`
+    typeStr = `[${type.name}](#user-content-#${type.id})`
   } else {
     typeStr = `${type.name}`
   }

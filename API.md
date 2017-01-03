@@ -42,14 +42,14 @@ This is useful if you already calculated `FieldErrors` in another event. In this
 way you can avoid re calculating them again each time you want to know if the field is valid.
 
 <big><pre>
-fieldIsValid(value: string | number, rules: [Rules](#9)): boolean
+fieldIsValid(value: string | number, rules: [Rules](#user-content-#9)): boolean
 </pre></big>
 
 
 
 
 <big><pre>
-fieldIsValid(fieldErrors: [FieldErrors](#15)): boolean
+fieldIsValid(fieldErrors: [FieldErrors](#user-content-#15)): boolean
 </pre></big>
 
 ## formIsValid <small>Function [src](./src/core.ts#L119)</small> <a id="#195"></a>
@@ -60,14 +60,14 @@ two variants, the first one accepts values and rules and calculates the
 one accepts an already calculated `formErrors`.
 
 <big><pre>
-formIsValid(fieldsValues: [Fields](#21), rulesMap: [RulesMap](#12)): boolean
+formIsValid(fieldsValues: [Fields](#user-content-#21), rulesMap: [RulesMap](#user-content-#12)): boolean
 </pre></big>
 
 
 
 
 <big><pre>
-formIsValid(formErrors: [FormErrors](#18)): boolean
+formIsValid(formErrors: [FormErrors](#user-content-#18)): boolean
 </pre></big>
 
 ## validateField <small>Function [src](./src/core.ts#L41)</small> <a id="#181"></a>
@@ -102,7 +102,7 @@ will be an object that has rule names as keys with boolean values. If the value 
 that there is an error, otherwise, it does not have an error, and that rule is passing.
 
 <big><pre>
-validateField(value: string | number, rules: [Rules](#9)): [FieldErrors](#15)
+validateField(value: string | number, rules: [Rules](#user-content-#9)): [FieldErrors](#user-content-#15)
 </pre></big>
 
 ## validateForm <small>Function [src](./src/core.ts#L100)</small> <a id="#191"></a>
@@ -113,7 +113,7 @@ indexed by `fieldName` and return `FormErrors` which is, an object that has
 fieldNames as keys and `FieldErrors` as values.
 
 <big><pre>
-validateForm(fieldsValues: [Fields](#21), rulesMap: [RulesMap](#12)): [FormErrors](#18)
+validateForm(fieldsValues: [Fields](#user-content-#21), rulesMap: [RulesMap](#user-content-#12)): [FormErrors](#user-content-#18)
 </pre></big>
 
 # reactHelpers <small>Module [src](./src/reactHelpers.ts#L1)</small> <a id="#201"></a>
@@ -144,7 +144,7 @@ Tags
 - unstable
 
 <big><pre>
-fieldErrors(this: [ValidationAbleInstance](#24), fieldName: string): Array\<Array\<any\>\>
+fieldErrors(this: [ValidationAbleInstance](#user-content-#24), fieldName: string): Array\<Array\<any\>\>
 </pre></big>
 
 ## fieldIfError <small>Function [src](./src/reactHelpers.ts#L174)</small> <a id="#228"></a>
@@ -160,7 +160,7 @@ Use it if to render field errors only if that field has a particular failed rule
 This function is purely for ergonomic purposes.
 
 <big><pre>
-fieldIfError(this: [ValidationAbleInstance](#24), fieldName: string, errorKey: string): boolean
+fieldIfError(this: [ValidationAbleInstance](#user-content-#24), fieldName: string, errorKey: string): boolean
 </pre></big>
 
 ## fieldIsValid <small>Function [src](./src/reactHelpers.ts#L141)</small> <a id="#221"></a>
@@ -173,7 +173,7 @@ Use it to render _invalid_ state in your inputs.
 **Important** this function will **not re calculate your field's validity**
 
 <big><pre>
-fieldIsValid(this: [ValidationAbleInstance](#24), fieldName: string): boolean
+fieldIsValid(this: [ValidationAbleInstance](#user-content-#24), fieldName: string): boolean
 </pre></big>
 
 ## formIsValid <small>Function [src](./src/reactHelpers.ts#L155)</small> <a id="#225"></a>
@@ -187,7 +187,7 @@ Use it to disable the submit button, or to prevent `onSubmit` callback from norm
 processing of the form.
 
 <big><pre>
-formIsValid(this: [ValidationAbleInstance](#24)): boolean
+formIsValid(this: [ValidationAbleInstance](#user-content-#24)): boolean
 </pre></big>
 
 ## mapFieldErrors <small>Function [src](./src/reactHelpers.ts#L262)</small> <a id="#237"></a>
@@ -230,7 +230,7 @@ Tags
 - unstable
 
 <big><pre>
-mapFieldErrors(this: [ValidationAbleInstance](#24), fieldName: string): Array\<string\>
+mapFieldErrors(this: [ValidationAbleInstance](#user-content-#24), fieldName: string): Array\<string\>
 </pre></big>
 
 ## validateField <small>Function [src](./src/reactHelpers.ts#L65)</small> <a id="#205"></a>
@@ -266,7 +266,7 @@ However, if you are undecided, I suggest you start by using `React.reactMixins`
 This function will also set your form to `dirty` in `this.state.formIsDirty`
 
 <big><pre>
-validateField(this: [ValidationAbleInstance](#24), fieldName: string, value: any): boolean
+validateField(this: [ValidationAbleInstance](#user-content-#24), fieldName: string, value: any): boolean
 </pre></big>
 
 ## validateFieldFromState <small>Function [src](./src/reactHelpers.ts#L89)</small> <a id="#210"></a>
@@ -281,7 +281,7 @@ Use it if you are validating **after** updating your state, i.e.: `onBlur`, `onS
 This function will also set your form to `dirty` in `this.state.formIsDirty`
 
 <big><pre>
-validateFieldFromState(this: [ValidationAbleInstance](#24), fieldName: string): boolean
+validateFieldFromState(this: [ValidationAbleInstance](#user-content-#24), fieldName: string): boolean
 </pre></big>
 
 ## validateForm <small>Function [src](./src/reactHelpers.ts#L104)</small> <a id="#214"></a>
@@ -296,7 +296,7 @@ Unless you have a very specific use case, most of the time you should be using `
 This function will also set your form to `dirty` in `this.state.formIsDirty`
 
 <big><pre>
-validateForm(this: [ValidationAbleInstance](#24), fieldsValues: [Fields](#21)): boolean
+validateForm(this: [ValidationAbleInstance](#user-content-#24), fieldsValues: [Fields](#user-content-#21)): boolean
 </pre></big>
 
 ## validateFormFromState <small>Function [src](./src/reactHelpers.ts#L127)</small> <a id="#218"></a>
@@ -311,7 +311,7 @@ Use it `onSubmit`.
 This function will also set your form to `dirty` in `this.state.formIsDirty`
 
 <big><pre>
-validateFormFromState(this: [ValidationAbleInstance](#24)): boolean
+validateFormFromState(this: [ValidationAbleInstance](#user-content-#24)): boolean
 </pre></big>
 
 # reactMixins <small>Module [src](./src/reactMixins.ts#L1)</small> <a id="#241"></a>
@@ -335,15 +335,15 @@ prototype: T
 
 <big><pre>
 {
-fieldErrors: [fieldErrors](#233);
-fieldIfError: [fieldIfError](#228);
-fieldIsValid: [fieldIsValid](#221);
-formIsValid: [formIsValid](#225);
-mapFieldErrors: [mapFieldErrors](#237);
-validateField: [validateField](#205);
-validateFieldFromState: [validateFieldFromState](#210);
-validateForm: [validateForm](#214);
-validateFormFromState: [validateFormFromState](#218)
+fieldErrors: [fieldErrors](#user-content-#233);
+fieldIfError: [fieldIfError](#user-content-#228);
+fieldIsValid: [fieldIsValid](#user-content-#221);
+formIsValid: [formIsValid](#user-content-#225);
+mapFieldErrors: [mapFieldErrors](#user-content-#237);
+validateField: [validateField](#user-content-#205);
+validateFieldFromState: [validateFieldFromState](#user-content-#210);
+validateForm: [validateForm](#user-content-#214);
+validateFormFromState: [validateFormFromState](#user-content-#218)
 }
 </big></pre>
 ## classMixin <small>Function [src](./src/reactMixins.ts#L31)</small> <a id="#260"></a>
@@ -351,7 +351,7 @@ validateFormFromState: [validateFormFromState](#218)
 
 
 <big><pre>
-classMixin(base: [GenericClass](#253)\<T\>): [GenericClass](#253)\<T & Reform\>
+classMixin(base: [GenericClass](#user-content-#253)\<T\>): [GenericClass](#user-content-#253)\<T & Reform\>
 </pre></big>
 
 ## functionalMixin <small>Function [src](./src/reactMixins.ts#L55)</small> <a id="#264"></a>
@@ -368,8 +368,8 @@ functionalMixin(instance: any): void
 
 <big><pre>
 {
-get: get(key: string): [Validator](#2)
-set: set(key: string, value: [Validator](#2)): void
+get: get(key: string): [Validator](#user-content-#2)
+set: set(key: string, value: [Validator](#user-content-#2)): void
 }
 </big></pre>
 # types <small>Module [src](./src/types.ts#L1)</small> <a id="#1"></a>
@@ -392,21 +392,21 @@ set: set(key: string, value: [Validator](#2)): void
 
 <big><pre>
 {
-\[fieldName: string\]: [FieldErrors](#15)
+\[fieldName: string\]: [FieldErrors](#user-content-#15)
 }
 </big></pre>
 ## Rules <small>Interface [src](./src/types.ts#L9)</small> <a id="#9"></a>
 
 <big><pre>
 {
-\[ruleKey: string\]: boolean | string | [Validator](#2) | any
+\[ruleKey: string\]: boolean | string | [Validator](#user-content-#2) | any
 }
 </big></pre>
 ## RulesMap <small>Interface [src](./src/types.ts#L13)</small> <a id="#12"></a>
 
 <big><pre>
 {
-\[fieldName: string\]: [Rules](#9)
+\[fieldName: string\]: [Rules](#user-content-#9)
 }
 </big></pre>
 ## ValidationAbleInstance <small>Interface [src](./src/types.ts#L29)</small> <a id="#24"></a>
@@ -415,14 +415,14 @@ set: set(key: string, value: [Validator](#2)): void
 {
 setState: any;
 state: {
-  errors: [FormErrors](#18);
-  fields: [Fields](#21);
+  errors: [FormErrors](#user-content-#18);
+  fields: [Fields](#user-content-#21);
   formIsDirty: boolean
 };
 validationMessages: {
-  \[ruleKey: string\]: [MessageCreator](#36)
+  \[ruleKey: string\]: [MessageCreator](#user-content-#36)
 };
-validationRules: [RulesMap](#12)
+validationRules: [RulesMap](#user-content-#12)
 }
 </big></pre>
 ## Validator <small>Interface [src](./src/types.ts#L1)</small> <a id="#2"></a>
@@ -435,7 +435,7 @@ validationRules: [RulesMap](#12)
 
 <big><pre>
 {
-\[ruleKey: string\]: [Validator](#2)
+\[ruleKey: string\]: [Validator](#user-content-#2)
 }
 </big></pre>
 
@@ -464,8 +464,8 @@ minNumber: Function
 minTime: Function
 minWeek: Function
 month: Function
-number: [Validator](#2)
-range: [Validator](#2)
+number: [Validator](#user-content-#2)
+range: [Validator](#user-content-#2)
 time: Function
 url: Function
 week: Function
