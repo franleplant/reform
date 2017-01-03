@@ -7,5 +7,5 @@ function variableHelper(item = {}) {
     return '[./src/validators](./src/validators)'
   }
 
-  return `${typeHelper(item.type)}`
+  return `${require('./typeHelper')(item.type)}`
 }

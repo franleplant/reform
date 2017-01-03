@@ -2,6 +2,6 @@ const typeHelper = require('./typeHelper');
 
 
 module.exports =
-function propertyHelper(item = {}, inline) {
-  return `${item.name}: ${typeHelper(item.type)}`
+function propertyHelper(item = {}, inline, indent) {
+  return `${item.name}: ${require('./typeHelper')(item.type, true, indent)}`
 }

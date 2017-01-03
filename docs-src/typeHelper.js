@@ -1,9 +1,10 @@
 const absoluteToRelativePathHelper = require('./absoluteToRelativePathHelper.js');
+const itemHelper = require('./itemHelper')
 
 
 
 module.exports =
-function typeHelper(type = {}) {
+function typeHelper(type = {}, inline, indent = 0) {
   //Special case for re exported modules
   if (type.type === 'reference' && type.name.includes('/src/')) {
     const name = absoluteToRelativePathHelper(type.name.replace(/"/g,''))
@@ -22,7 +23,10 @@ function typeHelper(type = {}) {
     return 'Function'
   }
 
-  //TODO "type": "reflection",
+  // Inline Type literal declarations
+  if (type.type === 'reflection' && type.declaration && type.declaration.kindString === 'Type literal') {
+    return  require('./itemHelper')(type.declaration, inline, indent);
+  }
 
   // sums are broken
   //if (type.type === 'unknown' && type.name.includes('&')) {

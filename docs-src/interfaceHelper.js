@@ -1,42 +1,47 @@
 const commentsHelper = require('./commentsHelper')
 const itemTitleHelper = require('./itemTitleHelper');
+const itemHelper = require('./itemHelper');
 const typeHelper = require('./typeHelper');
 
 
 module.exports =
-function interfaceHelper(item ={}, inline){
-  return `## ${itemTitleHelper(item)}
-  ${commentsHelper(item.comment)}
-  
-  `
-  //let rest = '';
+function interfaceHelper(item = {}, inline){
 
-  //if (item.indexSignature) {
-    //const res = item.indexSignature.map(ind => {
-      //const params = ind.parameters
-      //const param = params[0]
-      //return `\\[${param.name}: ${typeHelper(param.type, true)}\\]: ${typeHelper(ind.type)}`
-    //})
-    //.join(';\n')
+  const content = [];
 
-    //rest += res;
-  //}
+  if (item.children) {
+    content.push(item.children.map(child => {
+        return `${require('./itemHelper')(child, true, 2)}`
+      })
+      .join(';\n')
+    )
+  }
 
-  //if (item.children) {
-    //const res = item.children.map(child => {
-      //return `${itemHelper(child, true)}`
-    //})
-    //.join(';\n\n')
-    //rest += res;
-  //}
+  if (item.indexSignature) {
+    content.push(item.indexSignature.map(ind => {
+        const params = ind.parameters
+        const param = params[0]
+        return `\\[${param.name}: ${typeHelper(param.type, true)}\\]: ${typeHelper(ind.type)}`
+      })
+      .join(';\n')
+    )
+  }
 
-  //return `
+  const obj = [
+    '<big><pre>',
+    '{',
+    ...content,
+    '}',
+    '</big></pre>',
+  ]
 
-     //\`{\`
+  if (inline) {
+    return obj.join('\n');
+  }
 
-     //${rest}
-
-     //\`}\`
-  //`
-
+  return [
+    `## ${itemTitleHelper(item)}`,
+    `${commentsHelper(item.comment)}`,
+    ...obj,
+  ].join('\n');
 }

@@ -317,17 +317,35 @@ validateFormFromState(this: [ValidationAbleInstance](#24)): boolean
 # reactMixins <small>Module [src](./src/reactMixins.ts#L1)</small> <a id="#241"></a>
 
 ## Base <small>Interface [src](./src/reactMixins.ts#L23)</small> <a id="#252"></a>
-  
-  
-  
+
+<big><pre>
+{
+}
+</big></pre>
 ## GenericClass <small>Interface [src](./src/reactMixins.ts#L24)</small> <a id="#253"></a>
-  
-  
-  
+
+<big><pre>
+{
+;
+displayName: string;
+prototype: T
+}
+</big></pre>
 ## Reform <small>Interface [src](./src/reactMixins.ts#L10)</small> <a id="#242"></a>
-  
-  
-  
+
+<big><pre>
+{
+fieldErrors: [fieldErrors](#233);
+fieldIfError: [fieldIfError](#228);
+fieldIsValid: [fieldIsValid](#221);
+formIsValid: [formIsValid](#225);
+mapFieldErrors: [mapFieldErrors](#237);
+validateField: [validateField](#205);
+validateFieldFromState: [validateFieldFromState](#210);
+validateForm: [validateForm](#214);
+validateFormFromState: [validateFormFromState](#218)
+}
+</big></pre>
 ## classMixin <small>Function [src](./src/reactMixins.ts#L31)</small> <a id="#260"></a>
 
 
@@ -357,37 +375,69 @@ set: set(key: string, value: [Validator](#2)): void
 # types <small>Module [src](./src/types.ts#L1)</small> <a id="#1"></a>
 
 ## FieldErrors <small>Interface [src](./src/types.ts#L17)</small> <a id="#15"></a>
-  
-  
-  
+
+<big><pre>
+{
+\[ruleKey: string\]: boolean
+}
+</big></pre>
 ## Fields <small>Interface [src](./src/types.ts#L25)</small> <a id="#21"></a>
-  
-  
-  
+
+<big><pre>
+{
+\[fieldName: string\]: any
+}
+</big></pre>
 ## FormErrors <small>Interface [src](./src/types.ts#L21)</small> <a id="#18"></a>
-  
-  
-  
+
+<big><pre>
+{
+\[fieldName: string\]: [FieldErrors](#15)
+}
+</big></pre>
 ## Rules <small>Interface [src](./src/types.ts#L9)</small> <a id="#9"></a>
-  
-  
-  
+
+<big><pre>
+{
+\[ruleKey: string\]: boolean | string | [Validator](#2) | any
+}
+</big></pre>
 ## RulesMap <small>Interface [src](./src/types.ts#L13)</small> <a id="#12"></a>
-  
-  
-  
+
+<big><pre>
+{
+\[fieldName: string\]: [Rules](#9)
+}
+</big></pre>
 ## ValidationAbleInstance <small>Interface [src](./src/types.ts#L29)</small> <a id="#24"></a>
-  
-  
-  
+
+<big><pre>
+{
+setState: any;
+state: {
+  errors: [FormErrors](#18);
+  fields: [Fields](#21);
+  formIsDirty: boolean
+};
+validationMessages: {
+  \[ruleKey: string\]: [MessageCreator](#36)
+};
+validationRules: [RulesMap](#12)
+}
+</big></pre>
 ## Validator <small>Interface [src](./src/types.ts#L1)</small> <a id="#2"></a>
-  
-  
-  
+
+<big><pre>
+{
+}
+</big></pre>
 ## ValidatorMap <small>Interface [src](./src/types.ts#L5)</small> <a id="#6"></a>
-  
-  
-  
+
+<big><pre>
+{
+\[ruleKey: string\]: [Validator](#2)
+}
+</big></pre>
 
 # officialValidators/index <small>Module [src](./src/officialValidators/index.ts#L1)</small> <a id="#124"></a>
 
