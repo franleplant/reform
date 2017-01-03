@@ -2,8 +2,6 @@
 
 A form validation _library_ for Javascript, Typescript, React and the web!
 
-[API docs](./API.md);
-
 ## Introduction
 
 Reform started as a form validation library for React, but it has come a long way
@@ -65,6 +63,8 @@ This is a complete working example of a React Form plus Reform validation
 
 ```javascript
 import React, { Component } from 'react';
+// In your case it will be something like this
+//import Reform from '@franleplant/reform';
 import Reform from '../../build/index.js';
 
 /*
@@ -116,8 +116,9 @@ export default class GettingStarted extends Component {
     return event => {
       const value = event.target.value;
       this.setState(state => {
+        state.message = ''
         state.fields[fieldName] = value;
-        state.errors[fieldName] = {};
+        state.errors = {};
         return state;
       });
     }
@@ -194,6 +195,10 @@ export default class GettingStarted extends Component {
 }
 ```
 
+
+## API docs
+
+TODO link
 
 ## React Helpers Guide
 
@@ -413,12 +418,6 @@ this.validationMessages = {
 }
 ```
 
-
-## Core
-
-TODO: An overview of the core.
-
-For now check the API docs that have a lot of docs about it.
 
 ## Common Solutions to Common Problems
 

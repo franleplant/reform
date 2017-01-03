@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+// In your case it will be something like this
+//import Reform from '@franleplant/reform';
 import Reform from '../../build/index.js';
 
 /*
@@ -50,8 +52,9 @@ export default class GettingStarted extends Component {
     return event => {
       const value = event.target.value;
       this.setState(state => {
+        state.message = ''
         state.fields[fieldName] = value;
-        state.errors[fieldName] = {};
+        state.errors = {};
         return state;
       });
     }

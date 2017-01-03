@@ -32,6 +32,7 @@ export default class Form1 extends Component {
     required: _ => 'Field is required',
     email: _ => 'Field must be a valid email',
     minLength: minLength => `Field must be at least ${minLength} long`,
+    default: _ => `Invalid field`,
   }
 
 
