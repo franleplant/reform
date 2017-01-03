@@ -46,15 +46,15 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var types = __webpack_require__(1);
+	const types = __webpack_require__(1);
 	exports.types = types;
-	var core = __webpack_require__(2);
+	const core = __webpack_require__(2);
 	exports.core = core;
-	var validators_1 = __webpack_require__(3);
+	const validators_1 = __webpack_require__(3);
 	exports.validators = validators_1.default;
-	var reactHelpers = __webpack_require__(20);
+	const reactHelpers = __webpack_require__(20);
 	exports.reactHelpers = reactHelpers;
-	var reactMixins = __webpack_require__(21);
+	const reactMixins = __webpack_require__(21);
 	exports.reactMixins = reactMixins;
 	/**
 	 *  `default` export for the entire library.
@@ -69,12 +69,12 @@ module.exports =
 	 *  ```
 	 *
 	 */
-	var Reform = {
-	    types: types,
-	    core: core,
+	const Reform = {
+	    types,
+	    core,
 	    validators: validators_1.default,
-	    reactHelpers: reactHelpers,
-	    reactMixins: reactMixins,
+	    reactHelpers,
+	    reactMixins,
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = Reform;
@@ -93,11 +93,11 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var validators_1 = __webpack_require__(3);
+	const validators_1 = __webpack_require__(3);
 	/**
 	 *  @hidden
 	 */
-	var EMPTY_OBJECT = Object.freeze({});
+	const EMPTY_OBJECT = Object.freeze({});
 	/**
 	 * Validate `value` against `rules` and return which rules are valid with a value `false`
 	 * and which rules ar invalid with a value of `true`.
@@ -129,39 +129,33 @@ module.exports =
 	 * that there is an error, otherwise, it does not have an error, and that rule is passing.
 	 *
 	 */
-	function validateField(value, rules) {
-	    if (rules === void 0) { rules = {}; }
-	    var fieldErrors = {};
-	    for (var ruleKey in rules) {
-	        var ruleValue = rules[ruleKey];
-	        var validator = typeof ruleValue === 'function' ? ruleValue : validators_1.default.get(ruleKey);
+	function validateField(value, rules = {}) {
+	    const fieldErrors = {};
+	    for (const ruleKey in rules) {
+	        const ruleValue = rules[ruleKey];
+	        const validator = typeof ruleValue === 'function' ? ruleValue : validators_1.default.get(ruleKey);
 	        fieldErrors[ruleKey] = validator(value, ruleValue);
 	    }
 	    return fieldErrors;
 	}
 	exports.validateField = validateField;
-	function fieldIsValid() {
-	    var args = [];
-	    for (var _i = 0; _i < arguments.length; _i++) {
-	        args[_i] = arguments[_i];
-	    }
-	    var fieldErrors;
+	function fieldIsValid(...args) {
+	    let fieldErrors;
 	    if (args.length === 1) {
-	        _a = args[0], fieldErrors = _a === void 0 ? EMPTY_OBJECT : _a;
+	        [fieldErrors = EMPTY_OBJECT] = args;
 	    }
 	    else {
-	        var value = args[0], _b = args[1], rules = _b === void 0 ? EMPTY_OBJECT : _b;
+	        const [value, rules = EMPTY_OBJECT] = args;
 	        fieldErrors = validateField(value, rules);
 	    }
-	    var result = true;
-	    for (var errorKey in fieldErrors) {
-	        var errorResult = fieldErrors[errorKey];
+	    const result = true;
+	    for (const errorKey in fieldErrors) {
+	        const errorResult = fieldErrors[errorKey];
 	        if (errorResult) {
 	            return false;
 	        }
 	    }
 	    return result;
-	    var _a;
 	}
 	exports.fieldIsValid = fieldIsValid;
 	/**
@@ -171,39 +165,33 @@ module.exports =
 	 * fieldNames as keys and `FieldErrors` as values.
 	 *
 	 */
-	function validateForm(fieldsValues, rulesMap) {
-	    if (rulesMap === void 0) { rulesMap = {}; }
-	    var formErrors = {};
-	    for (var fieldName in fieldsValues) {
-	        var fieldValue = fieldsValues[fieldName];
-	        var fieldRules = rulesMap[fieldName];
+	function validateForm(fieldsValues, rulesMap = {}) {
+	    const formErrors = {};
+	    for (const fieldName in fieldsValues) {
+	        const fieldValue = fieldsValues[fieldName];
+	        const fieldRules = rulesMap[fieldName];
 	        formErrors[fieldName] = validateField(fieldValue, fieldRules);
 	    }
 	    return formErrors;
 	}
 	exports.validateForm = validateForm;
-	function formIsValid() {
-	    var args = [];
-	    for (var _i = 0; _i < arguments.length; _i++) {
-	        args[_i] = arguments[_i];
-	    }
-	    var formErrors;
+	function formIsValid(...args) {
+	    let formErrors;
 	    if (args.length === 1) {
-	        _a = args[0], formErrors = _a === void 0 ? EMPTY_OBJECT : _a;
+	        [formErrors = EMPTY_OBJECT] = args;
 	    }
 	    else {
-	        var fieldsValues = args[0], _b = args[1], rulesMap = _b === void 0 ? EMPTY_OBJECT : _b;
+	        const [fieldsValues, rulesMap = EMPTY_OBJECT] = args;
 	        formErrors = validateForm(fieldsValues, rulesMap);
 	    }
-	    var result = true;
-	    for (var fieldName in formErrors) {
-	        var fieldErrors = formErrors[fieldName];
+	    const result = true;
+	    for (const fieldName in formErrors) {
+	        const fieldErrors = formErrors[fieldName];
 	        if (!fieldIsValid(fieldErrors)) {
 	            return false;
 	        }
 	    }
 	    return result;
-	    var _a;
 	}
 	exports.formIsValid = formIsValid;
 
@@ -213,18 +201,18 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var officialValidators_1 = __webpack_require__(4);
-	var validatorInterface = {
-	    get: function (key) {
-	        var validator = officialValidators_1.default[key];
+	const officialValidators_1 = __webpack_require__(4);
+	const validatorInterface = {
+	    get(key) {
+	        const validator = officialValidators_1.default[key];
 	        if (!validator) {
-	            throw new Error("Validator " + key + " not found");
+	            throw new Error(`Validator ${key} not found`);
 	        }
 	        return validator;
 	    },
-	    set: function (key, value) {
+	    set(key, value) {
 	        if (officialValidators_1.default.hasOwnProperty(key)) {
-	            throw new Error("Validator " + key + " is already used, please use another name");
+	            throw new Error(`Validator ${key} is already used, please use another name`);
 	        }
 	        officialValidators_1.default[key] = value;
 	    }
@@ -238,35 +226,31 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var url_1 = __webpack_require__(5);
-	var time_1 = __webpack_require__(6);
-	var month_1 = __webpack_require__(8);
-	var week_1 = __webpack_require__(9);
-	var minNumber_1 = __webpack_require__(10);
-	var maxNumber_1 = __webpack_require__(11);
-	var minDate_1 = __webpack_require__(12);
-	var maxDate_1 = __webpack_require__(13);
-	var minMonth_1 = __webpack_require__(14);
-	var maxMonth_1 = __webpack_require__(15);
-	var minTime_1 = __webpack_require__(16);
-	var maxTime_1 = __webpack_require__(17);
-	var minWeek_1 = __webpack_require__(18);
-	var maxWeek_1 = __webpack_require__(19);
-	var isNumber = function (value) { return (!!value || value === 0) && !Number.isFinite(parseFloat(value)); };
-	var validatorMap = {
-	    /**
-	     *  Something to tell about required
-	     *  `alkasdlkasd`
-	     */
-	    required: function (value) { return !value; },
-	    email: function (value) { return !!value && !/\S+@\S+\.\S+/.test(value); },
-	    minLength: function (value, minLength) { return !!value && value.length < minLength; },
-	    maxLength: function (value, maxLength) { return !!value && value.length > maxLength; },
-	    pattern: function (value, re) { return !!value && !re.test(value); },
+	const url_1 = __webpack_require__(5);
+	const time_1 = __webpack_require__(6);
+	const month_1 = __webpack_require__(8);
+	const week_1 = __webpack_require__(9);
+	const minNumber_1 = __webpack_require__(10);
+	const maxNumber_1 = __webpack_require__(11);
+	const minDate_1 = __webpack_require__(12);
+	const maxDate_1 = __webpack_require__(13);
+	const minMonth_1 = __webpack_require__(14);
+	const maxMonth_1 = __webpack_require__(15);
+	const minTime_1 = __webpack_require__(16);
+	const maxTime_1 = __webpack_require__(17);
+	const minWeek_1 = __webpack_require__(18);
+	const maxWeek_1 = __webpack_require__(19);
+	const isNumber = value => (!!value || value === 0) && !Number.isFinite(parseFloat(value));
+	const validatorMap = {
+	    required: value => !value,
+	    email: (value) => !!value && !/\S+@\S+\.\S+/.test(value),
+	    minLength: (value, minLength) => !!value && value.length < minLength,
+	    maxLength: (value, maxLength) => !!value && value.length > maxLength,
+	    pattern: (value, re) => !!value && !re.test(value),
 	    number: isNumber,
 	    range: isNumber,
-	    color: function (value) { return !!value && !/^#[0-9A-F]{6}$/.test(value); },
-	    date: function (value) { return !!value && Number.isNaN(Date.parse(value)); },
+	    color: value => !!value && !/^#[0-9A-F]{6}$/.test(value),
+	    date: value => !!value && Number.isNaN(Date.parse(value)),
 	    time: time_1.time,
 	    url: url_1.url,
 	    month: month_1.month,
@@ -291,9 +275,9 @@ module.exports =
 /***/ function(module, exports) {
 
 	"use strict";
-	var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/i;
-	var re = new RegExp(expression);
-	exports.url = function (value) { return !!value && !re.test(value); };
+	const expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/i;
+	const re = new RegExp(expression);
+	exports.url = (value) => !!value && !re.test(value);
 
 
 /***/ },
@@ -302,9 +286,9 @@ module.exports =
 
 	"use strict";
 	// Official docs https://www.w3.org/TR/html5/infrastructure.html#valid-date-string
-	var utils_1 = __webpack_require__(7);
+	const utils_1 = __webpack_require__(7);
 	// Example "02:00"
-	exports.time = function (value) { return !!value && Number.isNaN(utils_1.parseTime(value)); };
+	exports.time = (value) => !!value && Number.isNaN(utils_1.parseTime(value));
 
 
 /***/ },
@@ -314,9 +298,9 @@ module.exports =
 	"use strict";
 	// Returns [] if something went wrong
 	function parseMonth(value) {
-	    var _a = value.split("-"), yearStr = _a[0], monthStr = _a[1];
-	    var year = parseInt(yearStr, 10);
-	    var month = parseInt(monthStr, 10);
+	    const [yearStr, monthStr] = value.split("-");
+	    const year = parseInt(yearStr, 10);
+	    const month = parseInt(monthStr, 10);
 	    if (!Number.isFinite(year) || !Number.isFinite(month)) {
 	        return [];
 	    }
@@ -325,14 +309,14 @@ module.exports =
 	exports.parseMonth = parseMonth;
 	// Returns [] if something went wrong
 	function parseWeek(value) {
-	    var _a = value.split("-"), yearStr = _a[0], weekStr = _a[1];
-	    var year = parseInt(yearStr, 10);
+	    let [yearStr, weekStr] = value.split("-");
+	    const year = parseInt(yearStr, 10);
 	    // Error if weekstr is not defined
 	    if (!weekStr || weekStr[0] !== 'W') {
 	        return [];
 	    }
 	    weekStr = weekStr.slice(1);
-	    var week = parseInt(weekStr, 10);
+	    const week = parseInt(weekStr, 10);
 	    if (!Number.isFinite(year) || !Number.isFinite(week)) {
 	        return [];
 	    }
@@ -340,16 +324,16 @@ module.exports =
 	}
 	exports.parseWeek = parseWeek;
 	function weeksInYear(year) {
-	    var d = new Date(year, 0, 1);
-	    var isLeap = new Date(year, 1, 29).getMonth() === 1;
+	    const d = new Date(year, 0, 1);
+	    const isLeap = new Date(year, 1, 29).getMonth() === 1;
 	    // Check for a Jan 1 that's a Thursday or a leap year that has a
 	    // Wednesday jan 1. Otherwise year has 52 weeks.
 	    return d.getDay() === 4 || isLeap && d.getDay() === 3 ? 53 : 52;
 	}
 	exports.weeksInYear = weeksInYear;
-	var baseDate = "1970-01-01";
+	const baseDate = "1970-01-01";
 	function parseTime(time) {
-	    return Date.parse(baseDate + " " + time);
+	    return Date.parse(`${baseDate} ${time}`);
 	}
 	exports.parseTime = parseTime;
 
@@ -360,11 +344,11 @@ module.exports =
 
 	"use strict";
 	// Official docs https://www.w3.org/TR/html5/infrastructure.html#valid-month-string
-	var utils_1 = __webpack_require__(7);
-	exports.month = function (value) {
+	const utils_1 = __webpack_require__(7);
+	exports.month = (value) => {
 	    if (!value)
 	        return false;
-	    var _a = utils_1.parseMonth(value), year = _a[0], month = _a[1];
+	    const [year, month] = utils_1.parseMonth(value);
 	    if (!year || !month) {
 	        return true;
 	    }
@@ -379,13 +363,13 @@ module.exports =
 	"use strict";
 	// Official docs https://www.w3.org/TR/html5/infrastructure.html
 	// 2.4.5.8 Weeks
-	var utils_1 = __webpack_require__(7);
+	const utils_1 = __webpack_require__(7);
 	// Example week: "2016-W33"
-	exports.week = function (value) {
+	exports.week = (value) => {
 	    if (!value) {
 	        return false;
 	    }
-	    var _a = utils_1.parseWeek(value), year = _a[0], week = _a[1];
+	    const [year, week] = utils_1.parseWeek(value);
 	    if (!year || !week) {
 	        return true;
 	    }
@@ -398,13 +382,13 @@ module.exports =
 /***/ function(module, exports) {
 
 	"use strict";
-	exports.minNumber = function (value, min) {
+	exports.minNumber = (value, min) => {
 	    if (!value)
 	        return false;
-	    var minN = parseInt(min, 10);
-	    var valueN = parseInt(value, 10);
+	    const minN = parseInt(min, 10);
+	    const valueN = parseInt(value, 10);
 	    if (!Number.isFinite(minN)) {
-	        throw new Error("Reform minNumber argument should be a valid a number or a number string. Found \"" + min + "\"");
+	        throw new Error(`Reform minNumber argument should be a valid a number or a number string. Found "${min}"`);
 	    }
 	    if (!Number.isFinite(valueN)) {
 	        return false;
@@ -418,13 +402,13 @@ module.exports =
 /***/ function(module, exports) {
 
 	"use strict";
-	exports.maxNumber = function (value, max) {
+	exports.maxNumber = (value, max) => {
 	    if (!value)
 	        return false;
-	    var maxN = parseInt(max, 10);
-	    var valueN = parseInt(value, 10);
+	    const maxN = parseInt(max, 10);
+	    const valueN = parseInt(value, 10);
 	    if (!Number.isFinite(maxN)) {
-	        throw new Error("Reform maxNumber argument should be a valid a number or a number string. Found \"" + max + "\"");
+	        throw new Error(`Reform maxNumber argument should be a valid a number or a number string. Found "${max}"`);
 	    }
 	    if (!Number.isFinite(valueN)) {
 	        return false;
@@ -438,13 +422,13 @@ module.exports =
 /***/ function(module, exports) {
 
 	"use strict";
-	exports.minDate = function (value, min) {
+	exports.minDate = (value, min) => {
 	    if (!value)
 	        return false;
-	    var minDate = Date.parse(min);
-	    var valueDate = Date.parse(value);
+	    const minDate = Date.parse(min);
+	    const valueDate = Date.parse(value);
 	    if (Number.isNaN(minDate)) {
-	        throw new Error("Reform minDate should have a valid date as argument. Found \"" + min + "\"");
+	        throw new Error(`Reform minDate should have a valid date as argument. Found "${min}"`);
 	    }
 	    if (Number.isNaN(valueDate)) {
 	        return false;
@@ -458,13 +442,13 @@ module.exports =
 /***/ function(module, exports) {
 
 	"use strict";
-	exports.maxDate = function (value, max) {
+	exports.maxDate = (value, max) => {
 	    if (!value)
 	        return false;
-	    var maxDate = Date.parse(max);
-	    var valueDate = Date.parse(value);
+	    const maxDate = Date.parse(max);
+	    const valueDate = Date.parse(value);
 	    if (Number.isNaN(maxDate)) {
-	        throw new Error("Reform maxDate should have a valid date as argument. Found \"" + max + "\"");
+	        throw new Error(`Reform maxDate should have a valid date as argument. Found "${max}"`);
 	    }
 	    if (Number.isNaN(valueDate)) {
 	        return false;
@@ -478,22 +462,22 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var utils_1 = __webpack_require__(7);
-	var month_1 = __webpack_require__(8);
-	exports.minMonth = function (value, min) {
+	const utils_1 = __webpack_require__(7);
+	const month_1 = __webpack_require__(8);
+	exports.minMonth = (value, min) => {
 	    if (!value)
 	        return false;
-	    var _a = utils_1.parseMonth(value), vYear = _a[0], vMonth = _a[1];
-	    var _b = utils_1.parseMonth(min), mYear = _b[0], mMonth = _b[1];
+	    const [vYear, vMonth] = utils_1.parseMonth(value);
+	    const [mYear, mMonth] = utils_1.parseMonth(min);
 	    // Check that the min month is a valid month
 	    if (!mYear || !mMonth || month_1.month(min)) {
-	        throw new Error("Reform minMonth should have a valid month as argument. Found \"" + min + "\"");
+	        throw new Error(`Reform minMonth should have a valid month as argument. Found "${min}"`);
 	    }
 	    // Invalid week
 	    if (!vYear || !vMonth) {
 	        return false;
 	    }
-	    var error = false;
+	    let error = false;
 	    if (vYear < mYear) {
 	        error = true;
 	    }
@@ -513,22 +497,22 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var utils_1 = __webpack_require__(7);
-	var month_1 = __webpack_require__(8);
-	exports.maxMonth = function (value, max) {
+	const utils_1 = __webpack_require__(7);
+	const month_1 = __webpack_require__(8);
+	exports.maxMonth = (value, max) => {
 	    if (!value)
 	        return false;
-	    var _a = utils_1.parseMonth(value), vYear = _a[0], vMonth = _a[1];
-	    var _b = utils_1.parseMonth(max), mYear = _b[0], mMonth = _b[1];
+	    const [vYear, vMonth] = utils_1.parseMonth(value);
+	    const [mYear, mMonth] = utils_1.parseMonth(max);
 	    // Invalid max
 	    if (!mYear || !mMonth || month_1.month(max)) {
-	        throw new Error("Reform maxMonth should have a valid month as argument. Found " + max);
+	        throw new Error(`Reform maxMonth should have a valid month as argument. Found ${max}`);
 	    }
 	    // Invalid week
 	    if (!vYear || !vMonth) {
 	        return false;
 	    }
-	    var error = false;
+	    let error = false;
 	    if (vYear > mYear) {
 	        error = true;
 	    }
@@ -548,14 +532,14 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var utils_1 = __webpack_require__(7);
-	exports.minTime = function (value, min) {
+	const utils_1 = __webpack_require__(7);
+	exports.minTime = (value, min) => {
 	    if (!value)
 	        return false;
-	    var minDate = utils_1.parseTime(min);
-	    var valueDate = utils_1.parseTime(value);
+	    const minDate = utils_1.parseTime(min);
+	    const valueDate = utils_1.parseTime(value);
 	    if (Number.isNaN(minDate)) {
-	        throw new Error("Reform minTime should have a valid time as value. Found " + min);
+	        throw new Error(`Reform minTime should have a valid time as value. Found ${min}`);
 	    }
 	    if (Number.isNaN(valueDate)) {
 	        return false;
@@ -569,14 +553,14 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var utils_1 = __webpack_require__(7);
-	exports.maxTime = function (value, max) {
+	const utils_1 = __webpack_require__(7);
+	exports.maxTime = (value, max) => {
 	    if (!value)
 	        return false;
-	    var maxDate = utils_1.parseTime(max);
-	    var valueDate = utils_1.parseTime(value);
+	    const maxDate = utils_1.parseTime(max);
+	    const valueDate = utils_1.parseTime(value);
 	    if (Number.isNaN(maxDate)) {
-	        throw new Error("Reform maxTime should have a valid time as value. Found " + max);
+	        throw new Error(`Reform maxTime should have a valid time as value. Found ${max}`);
 	    }
 	    if (Number.isNaN(valueDate)) {
 	        return false;
@@ -590,22 +574,22 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var utils_1 = __webpack_require__(7);
-	var week_1 = __webpack_require__(9);
-	exports.minWeek = function (value, min) {
+	const utils_1 = __webpack_require__(7);
+	const week_1 = __webpack_require__(9);
+	exports.minWeek = (value, min) => {
 	    if (!value)
 	        return false;
-	    var _a = utils_1.parseWeek(value), vYear = _a[0], vWeek = _a[1];
-	    var _b = utils_1.parseWeek(min), mYear = _b[0], mWeek = _b[1];
+	    const [vYear, vWeek] = utils_1.parseWeek(value);
+	    const [mYear, mWeek] = utils_1.parseWeek(min);
 	    // Invalid min
 	    if (!mYear || !mWeek || week_1.week(min)) {
-	        throw new Error("Reform minWeek should have a valid week as value. Found " + min + ".");
+	        throw new Error(`Reform minWeek should have a valid week as value. Found ${min}.`);
 	    }
 	    // Invalid week
 	    if (!vYear || !vWeek) {
 	        return false;
 	    }
-	    var error = false;
+	    let error = false;
 	    if (vYear < mYear) {
 	        error = true;
 	    }
@@ -625,22 +609,22 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var utils_1 = __webpack_require__(7);
-	var week_1 = __webpack_require__(9);
-	exports.maxWeek = function (value, max) {
+	const utils_1 = __webpack_require__(7);
+	const week_1 = __webpack_require__(9);
+	exports.maxWeek = (value, max) => {
 	    if (!value)
 	        return false;
-	    var _a = utils_1.parseWeek(value), vYear = _a[0], vWeek = _a[1];
-	    var _b = utils_1.parseWeek(max), mYear = _b[0], mWeek = _b[1];
+	    const [vYear, vWeek] = utils_1.parseWeek(value);
+	    const [mYear, mWeek] = utils_1.parseWeek(max);
 	    // Invalid max
 	    if (!mYear || !mWeek || week_1.week(max)) {
-	        throw new Error("Reform maxWeek should have a valid week as value. Found " + max + ".");
+	        throw new Error(`Reform maxWeek should have a valid week as value. Found ${max}.`);
 	    }
 	    // Invalid week
 	    if (!vYear || !vWeek) {
 	        return false;
 	    }
-	    var error = false;
+	    let error = false;
 	    if (vYear > mYear) {
 	        error = true;
 	    }
@@ -660,7 +644,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var core = __webpack_require__(2);
+	const core = __webpack_require__(2);
 	/**
 	 * Useful function for javascript land (which needs dynamic checking)
 	 * @hidden
@@ -669,20 +653,20 @@ module.exports =
 	 */
 	function checkInstance(instance) {
 	    if (!instance.hasOwnProperty('validationRules')) {
-	        console.error("Reform: instance does not have validationRules attribute", instance);
-	        throw new Error("Reform: instance.validationRules not found");
+	        console.error(`Reform: instance does not have validationRules attribute`, instance);
+	        throw new Error(`Reform: instance.validationRules not found`);
 	    }
 	    if (!instance.hasOwnProperty('state')) {
-	        console.error("Reform: instance does not have state attribute", instance);
-	        throw new Error("Reform: instance.state not found");
+	        console.error(`Reform: instance does not have state attribute`, instance);
+	        throw new Error(`Reform: instance.state not found`);
 	    }
 	    if (!instance.state.hasOwnProperty('fields')) {
-	        console.error("Reform: instance does not have state.fields attribute", instance);
-	        throw new Error("Reform: instance.state.fields not found");
+	        console.error(`Reform: instance does not have state.fields attribute`, instance);
+	        throw new Error(`Reform: instance.state.fields not found`);
 	    }
 	    if (!instance.state.hasOwnProperty('errors')) {
-	        console.error("Reform: instance does not have state.errors attribute", instance);
-	        throw new Error("Reform: instance.state.errors not found");
+	        console.error(`Reform: instance does not have state.errors attribute`, instance);
+	        throw new Error(`Reform: instance.state.errors not found`);
 	    }
 	}
 	/**
@@ -719,9 +703,9 @@ module.exports =
 	 */
 	function validateField(fieldName, value) {
 	    checkInstance(this);
-	    var rules = this.validationRules[fieldName];
-	    var fieldErrors = core.validateField(value, rules);
-	    this.setState(function (state) {
+	    const rules = this.validationRules[fieldName];
+	    const fieldErrors = core.validateField(value, rules);
+	    this.setState((state) => {
 	        state.formIsDirty = true;
 	        state.errors[fieldName] = fieldErrors;
 	        return state;
@@ -741,7 +725,7 @@ module.exports =
 	 *
 	 */
 	function validateFieldFromState(fieldName) {
-	    var value = this.state.fields[fieldName];
+	    const value = this.state.fields[fieldName];
 	    return validateField.call(this, fieldName, value);
 	}
 	exports.validateFieldFromState = validateFieldFromState;
@@ -757,9 +741,9 @@ module.exports =
 	 */
 	function validateForm(fieldsValues) {
 	    checkInstance(this);
-	    var rulesMap = this.validationRules;
-	    var formErrors = core.validateForm(fieldsValues, rulesMap);
-	    this.setState(function (state) {
+	    const rulesMap = this.validationRules;
+	    const formErrors = core.validateForm(fieldsValues, rulesMap);
+	    this.setState((state) => {
 	        state.formIsDirty = true;
 	        state.errors = formErrors;
 	        return state;
@@ -778,7 +762,7 @@ module.exports =
 	 * This function will also set your form to `dirty` in `this.state.formIsDirty`
 	 */
 	function validateFormFromState() {
-	    var values = this.state.fields;
+	    const values = this.state.fields;
 	    return validateForm.call(this, values);
 	}
 	exports.validateFormFromState = validateFormFromState;
@@ -805,8 +789,8 @@ module.exports =
 	 */
 	function formIsValid() {
 	    checkInstance(this);
-	    var fields = this.state.fields;
-	    var rules = this.validationRules;
+	    const fields = this.state.fields;
+	    const rules = this.validationRules;
 	    return core.formIsValid(fields, rules);
 	}
 	exports.formIsValid = formIsValid;
@@ -824,10 +808,10 @@ module.exports =
 	function fieldIfError(fieldName, errorKey) {
 	    checkInstance(this);
 	    if (!this.state.fields.hasOwnProperty(fieldName)) {
-	        throw new Error("Field " + fieldName + " not found! Did you forget to initialize it?");
+	        throw new Error(`Field ${fieldName} not found! Did you forget to initialize it?`);
 	    }
 	    if (!this.validationRules.hasOwnProperty(fieldName)) {
-	        throw new Error("Field Rules " + fieldName + " not found! Did you forget to initialize them?");
+	        throw new Error(`Field Rules ${fieldName} not found! Did you forget to initialize them?`);
 	    }
 	    if (this.state.errors[fieldName] && this.state.errors[fieldName][errorKey]) {
 	        return true;
@@ -859,9 +843,9 @@ module.exports =
 	 */
 	function fieldErrors(fieldName) {
 	    checkInstance(this);
-	    var result = [];
-	    for (var ruleKey in this.state.errors[fieldName]) {
-	        var errorResult = this.state.errors[fieldName][ruleKey];
+	    const result = [];
+	    for (const ruleKey in this.state.errors[fieldName]) {
+	        const errorResult = this.state.errors[fieldName][ruleKey];
 	        if (!errorResult)
 	            continue;
 	        result.push([ruleKey, this.validationRules[fieldName][ruleKey]]);
@@ -907,17 +891,15 @@ module.exports =
 	 *
 	 */
 	function mapFieldErrors(fieldName) {
-	    var _this = this;
 	    if (!this.hasOwnProperty('validationMessages')) {
-	        throw new Error("\"this.validationMessages\" is required when using \"mapFieldErrors\"");
+	        throw new Error(`"this.validationMessages" is required when using "mapFieldErrors"`);
 	    }
 	    if (!this.validationMessages.hasOwnProperty('default')) {
-	        throw new Error("\"this.validationMessages.default\" must be defined when using \"mapFieldErrors\"");
+	        throw new Error(`"this.validationMessages.default" must be defined when using "mapFieldErrors"`);
 	    }
 	    return fieldErrors.call(this, 'email')
-	        .map(function (_a) {
-	        var ruleKey = _a[0], ruleValue = _a[1];
-	        var creator = _this.validationMessages[ruleKey] || _this.validationMessages['default'];
+	        .map(([ruleKey, ruleValue]) => {
+	        const creator = this.validationMessages[ruleKey] || this.validationMessages['default'];
 	        return creator(ruleValue, ruleKey, fieldName);
 	    });
 	}
@@ -929,50 +911,42 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
 	//import { ValidationAbleInstance, Fields } from './types'
-	var helpers = __webpack_require__(20);
+	const helpers = __webpack_require__(20);
 	/**
 	 *  @hidden
 	 */
-	var mixinProperties = Object.keys(helpers);
+	const mixinProperties = Object.keys(helpers);
 	function classMixin(base) {
-	    mixinProperties.forEach(function (prop) {
+	    mixinProperties.forEach(prop => {
 	        if (base[prop] != null) {
 	            // TODO: better error message
-	            throw new Error("Wrapped Component already implements method, please use another one");
+	            throw new Error(`Wrapped Component already implements method, please use another one`);
 	        }
 	    });
-	    var ReformImpl = (function (_super) {
-	        __extends(ReformImpl, _super);
-	        function ReformImpl() {
-	            var _this = _super.apply(this, arguments) || this;
-	            _this.validateField = helpers.validateField;
-	            _this.validateFieldFromState = helpers.validateFieldFromState;
-	            _this.fieldIsValid = helpers.fieldIsValid;
-	            _this.validateForm = helpers.validateForm;
-	            _this.validateFormFromState = helpers.validateFormFromState;
-	            _this.formIsValid = helpers.formIsValid;
-	            _this.fieldErrors = helpers.fieldErrors;
-	            _this.fieldIfError = helpers.fieldIfError;
-	            _this.mapFieldErrors = helpers.mapFieldErrors;
-	            return _this;
+	    class ReformImpl extends base {
+	        constructor() {
+	            super(...arguments);
+	            this.validateField = helpers.validateField;
+	            this.validateFieldFromState = helpers.validateFieldFromState;
+	            this.fieldIsValid = helpers.fieldIsValid;
+	            this.validateForm = helpers.validateForm;
+	            this.validateFormFromState = helpers.validateFormFromState;
+	            this.formIsValid = helpers.formIsValid;
+	            this.fieldErrors = helpers.fieldErrors;
+	            this.fieldIfError = helpers.fieldIfError;
+	            this.mapFieldErrors = helpers.mapFieldErrors;
 	        }
-	        return ReformImpl;
-	    }(base));
-	    ReformImpl.displayName = "Reform(" + base.displayName + ")";
+	    }
+	    ReformImpl.displayName = `Reform(${base.displayName})`;
 	    return ReformImpl;
 	}
 	exports.classMixin = classMixin;
 	function functionalMixin(instance) {
-	    mixinProperties.forEach(function (prop) {
+	    mixinProperties.forEach(prop => {
 	        if (instance[prop] != null) {
 	            // TODO: better error message
-	            throw new Error("Wrapped Component already implements method, please use another one");
+	            throw new Error(`Wrapped Component already implements method, please use another one`);
 	        }
 	    });
 	    instance.validateField = helpers.validateField;

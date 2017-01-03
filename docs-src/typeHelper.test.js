@@ -13,7 +13,7 @@ test('typeHelper', function (t) {
   t.plan(1);
 
   const result = typeHelper(type1);
-  const expected = "[Validator](#2)"
+  const expected = "[Validator](#user-content-#2)"
 
   t.equal(result, expected);
 });
