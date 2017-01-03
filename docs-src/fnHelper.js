@@ -6,11 +6,17 @@ const commentsHelper = require('./commentsHelper');
 
 function fnSignatureHelper(item) {
   const params = item.parameters.map(param => `${param.name}: ${typeHelper(param.type)}`).join(', ');
-  return `${item.name}(${params}): ${typeHelper(item.type)}`;
+  const signature = `(${params}): ${typeHelper(item.type)}`;
+
+  // Special case for inline, anonymous function signaruters in interfaces
+  if (item.name === '__call') {
+    return signature
+  }
+
+  return `${item.name}${signature}`;
 }
 
 
-module.exports =
 function fnHelper(item = {}, inline) {
   if (inline) {
     return (item.signatures || []).map(sign => `${fnSignatureHelper(sign)}`).join(' | ')
@@ -32,3 +38,7 @@ function fnHelper(item = {}, inline) {
     ...signatures,
   ].join('\n')
 }
+
+
+fnHelper.fnSignatureHelper = fnSignatureHelper;
+module.exports = fnHelper;

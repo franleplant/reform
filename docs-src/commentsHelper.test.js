@@ -3,7 +3,7 @@ const commentsHelper = require('./commentsHelper');
 
 const comment = {
   shortText: "test 123",
-  text: "test 456",
+  text: "  test 456",
   tags: [
     {
       "tag": "a_tag",
@@ -20,11 +20,13 @@ test('commentsHelper', function (t) {
   const expected = ([
     'test 123',
     '',
-    'test 456',
+    '  test 456',
     '',
     'Tags',
     '',
-    '- a_tag',
+    '',
+    '- a_tag ',
+    '',
   ].join('\n'));
 
   t.equal(result, expected);

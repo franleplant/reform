@@ -2,6 +2,7 @@ const commentsHelper = require('./commentsHelper')
 const itemTitleHelper = require('./itemTitleHelper');
 const itemHelper = require('./itemHelper');
 const typeHelper = require('./typeHelper');
+const fnHelper = require('./fnHelper')
 
 
 module.exports =
@@ -22,6 +23,14 @@ function interfaceHelper(item = {}, inline){
         const params = ind.parameters
         const param = params[0]
         return `\\[${param.name}: ${typeHelper(param.type, true)}\\]: ${typeHelper(ind.type)}`
+      })
+      .join(';\n')
+    )
+  }
+
+  if (item.signatures) {
+    content.push(item.signatures.map(sig => {
+        return `${fnHelper.fnSignatureHelper(sig)}`;
       })
       .join(';\n')
     )

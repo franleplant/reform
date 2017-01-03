@@ -331,6 +331,9 @@ module.exports =
 	    return d.getDay() === 4 || isLeap && d.getDay() === 3 ? 53 : 52;
 	}
 	exports.weeksInYear = weeksInYear;
+	/**
+	 *  @hidden
+	 */
 	const baseDate = "1970-01-01";
 	function parseTime(time) {
 	    return Date.parse(`${baseDate} ${time}`);

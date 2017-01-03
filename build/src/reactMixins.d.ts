@@ -10,8 +10,14 @@ export interface Reform {
     fieldIfError: typeof helpers.fieldIfError;
     mapFieldErrors: typeof helpers.mapFieldErrors;
 }
+/**
+ *  @hidden
+ */
 export interface Base {
 }
+/**
+ *  @hidden
+ */
 export interface GenericClass<T> {
     new (): T;
     readonly prototype: T;

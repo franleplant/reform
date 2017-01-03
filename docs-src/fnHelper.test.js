@@ -1,6 +1,35 @@
 const test = require('tape');
 const fnHelper = require('./fnHelper');
 
+
+
+test('fnHelper', function (t) {
+  t.plan(1);
+
+  const result = fnHelper(src);
+  const expected = ([
+    '## formIsValid <small>Function [src](./src/core.ts#L119)</small> <a id="#1"></a>',
+    '',
+    'comments',
+    '',
+    '',
+    '<big><pre>',
+    'formIsValid(fieldsValues: [Fields](#user-content-#21)): boolean',
+    '</pre></big>',
+    '',
+    '',
+    'commentsr2',
+    '',
+    '',
+    '<big><pre>',
+    'formIsValid(fieldsValues2: [Fields](#user-content-#21)): boolean',
+    '</pre></big>',
+    '',
+  ].join('\n'));
+
+  t.equal(result, expected);
+});
+
 const src = {
   id: 1,
   name: "formIsValid",
@@ -57,29 +86,3 @@ const src = {
       "character": 27
   }]
 }
-
-
-test('fnHelper', function (t) {
-  t.plan(1);
-
-  const result = fnHelper(src);
-  const expected = ([
-    '## formIsValid <small>Function [src](./src/core.ts#L119)</small> <a id="#1"></a>',
-    '',
-    'comments',
-    '',
-    '<big><pre>',
-    'formIsValid(fieldsValues: [Fields](#user-content-#21)): boolean',
-    '</pre></big>',
-    '',
-    '',
-    'commentsr2',
-    '',
-    '<big><pre>',
-    'formIsValid(fieldsValues2: [Fields](#user-content-#21)): boolean',
-    '</pre></big>',
-    '',
-  ].join('\n'));
-
-  t.equal(result, expected);
-});

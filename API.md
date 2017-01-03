@@ -5,16 +5,19 @@
 # index <small>Module [src](./src/index.ts#L1)</small> <a id="#267"></a>
 
 ## Reform <small>Object literal [src](./src/index.ts#L29)</small> <a id="#268"></a>
-`default` export for the entire library.
+ `default` export for the entire library.
 
-```javascript
-// using the default export
-import Reform from '@franleplant/reform'
+ ```javascript
+ // using the default export
+ import Reform from '@franleplant/reform'
 
-// importing only the needed parts
-import { reactMixins } from '@franleplant/reform'
+ // importing only the needed parts
+ import { reactMixins } from '@franleplant/reform'
 
-```
+ ```
+
+
+
 <big><pre>
 {
 core: [./src/core](#user-content-#178)
@@ -41,6 +44,9 @@ if all values are false (valid field) or some are true (invalid field).
 This is useful if you already calculated `FieldErrors` in another event. In this
 way you can avoid re calculating them again each time you want to know if the field is valid.
 
+
+
+
 <big><pre>
 fieldIsValid(value: string | number, rules: [Rules](#user-content-#9)): boolean
 </pre></big>
@@ -58,6 +64,7 @@ Analogous to `fieldIsValid` but operating for forms. There are also
 two variants, the first one accepts values and rules and calculates the
 `formErrors` and then check that all fields are valid, and the second
 one accepts an already calculated `formErrors`.
+
 
 <big><pre>
 formIsValid(fieldsValues: [Fields](#user-content-#21), rulesMap: [RulesMap](#user-content-#12)): boolean
@@ -101,6 +108,9 @@ The most important part is that the result of this function, which is of the typ
 will be an object that has rule names as keys with boolean values. If the value is `true` it means
 that there is an error, otherwise, it does not have an error, and that rule is passing.
 
+
+
+
 <big><pre>
 validateField(value: string | number, rules: [Rules](#user-content-#9)): [FieldErrors](#user-content-#15)
 </pre></big>
@@ -111,6 +121,7 @@ A simple generalization of `validateField` but for an entire form.
 It will basically run `validateField` on each `value` and each `rules`
 indexed by `fieldName` and return `FormErrors` which is, an object that has
 fieldNames as keys and `FieldErrors` as values.
+
 
 <big><pre>
 validateForm(fieldsValues: [Fields](#user-content-#21), rulesMap: [RulesMap](#user-content-#12)): [FormErrors](#user-content-#18)
@@ -141,7 +152,9 @@ assert(errors, [['required', true], ['minLenght', 6], ['pattern', 'banana|apple'
 
 Tags
 
-- unstable
+
+- unstable 
+
 
 <big><pre>
 fieldErrors(this: [ValidationAbleInstance](#user-content-#24), fieldName: string): Array\<Array\<any\>\>
@@ -159,6 +172,8 @@ Use it if to render field errors only if that field has a particular failed rule
 
 This function is purely for ergonomic purposes.
 
+
+
 <big><pre>
 fieldIfError(this: [ValidationAbleInstance](#user-content-#24), fieldName: string, errorKey: string): boolean
 </pre></big>
@@ -172,19 +187,23 @@ Use it to render _invalid_ state in your inputs.
 
 **Important** this function will **not re calculate your field's validity**
 
+
+
 <big><pre>
 fieldIsValid(this: [ValidationAbleInstance](#user-content-#24), fieldName: string): boolean
 </pre></big>
 
 ## formIsValid <small>Function [src](./src/reactHelpers.ts#L155)</small> <a id="#225"></a>
 
-Calculate the form's validity from the `values` in `this.state.fields` and
-the rules in `this.validationRules`.
+ Calculate the form's validity from the `values` in `this.state.fields` and
+ the rules in `this.validationRules`.
 
-This function, in contrast to `fieldIsValid`, **will effectively re-calculate your form's validity**
+ This function, in contrast to `fieldIsValid`, **will effectively re-calculate your form's validity**
 
-Use it to disable the submit button, or to prevent `onSubmit` callback from normal
-processing of the form.
+ Use it to disable the submit button, or to prevent `onSubmit` callback from normal
+ processing of the form.
+
+
 
 <big><pre>
 formIsValid(this: [ValidationAbleInstance](#user-content-#24)): boolean
@@ -202,22 +221,22 @@ how ever you want.
 ```javascript
 //Define your validationMessages
 this.validationMessages = {
-// Define a per-rule message creator
-minLenght: (ruleValue, ruleKey, fieldName) => `${fieldName} must have at least ${ruleValue} characters`
-// Define a fall back for missing message creators
-default: (ruleValue, ruleKey, fieldName) => `{fieldName} is invalid according to rule ${ruleKey}: ${ruleValue}`
+  // Define a per-rule message creator
+  minLenght: (ruleValue, ruleKey, fieldName) => `${fieldName} must have at least ${ruleValue} characters`
+  // Define a fall back for missing message creators
+  default: (ruleValue, ruleKey, fieldName) => `{fieldName} is invalid according to rule ${ruleKey}: ${ruleValue}`
 }
 
 // Example validationRules
 this.validationRules = {
-myField: {minLength: 6}
+  myField: {minLength: 6}
 }
 
 // Use inside your render function
 {this.mapFieldErrors('myField')
-.map(message => (
-<span>{message}</span>
-))
+   .map(message => (
+     <span>{message}</span>
+   ))
 }
 
 //In our example it will render something like this
@@ -227,7 +246,10 @@ myField: {minLength: 6}
 
 Tags
 
-- unstable
+
+- unstable 
+
+
 
 <big><pre>
 mapFieldErrors(this: [ValidationAbleInstance](#user-content-#24), fieldName: string): Array\<string\>
@@ -265,6 +287,9 @@ However, if you are undecided, I suggest you start by using `React.reactMixins`
 
 This function will also set your form to `dirty` in `this.state.formIsDirty`
 
+
+
+
 <big><pre>
 validateField(this: [ValidationAbleInstance](#user-content-#24), fieldName: string, value: any): boolean
 </pre></big>
@@ -279,6 +304,9 @@ Use it if you are validating **after** updating your state, i.e.: `onBlur`, `onS
 **Important** this function **will modify your component's state**
 
 This function will also set your form to `dirty` in `this.state.formIsDirty`
+
+
+
 
 <big><pre>
 validateFieldFromState(this: [ValidationAbleInstance](#user-content-#24), fieldName: string): boolean
@@ -295,6 +323,8 @@ Unless you have a very specific use case, most of the time you should be using `
 
 This function will also set your form to `dirty` in `this.state.formIsDirty`
 
+
+
 <big><pre>
 validateForm(this: [ValidationAbleInstance](#user-content-#24), fieldsValues: [Fields](#user-content-#21)): boolean
 </pre></big>
@@ -310,27 +340,14 @@ Use it `onSubmit`.
 
 This function will also set your form to `dirty` in `this.state.formIsDirty`
 
+
+
 <big><pre>
 validateFormFromState(this: [ValidationAbleInstance](#user-content-#24)): boolean
 </pre></big>
 
 # reactMixins <small>Module [src](./src/reactMixins.ts#L1)</small> <a id="#241"></a>
 
-## Base <small>Interface [src](./src/reactMixins.ts#L23)</small> <a id="#252"></a>
-
-<big><pre>
-{
-}
-</big></pre>
-## GenericClass <small>Interface [src](./src/reactMixins.ts#L24)</small> <a id="#253"></a>
-
-<big><pre>
-{
-;
-displayName: string;
-prototype: T
-}
-</big></pre>
 ## Reform <small>Interface [src](./src/reactMixins.ts#L10)</small> <a id="#242"></a>
 
 <big><pre>
@@ -346,7 +363,7 @@ validateForm: [validateForm](#user-content-#214);
 validateFormFromState: [validateFormFromState](#user-content-#218)
 }
 </big></pre>
-## classMixin <small>Function [src](./src/reactMixins.ts#L31)</small> <a id="#260"></a>
+## classMixin <small>Function [src](./src/reactMixins.ts#L37)</small> <a id="#260"></a>
 
 
 
@@ -354,7 +371,7 @@ validateFormFromState: [validateFormFromState](#user-content-#218)
 classMixin(base: [GenericClass](#user-content-#253)\<T\>): [GenericClass](#user-content-#253)\<T & Reform\>
 </pre></big>
 
-## functionalMixin <small>Function [src](./src/reactMixins.ts#L55)</small> <a id="#264"></a>
+## functionalMixin <small>Function [src](./src/reactMixins.ts#L61)</small> <a id="#264"></a>
 
 
 
@@ -429,6 +446,7 @@ validationRules: [RulesMap](#user-content-#12)
 
 <big><pre>
 {
+(value: string | number | any, ruleValue: any): boolean
 }
 </big></pre>
 ## ValidatorMap <small>Interface [src](./src/types.ts#L5)</small> <a id="#6"></a>
@@ -480,7 +498,6 @@ required: required(value: any): boolean
 </big></pre>
 # utils <small>Module [src](./src/utils.ts#L1)</small> <a id="#48"></a>
 
-String
 ## parseMonth <small>Function [src](./src/utils.ts#L2)</small> <a id="#49"></a>
 
 
@@ -489,7 +506,7 @@ String
 parseMonth(value: string): number
 </pre></big>
 
-## parseTime <small>Function [src](./src/utils.ts#L46)</small> <a id="#59"></a>
+## parseTime <small>Function [src](./src/utils.ts#L49)</small> <a id="#59"></a>
 
 
 

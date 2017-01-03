@@ -20,7 +20,13 @@ export interface Reform {
 }
 
 
+/**
+ *  @hidden
+ */
 export interface Base {}
+/**
+ *  @hidden
+ */
 export interface GenericClass<T> {
   new (): T
   readonly prototype: T;

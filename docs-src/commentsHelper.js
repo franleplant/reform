@@ -1,24 +1,34 @@
 const commonTags = require('common-tags');
 
-module.exports = 
+module.exports =
 function commentsHelper(comment = {}) {
   const { shortText = '', text = ''} = comment;
-  const comments = shortText + '\n\n' + text;
+
+
+  const content = [];
+  if (comment.shortText && comment.text) {
+    content.push(comment.shortText);
+    content.push('');
+    content.push(comment.text);
+
+  } else if (comment.shortText) {
+    content.push(comment.shortText);
+  } else if (comment.text) {
+    content.push(comment.text);
+  }
+
   const tags = comment.tags || [];
+  const contentTags = [];
+  if (tags.length) {
+    contentTags.push('Tags');
+    contentTags.push('\n');
+    contentTags.push(tags.map(tag => `- ${tag.tag} ${tag.text}`).join('\n'))
+  }
 
-  const result = commonTags.stripIndents`
-
-    ${comments}
-
-    ${tags.length ? 'Tags' : '' }
-
-    ${tags.map(tag => commonTags.stripIndent`
-        - ${tag.tag} ${tag.text}
-      `).join('\n')
-    }
-
-  `;
-
-  return result;
+  return [
+    ...content,
+    '',
+    ...contentTags,
+  ].join('\n')
 }
 

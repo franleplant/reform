@@ -42,6 +42,9 @@ export function weeksInYear(year: number): number {
 }
 
 
+/**
+ *  @hidden
+ */
 const baseDate = "1970-01-01"
 export function parseTime(time: string): number {
   return Date.parse(`${baseDate} ${time}`);
