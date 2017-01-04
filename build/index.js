@@ -202,6 +202,20 @@ module.exports =
 
 	"use strict";
 	const officialValidators_1 = __webpack_require__(4);
+	/**
+	 * Main validator interface.
+	 *
+	 * It is simply a wrapper on top of an object that contains
+	 * all the single functions that each `officialValidators/**` module exports.
+	 *
+	 * The main reasons for this abstraction to exist are:
+	 *
+	 * - Throw errors when a wrong validation rule key is passed (i.e. in `this.validationRules`)
+	 * - Allow the user to set new global available custom validators
+	 * - Throw errors when the user is trying to overwrite an already existing validator
+	 *
+	 * Use it if you want to add new global custom validators.
+	 */
 	const validatorInterface = {
 	    get(key) {
 	        const validator = officialValidators_1.default[key];
@@ -932,6 +946,30 @@ module.exports =
 	 *  @hidden
 	 */
 	const mixinProperties = Object.keys(helpers);
+	/**
+	 * Class based mixin to auto-bind all `Reform.reactHelpers.*` methods into the `base` Component.
+	 *
+	 * Use it if you want to have all reactHelpers available in your component's instance.
+	 *
+	 * Recommended when using Typescript since will give you good autocomplete type suggestions
+	 * support.
+	 *
+	 * Note: This is implementing something very similar to Inheritance Inversion, but it's completely
+	 * independent from React.
+	 *
+	 * Example1
+	 *
+	 * ```javascript
+	 * const MyComponentPlusReform = classMixin(MyComponent);
+	 * ```
+	 *
+	 * Example 2: with decorators
+	 *
+	 * ```javascript
+	 * @classMixin
+	 * class MyComponent extends React.Component {}
+	 * ```
+	 */
 	function classMixin(base) {
 	    mixinProperties.forEach(prop => {
 	        if (base[prop] != null) {
@@ -957,6 +995,28 @@ module.exports =
 	    return ReformImpl;
 	}
 	exports.classMixin = classMixin;
+	/**
+	 * Functional mixin to incorporate all reactHelpers methods into your Component's instance.
+	 *
+	 * Use it in Javascript without the need of decorators.
+	 *
+	 * Example
+	 *
+	 * ```javascript
+	 * class MyComponent extends React.Component {
+	 *  constructor(...args) {
+	 *    super(...args)
+	 *
+	 *    functionalMixin(this);
+	 *
+	 *    // Now all reactHelpers will be available through this.[reactHelper]
+	 *    this.validateForm
+	 *    this.fieldIsValid
+	 *    // etc
+	 *  }
+	 * }
+	 * ```
+	 */
 	function functionalMixin(instance) {
 	    mixinProperties.forEach(prop => {
 	        if (instance[prop] != null) {

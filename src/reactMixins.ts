@@ -7,6 +7,12 @@ import * as helpers from './reactHelpers';
  */
 const mixinProperties = Object.keys(helpers);
 
+/**
+ * Handy interface that contains attributes corresponding to each
+ * `Reform.reactHelpers.*` method.
+ *
+ * Used by the `classMixin`.
+ */
 export interface Reform {
   validateField: typeof helpers.validateField;
   validateFieldFromState: typeof helpers.validateFieldFromState;
@@ -34,6 +40,30 @@ export interface GenericClass<T> {
 }
 
 
+/**
+ * Class based mixin to auto-bind all `Reform.reactHelpers.*` methods into the `base` Component.
+ *
+ * Use it if you want to have all reactHelpers available in your component's instance.
+ *
+ * Recommended when using Typescript since will give you good autocomplete type suggestions
+ * support.
+ *
+ * Note: This is implementing something very similar to Inheritance Inversion, but it's completely
+ * independent from React.
+ *
+ * Example1
+ *
+ * ```javascript
+ * const MyComponentPlusReform = classMixin(MyComponent);
+ * ```
+ *
+ * Example 2: with decorators
+ *
+ * ```javascript
+ * @classMixin
+ * class MyComponent extends React.Component {}
+ * ```
+ */
 export function classMixin<T extends Base>(base: GenericClass<T>): GenericClass<T & Reform> {
   mixinProperties.forEach(prop => {
     if (base[prop] != null) {
@@ -58,6 +88,28 @@ export function classMixin<T extends Base>(base: GenericClass<T>): GenericClass<
   return ReformImpl as GenericClass<T & Reform>;
 }
 
+/**
+ * Functional mixin to incorporate all reactHelpers methods into your Component's instance.
+ *
+ * Use it in Javascript without the need of decorators.
+ *
+ * Example
+ *
+ * ```javascript
+ * class MyComponent extends React.Component {
+ *  constructor(...args) {
+ *    super(...args)
+ *
+ *    functionalMixin(this);
+ *
+ *    // Now all reactHelpers will be available through this.[reactHelper]
+ *    this.validateForm
+ *    this.fieldIsValid
+ *    // etc
+ *  }
+ * }
+ * ```
+ */
 export function functionalMixin(instance: any) {
   mixinProperties.forEach(prop => {
     if (instance[prop] != null) {

@@ -348,7 +348,12 @@ validateFormFromState(this: [ValidationAbleInstance](#user-content-#24)): boolea
 
 # reactMixins <small>Module [src](./src/reactMixins.ts#L1)</small> <a id="#241"></a>
 
-## Reform <small>Interface [src](./src/reactMixins.ts#L10)</small> <a id="#242"></a>
+## Reform <small>Interface [src](./src/reactMixins.ts#L16)</small> <a id="#242"></a>
+Handy interface that contains attributes corresponding to each
+`Reform.reactHelpers.*` method.
+
+Used by the `classMixin`.
+
 
 <big><pre>
 {
@@ -363,15 +368,62 @@ validateForm: [validateForm](#user-content-#214);
 validateFormFromState: [validateFormFromState](#user-content-#218)
 }
 </big></pre>
-## classMixin <small>Function [src](./src/reactMixins.ts#L37)</small> <a id="#260"></a>
+## classMixin <small>Function [src](./src/reactMixins.ts#L67)</small> <a id="#260"></a>
 
+Class based mixin to auto-bind all `Reform.reactHelpers.*` methods into the `base` Component.
+
+Use it if you want to have all reactHelpers available in your component's instance.
+
+Recommended when using Typescript since will give you good autocomplete type suggestions
+support.
+
+Note: This is implementing something very similar to Inheritance Inversion, but it's completely
+independent from React.
+
+Example1
+
+```javascript
+const MyComponentPlusReform = classMixin(MyComponent);
+```
+
+Example 2: with decorators
+
+```javascript
+
+Tags
+
+
+- classmixin 
+class MyComponent extends React.Component {}
+```
 
 
 <big><pre>
 classMixin(base: [GenericClass](#user-content-#253)\<T\>): [GenericClass](#user-content-#253)\<T & Reform\>
 </pre></big>
 
-## functionalMixin <small>Function [src](./src/reactMixins.ts#L61)</small> <a id="#264"></a>
+## functionalMixin <small>Function [src](./src/reactMixins.ts#L113)</small> <a id="#264"></a>
+
+Functional mixin to incorporate all reactHelpers methods into your Component's instance.
+
+Use it in Javascript without the need of decorators.
+
+Example
+
+```javascript
+class MyComponent extends React.Component {
+ constructor(...args) {
+   super(...args)
+
+   functionalMixin(this);
+
+   // Now all reactHelpers will be available through this.[reactHelper]
+   this.validateForm
+   this.fieldIsValid
+   // etc
+ }
+}
+```
 
 
 
@@ -381,7 +433,20 @@ functionalMixin(instance: any): void
 
 # validators <small>Module [src](./src/validators.ts#L1)</small> <a id="#169"></a>
 
-## validatorInterface <small>Object literal [src](./src/validators.ts#L4)</small> <a id="#170"></a>
+## validatorInterface <small>Object literal [src](./src/validators.ts#L18)</small> <a id="#170"></a>
+Main validator interface.
+
+It is simply a wrapper on top of an object that contains
+all the single functions that each `officialValidators/**` module exports.
+
+The main reasons for this abstraction to exist are:
+
+- Throw errors when a wrong validation rule key is passed (i.e. in `this.validationRules`)
+- Allow the user to set new global available custom validators
+- Throw errors when the user is trying to overwrite an already existing validator
+
+Use it if you want to add new global custom validators.
+
 
 <big><pre>
 {
