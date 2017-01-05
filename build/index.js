@@ -672,12 +672,22 @@ module.exports =
 /* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(process) {"use strict";
 	const core = __webpack_require__(2);
+	/**
+	 * Mimic react __DEV__ env.
+	 * @hidden
+	 */
+	let __DEV__ = true;
+	try {
+	    if (process && process.env) {
+	        __DEV__ = ("development") !== "production";
+	    }
+	}
+	catch (e) { }
 	/**
 	 * Useful function for javascript land (which needs dynamic checking)
 	 * @hidden
-	 * @TODO do not use it in prod? Check performance
 	 *
 	 */
 	function checkInstance(instance) {
@@ -731,7 +741,13 @@ module.exports =
 	 *
 	 */
 	function validateField(fieldName, value) {
-	    checkInstance(this);
+	    if (__DEV__) {
+	        checkInstance(this);
+	        if (!this.state.fields.hasOwnProperty(fieldName)) {
+	            console.error(`Reform: field not found!: ${fieldName}`, this);
+	            throw new Error(`Reform: instance.state.fields.${fieldName} not found`);
+	        }
+	    }
 	    const rules = this.validationRules[fieldName];
 	    const fieldErrors = core.validateField(value, rules);
 	    this.setState((state) => {
@@ -769,7 +785,8 @@ module.exports =
 	 * This function will also set your form to `dirty` in `this.state.formIsDirty`
 	 */
 	function validateForm(fieldsValues) {
-	    checkInstance(this);
+	    if (__DEV__)
+	        checkInstance(this);
 	    const rulesMap = this.validationRules;
 	    const formErrors = core.validateForm(fieldsValues, rulesMap);
 	    this.setState((state) => {
@@ -804,6 +821,12 @@ module.exports =
 	 * **Important** this function will **not re calculate your field's validity**
 	 */
 	function fieldIsValid(fieldName) {
+	    if (__DEV__) {
+	        checkInstance(this);
+	        if (!this.state.errors.hasOwnProperty(fieldName)) {
+	            throw new Error(`Field Errors for field ${fieldName} not found!`);
+	        }
+	    }
 	    return core.fieldIsValid(this.state.errors[fieldName]);
 	}
 	exports.fieldIsValid = fieldIsValid;
@@ -817,7 +840,8 @@ module.exports =
 	 *  processing of the form.
 	 */
 	function formIsValid() {
-	    checkInstance(this);
+	    if (__DEV__)
+	        checkInstance(this);
 	    const fields = this.state.fields;
 	    const rules = this.validationRules;
 	    return core.formIsValid(fields, rules);
@@ -835,12 +859,11 @@ module.exports =
 	 * This function is purely for ergonomic purposes.
 	 */
 	function fieldIfError(fieldName, errorKey) {
-	    checkInstance(this);
-	    if (!this.state.fields.hasOwnProperty(fieldName)) {
-	        throw new Error(`Field ${fieldName} not found! Did you forget to initialize it?`);
-	    }
-	    if (!this.validationRules.hasOwnProperty(fieldName)) {
-	        throw new Error(`Field Rules ${fieldName} not found! Did you forget to initialize them?`);
+	    if (__DEV__) {
+	        checkInstance(this);
+	        if (!this.state.fields.hasOwnProperty(fieldName)) {
+	            throw new Error(`Field ${fieldName} not found! Did you forget to initialize it?`);
+	        }
 	    }
 	    if (this.state.errors[fieldName] && this.state.errors[fieldName][errorKey]) {
 	        return true;
@@ -871,7 +894,12 @@ module.exports =
 	 * @Unstable
 	 */
 	function fieldErrors(fieldName) {
-	    checkInstance(this);
+	    if (__DEV__) {
+	        checkInstance(this);
+	        if (!this.state.fields.hasOwnProperty(fieldName)) {
+	            throw new Error(`Field ${fieldName} not found! Did you forget to initialize it?`);
+	        }
+	    }
 	    const result = [];
 	    for (const ruleKey in this.state.errors[fieldName]) {
 	        const errorResult = this.state.errors[fieldName][ruleKey];
@@ -920,20 +948,24 @@ module.exports =
 	 *
 	 */
 	function mapFieldErrors(fieldName) {
-	    if (!this.hasOwnProperty('validationMessages')) {
-	        throw new Error(`"this.validationMessages" is required when using "mapFieldErrors"`);
+	    if (__DEV__) {
+	        checkInstance(this);
+	        if (!this.hasOwnProperty('validationMessages')) {
+	            throw new Error(`"this.validationMessages" is required when using "mapFieldErrors"`);
+	        }
+	        if (!this.validationMessages.hasOwnProperty('default')) {
+	            throw new Error(`"this.validationMessages.default" must be defined when using "mapFieldErrors"`);
+	        }
 	    }
-	    if (!this.validationMessages.hasOwnProperty('default')) {
-	        throw new Error(`"this.validationMessages.default" must be defined when using "mapFieldErrors"`);
-	    }
-	    return fieldErrors.call(this, 'email')
+	    return fieldErrors.call(this, fieldName)
 	        .map(([ruleKey, ruleValue]) => {
 	        const creator = this.validationMessages[ruleKey] || this.validationMessages['default'];
 	        return creator(ruleValue, ruleKey, fieldName);
 	    });
 	}
 	exports.mapFieldErrors = mapFieldErrors;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
 
 /***/ },
 /* 21 */
@@ -966,9 +998,12 @@ module.exports =
 	 * Example 2: with decorators
 	 *
 	 * ```javascript
-	 * @classMixin
+	 * $classMixin
 	 * class MyComponent extends React.Component {}
 	 * ```
+	 *
+	 * NOTE: since limitations of the tool generating the docs I cannot use `@` as decorator, demands.
+	 * So replace `$` with `@`
 	 */
 	function classMixin(base) {
 	    mixinProperties.forEach(prop => {
@@ -1035,6 +1070,192 @@ module.exports =
 	    instance.mapFieldErrors = helpers.mapFieldErrors;
 	}
 	exports.functionalMixin = functionalMixin;
+
+
+/***/ },
+/* 22 */
+/***/ function(module, exports) {
+
+	// shim for using process in browser
+	var process = module.exports = {};
+	
+	// cached from whatever global is present so that test runners that stub it
+	// don't break things.  But we need to wrap it in a try catch in case it is
+	// wrapped in strict mode code which doesn't define any globals.  It's inside a
+	// function because try/catches deoptimize in certain engines.
+	
+	var cachedSetTimeout;
+	var cachedClearTimeout;
+	
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
+	(function () {
+	    try {
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
+	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
+	    }
+	    try {
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
+	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
+	    }
+	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
+	        return setTimeout(fun, 0);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedSetTimeout(fun, 0);
+	    } catch(e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+	            return cachedSetTimeout.call(null, fun, 0);
+	        } catch(e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+	            return cachedSetTimeout.call(this, fun, 0);
+	        }
+	    }
+	
+	
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
+	        return clearTimeout(marker);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedClearTimeout(marker);
+	    } catch (e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+	            return cachedClearTimeout.call(null, marker);
+	        } catch (e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+	            return cachedClearTimeout.call(this, marker);
+	        }
+	    }
+	
+	
+	
+	}
+	var queue = [];
+	var draining = false;
+	var currentQueue;
+	var queueIndex = -1;
+	
+	function cleanUpNextTick() {
+	    if (!draining || !currentQueue) {
+	        return;
+	    }
+	    draining = false;
+	    if (currentQueue.length) {
+	        queue = currentQueue.concat(queue);
+	    } else {
+	        queueIndex = -1;
+	    }
+	    if (queue.length) {
+	        drainQueue();
+	    }
+	}
+	
+	function drainQueue() {
+	    if (draining) {
+	        return;
+	    }
+	    var timeout = runTimeout(cleanUpNextTick);
+	    draining = true;
+	
+	    var len = queue.length;
+	    while(len) {
+	        currentQueue = queue;
+	        queue = [];
+	        while (++queueIndex < len) {
+	            if (currentQueue) {
+	                currentQueue[queueIndex].run();
+	            }
+	        }
+	        queueIndex = -1;
+	        len = queue.length;
+	    }
+	    currentQueue = null;
+	    draining = false;
+	    runClearTimeout(timeout);
+	}
+	
+	process.nextTick = function (fun) {
+	    var args = new Array(arguments.length - 1);
+	    if (arguments.length > 1) {
+	        for (var i = 1; i < arguments.length; i++) {
+	            args[i - 1] = arguments[i];
+	        }
+	    }
+	    queue.push(new Item(fun, args));
+	    if (queue.length === 1 && !draining) {
+	        runTimeout(drainQueue);
+	    }
+	};
+	
+	// v8 likes predictible objects
+	function Item(fun, array) {
+	    this.fun = fun;
+	    this.array = array;
+	}
+	Item.prototype.run = function () {
+	    this.fun.apply(null, this.array);
+	};
+	process.title = 'browser';
+	process.browser = true;
+	process.env = {};
+	process.argv = [];
+	process.version = ''; // empty string to avoid regexp issues
+	process.versions = {};
+	
+	function noop() {}
+	
+	process.on = noop;
+	process.addListener = noop;
+	process.once = noop;
+	process.off = noop;
+	process.removeListener = noop;
+	process.removeAllListeners = noop;
+	process.emit = noop;
+	
+	process.binding = function (name) {
+	    throw new Error('process.binding is not supported');
+	};
+	
+	process.cwd = function () { return '/' };
+	process.chdir = function (dir) {
+	    throw new Error('process.chdir is not supported');
+	};
+	process.umask = function() { return 0; };
 
 
 /***/ }

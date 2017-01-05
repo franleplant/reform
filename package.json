@@ -11,7 +11,7 @@
     "test": "jest --watch",
     "test:docs": "tape docs-src/**/*.test.js",
     "test:travis": "jest --coverage && npm run test:docs",
-    "build:docs": "typedoc --out ./docs --name Reform --module commonjs --json docsContent.json src/index.ts && node docs-src/build.js"
+    "build:docs": "typedoc --ignoreCompilerErrors --tsconfig ./typedocconfig.json --out ./docs --name Reform --module commonjs --json docsContent.json src/index.ts && node docs-src/build.js"
   },
   "author": "franleplant@gmail.com",
   "license": "MIT",

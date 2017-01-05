@@ -60,9 +60,12 @@ export interface GenericClass<T> {
  * Example 2: with decorators
  *
  * ```javascript
- * @classMixin
+ * $classMixin
  * class MyComponent extends React.Component {}
  * ```
+ *
+ * NOTE: since limitations of the tool generating the docs I cannot use `@` as decorator, demands.
+ * So replace `$` with `@`
  */
 export function classMixin<T extends Base>(base: GenericClass<T>): GenericClass<T & Reform> {
   mixinProperties.forEach(prop => {

@@ -2,6 +2,8 @@
 
 A form validation _library_ for Javascript, Typescript, React and the web!
 
+[API Docs](./API.md)
+
 ## Introduction
 
 Reform started as a form validation library for React, but it has come a long way

@@ -1,10 +1,21 @@
 import { ValidationAbleInstance, Fields } from './types'
 import * as core from './core';
 
+
+/**
+ * Mimic react __DEV__ env.
+ * @hidden
+ */
+let __DEV__ = true;
+try {
+  if (process && process.env) {
+    __DEV__ = process.env.NODE_ENV !== "production"
+  }
+} catch (e) {}
+
 /**
  * Useful function for javascript land (which needs dynamic checking)
  * @hidden
- * @TODO do not use it in prod? Check performance
  *
  */
 function checkInstance(instance: any) {
@@ -63,7 +74,13 @@ function checkInstance(instance: any) {
  *
  */
 export function validateField(this: ValidationAbleInstance, fieldName: string, value: any): boolean {
-  checkInstance(this);
+  if (__DEV__) {
+    checkInstance(this);
+    if (!this.state.fields.hasOwnProperty(fieldName)) {
+      console.error(`Reform: field not found!: ${fieldName}`, this);
+      throw new Error(`Reform: instance.state.fields.${fieldName} not found`);
+    }
+  }
   const rules = this.validationRules[fieldName];
   const fieldErrors = core.validateField(value, rules);
   this.setState((state: any) => {
@@ -102,7 +119,7 @@ export function validateFieldFromState(this: ValidationAbleInstance, fieldName: 
  * This function will also set your form to `dirty` in `this.state.formIsDirty`
  */
 export function validateForm(this: ValidationAbleInstance, fieldsValues: Fields): boolean {
-  checkInstance(this);
+  if (__DEV__) checkInstance(this);
   const rulesMap = this.validationRules;
   const formErrors = core.validateForm(fieldsValues, rulesMap);
   this.setState((state: any) => {
@@ -139,6 +156,12 @@ export function validateFormFromState(this: ValidationAbleInstance): boolean {
  * **Important** this function will **not re calculate your field's validity**
  */
 export function fieldIsValid(this: ValidationAbleInstance, fieldName: string): boolean {
+  if (__DEV__) {
+    checkInstance(this);
+    if (!this.state.errors.hasOwnProperty(fieldName)) {
+      throw new Error(`Field Errors for field ${fieldName} not found!`)
+    }
+  }
   return core.fieldIsValid(this.state.errors[fieldName]);
 }
 
@@ -153,7 +176,7 @@ export function fieldIsValid(this: ValidationAbleInstance, fieldName: string): b
  *  processing of the form.
  */
 export function formIsValid(this: ValidationAbleInstance): boolean {
-  checkInstance(this);
+  if (__DEV__) checkInstance(this);
   const fields = this.state.fields;
   const rules = this.validationRules;
   return core.formIsValid(fields, rules);
@@ -172,13 +195,11 @@ export function formIsValid(this: ValidationAbleInstance): boolean {
  * This function is purely for ergonomic purposes.
  */
 export function fieldIfError(this: ValidationAbleInstance, fieldName: string, errorKey: string): boolean {
-  checkInstance(this);
-  if (!this.state.fields.hasOwnProperty(fieldName)) {
-    throw new Error(`Field ${fieldName} not found! Did you forget to initialize it?`)
-  }
-
-  if (!this.validationRules.hasOwnProperty(fieldName)) {
-    throw new Error(`Field Rules ${fieldName} not found! Did you forget to initialize them?`)
+  if (__DEV__) {
+    checkInstance(this);
+    if (!this.state.fields.hasOwnProperty(fieldName)) {
+      throw new Error(`Field ${fieldName} not found! Did you forget to initialize it?`)
+    }
   }
 
   if (this.state.errors[fieldName] && this.state.errors[fieldName][errorKey]) {
@@ -211,7 +232,12 @@ export function fieldIfError(this: ValidationAbleInstance, fieldName: string, er
  * @Unstable
  */
 export function fieldErrors(this: ValidationAbleInstance, fieldName: string): Array<Array<any>> {
-  checkInstance(this)
+  if (__DEV__) {
+    checkInstance(this);
+    if (!this.state.fields.hasOwnProperty(fieldName)) {
+      throw new Error(`Field ${fieldName} not found! Did you forget to initialize it?`)
+    }
+  }
   const result: Array<Array<any>> = [];
   for (const ruleKey in this.state.errors[fieldName]) {
     const errorResult = this.state.errors[fieldName][ruleKey]
@@ -260,15 +286,18 @@ export function fieldErrors(this: ValidationAbleInstance, fieldName: string): Ar
  *
  */
 export function mapFieldErrors(this: ValidationAbleInstance, fieldName: string): Array<string> {
-  if (!this.hasOwnProperty('validationMessages')) {
-    throw new Error(`"this.validationMessages" is required when using "mapFieldErrors"`);
+  if (__DEV__) {
+    checkInstance(this)
+    if (!this.hasOwnProperty('validationMessages')) {
+      throw new Error(`"this.validationMessages" is required when using "mapFieldErrors"`);
+    }
+
+    if (!this.validationMessages.hasOwnProperty('default')) {
+      throw new Error(`"this.validationMessages.default" must be defined when using "mapFieldErrors"`)
+    }
   }
 
-  if (!this.validationMessages.hasOwnProperty('default')) {
-    throw new Error(`"this.validationMessages.default" must be defined when using "mapFieldErrors"`)
-  }
-
-  return fieldErrors.call(this, 'email')
+  return fieldErrors.call(this, fieldName)
     .map(([ruleKey, ruleValue]: Array<any>) => {
       const creator = this.validationMessages[ruleKey] || this.validationMessages['default'];
       return creator(ruleValue, ruleKey, fieldName)
