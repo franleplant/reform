@@ -1,4 +1,4 @@
-# Reform
+# Reform [![Build Status](https://travis-ci.org/franleplant/reform.svg?branch=master)](https://travis-ci.org/franleplant/reform) [![Coverage Status](https://coveralls.io/repos/github/franleplant/reform/badge.svg?branch=master)](https://coveralls.io/github/franleplant/reform?branch=master)
 
 A form validation _library_ for Javascript, Typescript, React and the web!
 
