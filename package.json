@@ -2,7 +2,10 @@
   "name": "@franleplant/reform",
   "version": "5.0.0",
   "description": "Form validation library for Javascript, Typescript, React and the web",
-  "keywords": ["form validation", "react"],
+  "keywords": [
+    "form validation",
+    "react"
+  ],
   "main": "./build/index.js",
   "types": "./build/src/@franleplant/reform.d.ts",
   "scripts": {
@@ -18,6 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/node": "6.0.51",
+    "coveralls": "^2.11.15",
     "dts-bundle": "0.6.1",
     "jest": "17.0.3",
     "source-map-loader": "0.1.5",
