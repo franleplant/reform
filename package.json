@@ -1,7 +1,8 @@
 {
-  "name": "reform",
+  "name": "@franleplant/reform",
   "version": "5.0.0",
-  "description": "",
+  "description": "Form validation library for Javascript, Typescript, React and the web",
+  "keywords": ["form validation", "react"],
   "main": "./build/index.js",
   "types": "./build/src/@franleplant/reform.d.ts",
   "scripts": {
