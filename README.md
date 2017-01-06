@@ -307,6 +307,12 @@ Most of the time I use this pattern
 handleChangeFactory(fieldName) {
   return function handleChange(e) {
     const value = e.target.value;
+    // Update your state
+    this.setState(state => {
+      state.fields[fieldName] = value;
+      return state;
+    })
+    // Validate and update your validation state
     this.validateField(fieldName, value);
   }
 }
@@ -330,6 +336,12 @@ handleChangeFactory(fieldName) {
   if (!this.handleChangeCache[fieldName]) {
     this.handleChangeCache[fieldName] = function handleChange(e) {
       const value = e.target.value;
+      // Update your state
+      this.setState(state => {
+        state.fields[fieldName] = value;
+        return state;
+      })
+      // Validate and update your validation state
       this.validateField(fieldName, value);
     }
   }
