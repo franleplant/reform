@@ -1,6 +1,6 @@
 {
   "name": "@franleplant/reform",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "description": "Form validation library for Javascript, Typescript, React and the web",
   "keywords": [
     "form validation",
