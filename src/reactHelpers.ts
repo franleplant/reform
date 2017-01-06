@@ -158,8 +158,8 @@ export function validateFormFromState(this: ValidationAbleInstance): boolean {
 export function fieldIsValid(this: ValidationAbleInstance, fieldName: string): boolean {
   if (__DEV__) {
     checkInstance(this);
-    if (!this.state.errors.hasOwnProperty(fieldName)) {
-      throw new Error(`Field Errors for field ${fieldName} not found!`)
+    if (!this.state.fields.hasOwnProperty(fieldName)) {
+      throw new Error(`Field ${fieldName} not found! Did you forget to initialize it?`)
     }
   }
   return core.fieldIsValid(this.state.errors[fieldName]);

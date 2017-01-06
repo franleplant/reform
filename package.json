@@ -9,6 +9,7 @@
   "main": "./build/index.js",
   "types": "./build/src/@franleplant/reform.d.ts",
   "scripts": {
+    "pre:publish": "npm run build:docs && npm run build",
     "dts": "dts-bundle --name @franleplant/reform --main build/src/index.d.ts",
     "build": "webpack && npm run dts",
     "start": "webpack --watch",
@@ -19,19 +20,7 @@
   },
   "author": "franleplant@gmail.com",
   "license": "MIT",
-  "dependencies": {
-    "@types/node": "6.0.51",
-    "coveralls": "^2.11.15",
-    "dts-bundle": "0.6.1",
-    "jest": "17.0.3",
-    "source-map-loader": "0.1.5",
-    "ts-jest": "17.0.0",
-    "ts-loader": "1.2.2",
-    "tslint": "4.0.2",
-    "tslint-loader": "3.2.0",
-    "typescript": "2.1.4",
-    "webpack": "1.13.3"
-  },
+  "dependencies": {},
   "jest": {
     "moduleFileExtensions": [
       "ts",
@@ -48,6 +37,17 @@
     "common-tags": "^1.4.0",
     "handlebars": "^4.0.6",
     "tape": "^4.6.3",
-    "typedoc": "^0.5.3"
+    "typedoc": "^0.5.3",
+    "@types/node": "6.0.51",
+    "coveralls": "^2.11.15",
+    "dts-bundle": "0.6.1",
+    "jest": "17.0.3",
+    "source-map-loader": "0.1.5",
+    "ts-jest": "17.0.0",
+    "ts-loader": "1.2.2",
+    "tslint": "4.0.2",
+    "tslint-loader": "3.2.0",
+    "typescript": "2.1.4",
+    "webpack": "1.13.3"
   }
 }

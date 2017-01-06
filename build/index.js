@@ -54,7 +54,7 @@ module.exports =
 	exports.validators = validators_1.default;
 	const reactHelpers = __webpack_require__(20);
 	exports.reactHelpers = reactHelpers;
-	const reactMixins = __webpack_require__(21);
+	const reactMixins = __webpack_require__(22);
 	exports.reactMixins = reactMixins;
 	/**
 	 *  `default` export for the entire library.
@@ -823,8 +823,8 @@ module.exports =
 	function fieldIsValid(fieldName) {
 	    if (__DEV__) {
 	        checkInstance(this);
-	        if (!this.state.errors.hasOwnProperty(fieldName)) {
-	            throw new Error(`Field Errors for field ${fieldName} not found!`);
+	        if (!this.state.fields.hasOwnProperty(fieldName)) {
+	            throw new Error(`Field ${fieldName} not found! Did you forget to initialize it?`);
 	        }
 	    }
 	    return core.fieldIsValid(this.state.errors[fieldName]);
@@ -965,115 +965,10 @@ module.exports =
 	}
 	exports.mapFieldErrors = mapFieldErrors;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
 
 /***/ },
 /* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	//import { ValidationAbleInstance, Fields } from './types'
-	const helpers = __webpack_require__(20);
-	/**
-	 *  @hidden
-	 */
-	const mixinProperties = Object.keys(helpers);
-	/**
-	 * Class based mixin to auto-bind all `Reform.reactHelpers.*` methods into the `base` Component.
-	 *
-	 * Use it if you want to have all reactHelpers available in your component's instance.
-	 *
-	 * Recommended when using Typescript since will give you good autocomplete type suggestions
-	 * support.
-	 *
-	 * Note: This is implementing something very similar to Inheritance Inversion, but it's completely
-	 * independent from React.
-	 *
-	 * Example1
-	 *
-	 * ```javascript
-	 * const MyComponentPlusReform = classMixin(MyComponent);
-	 * ```
-	 *
-	 * Example 2: with decorators
-	 *
-	 * ```javascript
-	 * $classMixin
-	 * class MyComponent extends React.Component {}
-	 * ```
-	 *
-	 * NOTE: since limitations of the tool generating the docs I cannot use `@` as decorator, demands.
-	 * So replace `$` with `@`
-	 */
-	function classMixin(base) {
-	    mixinProperties.forEach(prop => {
-	        if (base[prop] != null) {
-	            // TODO: better error message
-	            throw new Error(`Wrapped Component already implements method, please use another one`);
-	        }
-	    });
-	    class ReformImpl extends base {
-	        constructor() {
-	            super(...arguments);
-	            this.validateField = helpers.validateField;
-	            this.validateFieldFromState = helpers.validateFieldFromState;
-	            this.fieldIsValid = helpers.fieldIsValid;
-	            this.validateForm = helpers.validateForm;
-	            this.validateFormFromState = helpers.validateFormFromState;
-	            this.formIsValid = helpers.formIsValid;
-	            this.fieldErrors = helpers.fieldErrors;
-	            this.fieldIfError = helpers.fieldIfError;
-	            this.mapFieldErrors = helpers.mapFieldErrors;
-	        }
-	    }
-	    ReformImpl.displayName = `Reform(${base.displayName})`;
-	    return ReformImpl;
-	}
-	exports.classMixin = classMixin;
-	/**
-	 * Functional mixin to incorporate all reactHelpers methods into your Component's instance.
-	 *
-	 * Use it in Javascript without the need of decorators.
-	 *
-	 * Example
-	 *
-	 * ```javascript
-	 * class MyComponent extends React.Component {
-	 *  constructor(...args) {
-	 *    super(...args)
-	 *
-	 *    functionalMixin(this);
-	 *
-	 *    // Now all reactHelpers will be available through this.[reactHelper]
-	 *    this.validateForm
-	 *    this.fieldIsValid
-	 *    // etc
-	 *  }
-	 * }
-	 * ```
-	 */
-	function functionalMixin(instance) {
-	    mixinProperties.forEach(prop => {
-	        if (instance[prop] != null) {
-	            // TODO: better error message
-	            throw new Error(`Wrapped Component already implements method, please use another one`);
-	        }
-	    });
-	    instance.validateField = helpers.validateField;
-	    instance.validateFieldFromState = helpers.validateFieldFromState;
-	    instance.fieldIsValid = helpers.fieldIsValid;
-	    instance.validateForm = helpers.validateForm;
-	    instance.validateFormFromState = helpers.validateFormFromState;
-	    instance.formIsValid = helpers.formIsValid;
-	    instance.fieldErrors = helpers.fieldErrors;
-	    instance.fieldIfError = helpers.fieldIfError;
-	    instance.mapFieldErrors = helpers.mapFieldErrors;
-	}
-	exports.functionalMixin = functionalMixin;
-
-
-/***/ },
-/* 22 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -1256,6 +1151,111 @@ module.exports =
 	    throw new Error('process.chdir is not supported');
 	};
 	process.umask = function() { return 0; };
+
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	//import { ValidationAbleInstance, Fields } from './types'
+	const helpers = __webpack_require__(20);
+	/**
+	 *  @hidden
+	 */
+	const mixinProperties = Object.keys(helpers);
+	/**
+	 * Class based mixin to auto-bind all `Reform.reactHelpers.*` methods into the `base` Component.
+	 *
+	 * Use it if you want to have all reactHelpers available in your component's instance.
+	 *
+	 * Recommended when using Typescript since will give you good autocomplete type suggestions
+	 * support.
+	 *
+	 * Note: This is implementing something very similar to Inheritance Inversion, but it's completely
+	 * independent from React.
+	 *
+	 * Example1
+	 *
+	 * ```javascript
+	 * const MyComponentPlusReform = classMixin(MyComponent);
+	 * ```
+	 *
+	 * Example 2: with decorators
+	 *
+	 * ```javascript
+	 * $classMixin
+	 * class MyComponent extends React.Component {}
+	 * ```
+	 *
+	 * NOTE: since limitations of the tool generating the docs I cannot use `@` as decorator, demands.
+	 * So replace `$` with `@`
+	 */
+	function classMixin(base) {
+	    mixinProperties.forEach(prop => {
+	        if (base[prop] != null) {
+	            // TODO: better error message
+	            throw new Error(`Wrapped Component already implements method, please use another one`);
+	        }
+	    });
+	    class ReformImpl extends base {
+	        constructor() {
+	            super(...arguments);
+	            this.validateField = helpers.validateField;
+	            this.validateFieldFromState = helpers.validateFieldFromState;
+	            this.fieldIsValid = helpers.fieldIsValid;
+	            this.validateForm = helpers.validateForm;
+	            this.validateFormFromState = helpers.validateFormFromState;
+	            this.formIsValid = helpers.formIsValid;
+	            this.fieldErrors = helpers.fieldErrors;
+	            this.fieldIfError = helpers.fieldIfError;
+	            this.mapFieldErrors = helpers.mapFieldErrors;
+	        }
+	    }
+	    ReformImpl.displayName = `Reform(${base.displayName})`;
+	    return ReformImpl;
+	}
+	exports.classMixin = classMixin;
+	/**
+	 * Functional mixin to incorporate all reactHelpers methods into your Component's instance.
+	 *
+	 * Use it in Javascript without the need of decorators.
+	 *
+	 * Example
+	 *
+	 * ```javascript
+	 * class MyComponent extends React.Component {
+	 *  constructor(...args) {
+	 *    super(...args)
+	 *
+	 *    functionalMixin(this);
+	 *
+	 *    // Now all reactHelpers will be available through this.[reactHelper]
+	 *    this.validateForm
+	 *    this.fieldIsValid
+	 *    // etc
+	 *  }
+	 * }
+	 * ```
+	 */
+	function functionalMixin(instance) {
+	    mixinProperties.forEach(prop => {
+	        if (instance[prop] != null) {
+	            // TODO: better error message
+	            throw new Error(`Wrapped Component already implements method, please use another one`);
+	        }
+	    });
+	    instance.validateField = helpers.validateField;
+	    instance.validateFieldFromState = helpers.validateFieldFromState;
+	    instance.fieldIsValid = helpers.fieldIsValid;
+	    instance.validateForm = helpers.validateForm;
+	    instance.validateFormFromState = helpers.validateFormFromState;
+	    instance.formIsValid = helpers.formIsValid;
+	    instance.fieldErrors = helpers.fieldErrors;
+	    instance.fieldIfError = helpers.fieldIfError;
+	    instance.mapFieldErrors = helpers.mapFieldErrors;
+	}
+	exports.functionalMixin = functionalMixin;
 
 
 /***/ }
