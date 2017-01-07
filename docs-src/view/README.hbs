@@ -68,6 +68,111 @@ This is a complete working example of a React Form plus Reform validation
 {{/includeFile}}
 ```
 
+## Validators
+
+Reform provides all the HTML5 validators, they are slightly differently expressed
+
+
+These are the rules of thumb for translating HTML5 validator attributes to Reform validation rules:
+- All validation attributes, such as `required`, `min-length=6` and `max-length=6` are expresed as `{required: true}`, `{minLength: 5}`, {`maxLenght: 6}`
+- All `type="something"` are expressed as `{something: true}`, i.e.`type="email` is `{email: true}`
+- All validation rules that depend on the `type` of the field are expresed like `${rule}${type}`. i.e. `minNumber`, `maxDate`, `minWeek` etc.
+
+Dates, week, time and color types are supported exactly as the HTML5 standard says, so if you find
+any differences please report a bug.
+
+A complete list and their API is available in the API docs.
+
+Example
+
+```javascript
+
+// Use all the HTML5 validation Rules in a single field
+this.validationRules = {
+  myField: {
+    // Regular validation attributes
+    // attributes with no value in HTML5 use true as value in Reform
+    required: true,
+    // validation attributes with an actual value in HTML5
+    // use that same value in Reform
+    minLength: 5,
+    maxLength: 15,
+    // pattern accepts directly a RegExp object instead of a string
+    pattern: /banana|apple/,
+
+
+    // type validation attributes
+    // type attributes in HTML5 use true as value in Reform
+    email: true,
+    number: true,
+    range: true,
+    color: true,
+    date: true,
+    time: true,
+    url: true,
+    month: true,
+    week: true,
+
+
+    // type dependent validation attributes
+    minNumber: 5,
+    maxNumber: 15,
+    minDate: '2016-12-26',
+    maxDate: '2016-12-26',
+    minMonth: '2016-9',
+    maxMonth: '2016-9',
+    minTime: '17:45',
+    maxTime: '17:45',
+    minWeek: '2015-W32',
+    maxWeek: '2015-W32',
+  }
+}
+
+
+```
+
+
+### Custom validators
+
+There are two ways of using a custom validator in Reform:
+
+- ad hoc
+- Global
+
+Example: ad hoc
+
+```javascript
+
+// Instead of an attribute pass a function that conforms to the
+// Validator type (see api docs)
+this.validationRules = {
+  myField: {
+    myAdHocValidator: (value, validatorArgument) => {/*return true if the value is erroneus*/}
+    // Example of confirm a password
+    passwordShouldMatch: (value) => value !== this.state.fields.password
+  }
+}
+
+```
+
+Example: global
+
+```javascript
+
+// Define a global validator
+Reform.validators.set('myCustomGlobalValidator', (value, validatorArgument) => {/*return a boolean*/});
+
+// Now you can use it in any place of your app
+
+this.validationRules = {
+  myField: {
+    myCustomGlobalValidator: validatorArgument,
+  }
+}
+
+```
+
+
 
 
 ## React Helpers Guide

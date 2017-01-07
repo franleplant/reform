@@ -530,6 +530,75 @@ validationRules: [RulesMap](#user-content-#12)
 </big></pre>
 # officialValidators/index <small>Module [src](./src/officialValidators/index.ts#L1)</small> <a id="#124"></a>
 
+## validatorMap <small>Object literal [src](./src/officialValidators/index.ts#L65)</small> <a id="#128"></a>
+These are all the official validators HTML5 validators.
+
+They are slightly differently expressed.
+
+Example 1
+
+```javascript
+//HTML5
+<input name="myEmail" type="email" min-length=5 required />
+
+// Reform
+this.validationRules = {
+ myEmail: {
+   email: true,
+   minLength: 5,
+   required: true
+ }
+}
+```
+
+Example 2
+
+```javascript
+//HTML5
+<input name="myField" type="number" min=5  max=15 />
+
+// Reform
+this.validationRules = {
+ myField: {
+   number: true,
+   minNumber: 5,
+   maxNumber: 15,
+ }
+}
+```
+
+
+
+
+
+
+<big><pre>
+{
+maxDate: Function
+maxMonth: Function
+maxNumber: Function
+maxTime: Function
+maxWeek: Function
+minDate: Function
+minMonth: Function
+minNumber: Function
+minTime: Function
+minWeek: Function
+month: Function
+number: [Validator](#user-content-#2)
+range: [Validator](#user-content-#2)
+time: Function
+url: Function
+week: Function
+color: color(value: any): boolean
+date: date(value: any): boolean
+email: email(value: string): boolean
+maxLength: maxLength(value: string, maxLength: number): boolean
+minLength: minLength(value: string, minLength: number): boolean
+pattern: pattern(value: string, re: RegExp): boolean
+required: required(value: any): boolean
+}
+</big></pre>
 # officialValidators/minMonth <small>Module [src](./src/officialValidators/minMonth.ts#L1)</small> <a id="#94"></a>
 
 ## minMonth <small>Function [src](./src/officialValidators/minMonth.ts#L4)</small> <a id="#95"></a>
