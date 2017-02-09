@@ -9,7 +9,7 @@
   "main": "./build/index.js",
   "types": "./build/src/@franleplant/reform.d.ts",
   "scripts": {
-    "pre:publish": "npm run build:docs && npm run build",
+    "pre:publish": "npm run test:travis && npm run build:docs && npm run build",
     "dts": "dts-bundle --name @franleplant/reform --main build/src/index.d.ts",
     "build": "webpack && npm run dts",
     "start": "webpack --watch",
