@@ -1,8 +1,60 @@
 # Reform [![Build Status](https://travis-ci.org/franleplant/reform.svg?branch=master)](https://travis-ci.org/franleplant/reform) [![Coverage Status](https://coveralls.io/repos/github/franleplant/reform/badge.svg?branch=master)](https://coveralls.io/github/franleplant/reform?branch=master)
 
-A form validation _library_ for Javascript, Typescript, React and the web!
+A form validation _library_ for Javascript, Typescript, React, React Native and the web!
 
 [API Docs](./API.md)
+
+## Why should I use Reform? How Reform compares to existing solutions?
+
+While there are already solutions for the problem of Form Validation in React,
+Reform is an attempt to make form validation as simple and versatile as possible.
+
+### Characteristics of Reform
+
+#### Works on React and React Native
+
+Because of it's nature, because it does not rely on the DOM, Reform is just
+a plain javascript library which runs on anything that runs javascript, and that
+of course includes React Native. Bonus points: all HTML5 validators such as 
+`required`, `minLength`, et al, also work on React Native.
+
+#### Works with **any** React view framework and with any custom components
+
+Some libraries like [`react-validation`](https://www.npmjs.com/package/react-validation)
+use Components as their API. The problem with this approach is that it does not play well
+with libraries such as `react-bootstrap` which already provide their own input components, or
+your own custom input components.
+
+Reform works with any component that receives a value and a change function as its props,
+it does not matter what are the names for this props, whether they are `value`, `text`, `onChange`,
+`onChangeText`, `onChangeValue` or whatever the component author decided to call them, Reform
+will work with that component.
+
+#### Works right out of the box without further stuff.
+
+The great [`redux-form`](http://redux-form.com/6.5.0/) which we've used extensively, does
+not provide any validators by default.
+
+Reform **provides** all HTML5 validators right out of the box,
+for you to start validating your forms right away.
+
+#### Does not depend on Redux
+
+We love Redux, but except for particular use cases, we don't see the point
+in storing form state in the _application global state_, and also, we don't tend
+to connect Form Component to the Redux Store and that's why Reform only requires that
+you use the regular React Controlled Components pattern for form Handling.
+
+#### Does not have dependencies
+
+Reform does not depend on anything, not even in React.
+
+#### Absurd versatility
+
+Reform provides common abstraction to use with React. Don't like them? Simply
+build your own using the `core` (described below)
+
+
 
 ## Introduction
 
@@ -65,9 +117,9 @@ This is a complete working example of a React Form plus Reform validation
 
 ```javascript
 import React, { Component } from 'react';
-// In your case it will be something like this
-//import Reform from '@franleplant/reform';
 import Reform from '../../build/index.js';
+// In your case you should import it like this:
+//import Reform from '@franleplant/reform';
 
 /*
   Reform HTML5 mode example (validate onSubmit)
@@ -77,13 +129,15 @@ export default class GettingStarted extends Component {
    Initialize your field and error state
   */
   state = {
-    message: '',
     fields: {
       email: '',
       password: '',
     },
 
     errors: {},
+
+    // This is not reform specific
+    message: '',
   }
 
   /*
@@ -106,10 +160,16 @@ export default class GettingStarted extends Component {
   /*
     Hook Reform into your component
   */
-  validateFormFromState = Reform.reactHelpers.validateFormFromState;
-  formIsValid = Reform.reactHelpers.formIsValid;
-  fieldIfError = Reform.reactHelpers.fieldIfError;
-  mapFieldErrors = Reform.reactHelpers.mapFieldErrors;
+  constructor(...args) {
+    super(...args);
+    Reform.reactMixins.functionalMixin(this);
+    // The above call with add new methods to your component, including:
+    // - validateFormFromState
+    // - formIsValid
+    // - fieldIfError
+    // - mapFieldErrors
+  }
+
 
   /*
     Regular onChange handlers from React world

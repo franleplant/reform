@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-// In your case it will be something like this
-//import Reform from '@franleplant/reform';
 import Reform from '../../build/index.js';
+// In your case you should import it like this:
+//import Reform from '@franleplant/reform';
 
 /*
   Reform HTML5 mode example (validate onSubmit)
@@ -11,13 +11,15 @@ export default class GettingStarted extends Component {
    Initialize your field and error state
   */
   state = {
-    message: '',
     fields: {
       email: '',
       password: '',
     },
 
     errors: {},
+
+    // This is not reform specific
+    message: '',
   }
 
   /*
@@ -40,10 +42,16 @@ export default class GettingStarted extends Component {
   /*
     Hook Reform into your component
   */
-  validateFormFromState = Reform.reactHelpers.validateFormFromState;
-  formIsValid = Reform.reactHelpers.formIsValid;
-  fieldIfError = Reform.reactHelpers.fieldIfError;
-  mapFieldErrors = Reform.reactHelpers.mapFieldErrors;
+  constructor(...args) {
+    super(...args);
+    Reform.reactMixins.functionalMixin(this);
+    // The above call with add new methods to your component, including:
+    // - validateFormFromState
+    // - formIsValid
+    // - fieldIfError
+    // - mapFieldErrors
+  }
+
 
   /*
     Regular onChange handlers from React world
