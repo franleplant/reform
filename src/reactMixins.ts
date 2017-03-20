@@ -36,7 +36,7 @@ export interface Base {}
 export interface GenericClass<T> {
   new (): T
   readonly prototype: T;
-  displayName: string;
+  displayName?: string;
 }
 
 

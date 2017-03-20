@@ -356,7 +356,7 @@ declare module '@franleplant/reform/reactMixins' {
     export interface GenericClass<T> {
             new (): T;
             readonly prototype: T;
-            displayName: string;
+            displayName?: string;
     }
     /**
         * Class based mixin to auto-bind all `Reform.reactHelpers.*` methods into the `base` Component.
