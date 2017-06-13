@@ -60,10 +60,12 @@ export default class GettingStarted extends Component {
     return event => {
       const value = event.target.value;
       this.setState(state => {
-        state.message = ''
-        state.fields[fieldName] = value;
-        state.errors = {};
-        return state;
+        const fields = {
+          ...state.fields,
+          [fieldName]: value,
+        };
+
+        return {...state, message: '', error: {}, fields};
       });
     }
   }
