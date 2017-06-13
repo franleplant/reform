@@ -178,10 +178,12 @@ export default class GettingStarted extends Component {
     return event => {
       const value = event.target.value;
       this.setState(state => {
-        state.message = ''
-        state.fields[fieldName] = value;
-        state.errors = {};
-        return state;
+        const fields = {
+          ...state.fields,
+          [fieldName]: value,
+        };
+
+        return {...state, message: '', error: {}, fields};
       });
     }
   }
@@ -419,6 +421,9 @@ supposed to work. If you have any problems please report, decorators and mixins 
 an untamed beast in Typescript land. You can always use the `functionalMixin` but you are going
 to need to express the new attributes by hand.
 
+NOTE: important for typescript users, the class based mixins are broken because the type signature is hard to use,
+please the other ways of using reform in your components until we fix this.
+
 ###  Triggering Validation
 
 There are several ways you can trigger validation, let's checkout how:
@@ -430,15 +435,17 @@ There are several ways you can trigger validation, let's checkout how:
 handleChange(e) {
   const value = e.target.value;
   // this function will validate `value` with `this.validationRules[fieldName]`
-  // and update `this.state.fields[fieldName]` and `this.state.errors[fieldName]`
+  // and update `this.state.errors[fieldName]`
+  // NOTE: this wont update `this.state.fields[fieldName]` with the newest value
   this.validateField(fieldName, value);
 }
 
 //onBlur
 handleBlur() {
   // this function will validate `this.state.fields[fieldName]` with `this.validationRules[fieldName]`
-  // and update the state `this.state.fields[fieldName]` and `this.state.errors[fieldName]`
+  // and update `this.state.errors[fieldName]`
   // Note that we assume that we already have the latest value inside `this.state.fields[fieldName]`
+  // NOTE: this wont update `this.state.fields[fieldName]` with the newest value
   this.validateFieldFromState(fieldName);
 }
 
