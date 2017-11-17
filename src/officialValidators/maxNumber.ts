@@ -6,7 +6,9 @@ export const maxNumber = (value: number | string, max: number | string) => {
 
   if (!Number.isFinite(maxN)) {
     throw new Error(
-      `Reform maxNumber argument should be a valid a number or a number string. Found "${max}"`
+      `Reform maxNumber argument should be a valid a number or a number string. Found "${
+        max
+      }"`
     );
   }
 

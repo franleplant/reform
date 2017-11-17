@@ -6,7 +6,9 @@ export const minNumber = (value: number | string, min: number | string) => {
 
   if (!Number.isFinite(minN)) {
     throw new Error(
-      `Reform minNumber argument should be a valid a number or a number string. Found "${min}"`
+      `Reform minNumber argument should be a valid a number or a number string. Found "${
+        min
+      }"`
     );
   }
 
