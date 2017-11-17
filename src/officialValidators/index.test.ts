@@ -1,18 +1,15 @@
-import validators from '../validators';
+import validators from "../validators";
 
-
-
-describe('required', () => {
-  const validator = validators.get('required')
+describe("required", () => {
+  const validator = validators.get("required");
   it(`should work!`, () => {
     expect(validator("")).toBe(true);
     expect(validator("hello")).toBe(false);
   });
-
 });
 
-describe('email', () => {
-  const validator = validators.get('email');
+describe("email", () => {
+  const validator = validators.get("email");
   it(`should work!`, () => {
     expect(validator("hellow")).toBe(true);
     expect(validator("hello@gmail.com")).toBe(false);
@@ -29,8 +26,8 @@ describe('email', () => {
   });
 });
 
-describe('url', () => {
-  const validator = validators.get('url')
+describe("url", () => {
+  const validator = validators.get("url");
   it(`should work!`, () => {
     expect(validator("hellow")).toBe(true);
     expect(validator("google")).toBe(true);
@@ -39,7 +36,9 @@ describe('url', () => {
     expect(validator("www.google.com")).toBe(false);
     expect(validator("http://www.google.com")).toBe(false);
     expect(validator("https://www.google.com")).toBe(false);
-    expect(validator("https://www.google.com/hi?name=reform&version=5#")).toBe(false);
+    expect(validator("https://www.google.com/hi?name=reform&version=5#")).toBe(
+      false
+    );
   });
 
   it(`should not validate when no value`, () => {
@@ -53,8 +52,8 @@ describe('url', () => {
   });
 });
 
-describe('minLength', () => {
-  const validator = validators.get('minLength')
+describe("minLength", () => {
+  const validator = validators.get("minLength");
   it(`should work!`, () => {
     expect(validator("12", 5)).toBe(true);
     expect(validator("12345")).toBe(false);
@@ -71,8 +70,8 @@ describe('minLength', () => {
   });
 });
 
-describe('maxLength', () => {
-  const validator = validators.get('maxLength')
+describe("maxLength", () => {
+  const validator = validators.get("maxLength");
   it(`should work!`, () => {
     expect(validator("123456", 5)).toBe(true);
     expect(validator("12345")).toBe(false);
@@ -89,9 +88,9 @@ describe('maxLength', () => {
   });
 });
 
-describe('pattern', () => {
-  const validator = validators.get('pattern')
-  const re = /banana|apple/
+describe("pattern", () => {
+  const validator = validators.get("pattern");
+  const re = /banana|apple/;
   it(`should work!`, () => {
     expect(validator("nothing", re)).toBe(true);
     expect(validator("banana", re)).toBe(false);
@@ -109,8 +108,8 @@ describe('pattern', () => {
   });
 });
 
-describe('number', () => {
-  const validator = validators.get('number')
+describe("number", () => {
+  const validator = validators.get("number");
   it(`should work!`, () => {
     expect(validator("not")).toBe(true);
     expect(validator("1")).toBe(false);
@@ -128,8 +127,8 @@ describe('number', () => {
   });
 });
 
-describe('range', () => {
-  const validator = validators.get('range')
+describe("range", () => {
+  const validator = validators.get("range");
   it(`should work!`, () => {
     expect(validator("not")).toBe(true);
     expect(validator("1")).toBe(false);
@@ -147,8 +146,8 @@ describe('range', () => {
   });
 });
 
-describe('color', () => {
-  const validator = validators.get('color')
+describe("color", () => {
+  const validator = validators.get("color");
   it(`should work!`, () => {
     expect(validator("not")).toBe(true);
     expect(validator("#GGGGGG")).toBe(true);
@@ -167,8 +166,8 @@ describe('color', () => {
   });
 });
 
-describe('date', () => {
-  const validator = validators.get('date')
+describe("date", () => {
+  const validator = validators.get("date");
   it(`should work!`, () => {
     expect(validator("not")).toBe(true);
     expect(validator("2016-13-56")).toBe(true);
@@ -187,10 +186,8 @@ describe('date', () => {
   });
 });
 
-
-
-describe('time', () => {
-  const validator = validators.get('time')
+describe("time", () => {
+  const validator = validators.get("time");
   it(`should work!`, () => {
     expect(validator("not")).toBe(true);
     expect(validator("42:99")).toBe(true);
@@ -209,8 +206,8 @@ describe('time', () => {
   });
 });
 
-describe('month', () => {
-  const validator = validators.get('month')
+describe("month", () => {
+  const validator = validators.get("month");
   it(`should work!`, () => {
     expect(validator("not")).toBe(true);
     expect(validator("2016-53")).toBe(true);
@@ -232,8 +229,8 @@ describe('month', () => {
   });
 });
 
-describe('week', () => {
-  const validator = validators.get('week')
+describe("week", () => {
+  const validator = validators.get("week");
   it(`should work!`, () => {
     expect(validator("not")).toBe(true);
     expect(validator("2016-W00")).toBe(true);
@@ -250,7 +247,6 @@ describe('week', () => {
     expect(validator("2015-W54")).toBe(true);
   });
 
-
   it(`should not validate when no value`, () => {
     expect(validator("")).toBe(false);
   });
@@ -262,8 +258,8 @@ describe('week', () => {
   });
 });
 
-describe('minNumber', () => {
-  const validator = validators.get('minNumber')
+describe("minNumber", () => {
+  const validator = validators.get("minNumber");
   it(`should work!`, () => {
     expect(validator(1, 5)).toBe(true);
     expect(validator("1", "5")).toBe(true);
@@ -290,8 +286,8 @@ describe('minNumber', () => {
   });
 });
 
-describe('maxNumber', () => {
-  const validator = validators.get('maxNumber')
+describe("maxNumber", () => {
+  const validator = validators.get("maxNumber");
   it(`should work!`, () => {
     expect(validator(6, 5)).toBe(true);
     expect(validator("6", "5")).toBe(true);
@@ -318,8 +314,8 @@ describe('maxNumber', () => {
   });
 });
 
-describe('minDate', () => {
-  const validator = validators.get('minDate')
+describe("minDate", () => {
+  const validator = validators.get("minDate");
   it(`should work!`, () => {
     expect(validator("2016-12-24", "2016-12-25")).toBe(true);
     expect(validator("2016-12-25", "2016-12-25")).toBe(false);
@@ -343,8 +339,8 @@ describe('minDate', () => {
   });
 });
 
-describe('maxDate', () => {
-  const validator = validators.get('maxDate')
+describe("maxDate", () => {
+  const validator = validators.get("maxDate");
   it(`should work!`, () => {
     expect(validator("2016-12-26", "2016-12-25")).toBe(true);
     expect(validator("2016-12-25", "2016-12-25")).toBe(false);
@@ -368,8 +364,8 @@ describe('maxDate', () => {
   });
 });
 
-describe('minMonth', () => {
-  const validator = validators.get('minMonth')
+describe("minMonth", () => {
+  const validator = validators.get("minMonth");
   it(`should work!`, () => {
     expect(validator("2015-9", "2016-11")).toBe(true);
     expect(validator("2016-9", "2016-11")).toBe(true);
@@ -396,8 +392,8 @@ describe('minMonth', () => {
   });
 });
 
-describe('maxMonth', () => {
-  const validator = validators.get('maxMonth')
+describe("maxMonth", () => {
+  const validator = validators.get("maxMonth");
   it(`should work!`, () => {
     expect(validator("2017-12", "2016-11")).toBe(true);
     expect(validator("2016-12", "2016-11")).toBe(true);
@@ -423,8 +419,8 @@ describe('maxMonth', () => {
   });
 });
 
-describe('minTime', () => {
-  const validator = validators.get('minTime')
+describe("minTime", () => {
+  const validator = validators.get("minTime");
   it(`should work!`, () => {
     expect(validator("17:45", "17:50")).toBe(true);
     expect(validator("17:50", "17:50")).toBe(false);
@@ -449,8 +445,8 @@ describe('minTime', () => {
   });
 });
 
-describe('maxTime', () => {
-  const validator = validators.get('maxTime')
+describe("maxTime", () => {
+  const validator = validators.get("maxTime");
   it(`should work!`, () => {
     expect(validator("17:55", "17:50")).toBe(true);
     expect(validator("17:50", "17:50")).toBe(false);
@@ -475,8 +471,8 @@ describe('maxTime', () => {
   });
 });
 
-describe('minWeek', () => {
-  const validator = validators.get('minWeek')
+describe("minWeek", () => {
+  const validator = validators.get("minWeek");
   it(`should work!`, () => {
     expect(validator("2015-W32", "2016-W33")).toBe(true);
     expect(validator("2016-W33", "2016-W33")).toBe(false);
@@ -501,9 +497,8 @@ describe('minWeek', () => {
   });
 });
 
-
-describe('maxWeek', () => {
-  const validator = validators.get('maxWeek')
+describe("maxWeek", () => {
+  const validator = validators.get("maxWeek");
   it(`should work!`, () => {
     expect(validator("2017-W34", "2016-W33")).toBe(true);
     expect(validator("2016-W34", "2016-W33")).toBe(true);

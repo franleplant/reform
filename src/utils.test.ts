@@ -1,6 +1,6 @@
-import * as utils from './utils';
+import * as utils from "./utils";
 
-describe('weeksInYear', () => {
+describe("weeksInYear", () => {
   it(`should return 52 for year 2014 `, () => {
     expect(utils.weeksInYear(2014)).toBe(52);
   });
@@ -14,7 +14,7 @@ describe('weeksInYear', () => {
   });
 });
 
-describe('parseMonth', () => {
+describe("parseMonth", () => {
   it(`should work`, () => {
     expect(utils.parseMonth("2016-10")).toEqual([2016, 10]);
     expect(utils.parseMonth("-")).toEqual([]);
@@ -22,7 +22,7 @@ describe('parseMonth', () => {
   });
 });
 
-describe('parseWeek', () => {
+describe("parseWeek", () => {
   it(`should work`, () => {
     expect(utils.parseWeek("2016-W10")).toEqual([2016, 10]);
     expect(utils.parseWeek("-")).toEqual([]);
@@ -30,7 +30,7 @@ describe('parseWeek', () => {
   });
 });
 
-describe('parseTime', () => {
+describe("parseTime", () => {
   it(`should work`, () => {
     expect(Number.isFinite(utils.parseTime("17:50"))).toBe(true);
     expect(Number.isFinite(utils.parseTime("23:13"))).toBe(true);
