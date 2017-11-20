@@ -19,7 +19,7 @@ describe("validatorInterface", () => {
     });
 
     it(`should throw if validator is already set`, () => {
-      expect(() => validators.set("required")).toThrow();
+      expect(() => validators.set("required", () => true)).toThrow();
     });
   });
 });

@@ -22,15 +22,21 @@ export interface FormErrors {
   [fieldName: string]: FieldErrors;
 }
 
-export interface Fields { [fieldName: string]: any};
+export interface Fields {
+  [fieldName: string]: any;
+}
 
-export type MessageCreator = (ruleArgument?: any, ruleKey?: string, fieldName?: string) => string;
+export type MessageCreator = (
+  ruleArgument?: any,
+  ruleKey?: string,
+  fieldName?: string
+) => string;
 
 export interface ValidationAbleInstance {
   validationRules: RulesMap;
   validationMessages?: {
     [ruleKey: string]: MessageCreator;
-  }
+  };
 
   state: {
     fields: Fields;

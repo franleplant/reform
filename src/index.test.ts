@@ -1,6 +1,6 @@
-import Reform from './index';
+import Reform from "./index";
 
-test('Reform main entry point', () => {
+test("Reform main entry point", () => {
   expect(Reform).toBeDefined();
   expect(Reform.core).toBeDefined();
   expect(Reform.reactHelpers).toBeDefined();

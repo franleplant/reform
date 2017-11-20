@@ -21,21 +21,21 @@ test("validateField", () => {
   expect(
     core.validateField("custom", {
       required: true,
-      customValidator: value => value !== "custom",
+      customValidator: (value: string) => value !== "custom",
     })
   ).toEqual({ required: false, customValidator: false });
 
   expect(
     core.validateField("wrong", {
       required: true,
-      customValidator: value => value !== "custom",
+      customValidator: (value: string) => value !== "custom",
     })
   ).toEqual({ required: false, customValidator: true });
 
   expect(
     core.validateField("", {
       required: true,
-      customValidator: value => value !== "custom",
+      customValidator: (value: string) => value !== "custom",
     })
   ).toEqual({ required: true, customValidator: true });
 });
@@ -46,7 +46,6 @@ test("fieldIsValid(value, rules)", () => {
     true
   );
   expect(core.fieldIsValid("", {})).toBe(true);
-  expect(core.fieldIsValid("")).toBe(true);
 });
 
 test("fieldIsValid(fieldErrors)", () => {
@@ -56,7 +55,6 @@ test("fieldIsValid(fieldErrors)", () => {
   expect(core.fieldIsValid({ email: false, required: false })).toBe(true);
 
   expect(core.fieldIsValid({})).toBe(true);
-  expect(core.fieldIsValid()).toBe(true);
 });
 
 test("validateForm", () => {

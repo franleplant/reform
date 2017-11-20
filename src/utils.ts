@@ -1,4 +1,5 @@
 // Returns [] if something went wrong
+// TODO better return types
 export function parseMonth(value: string): number[] {
   const [yearStr, monthStr] = value.split("-");
   const year = parseInt(yearStr, 10);
@@ -12,6 +13,7 @@ export function parseMonth(value: string): number[] {
 }
 
 // Returns [] if something went wrong
+// TODO better return types
 export function parseWeek(value: string): number[] {
   let [yearStr, weekStr] = value.split("-");
   const year = parseInt(yearStr, 10);

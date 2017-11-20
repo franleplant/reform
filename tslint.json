@@ -10,7 +10,8 @@
     "variable-name": [true, "ban-keywords"],
     "no-namespace": [true, "allow-declarations"],
     "no-unused-variable": [true, "react"],
-    "whitespace": [true,
+    "whitespace": [
+      true,
       "check-branch",
       "check-decl",
       "check-operator",
