@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import Reform from '../../build/index.js';
-// In your case you should import it like this:
-//import Reform from '@franleplant/reform';
+import Reform from '@franleplant/reform';
 
 /*
   Reform HTML5 mode example (validate onSubmit)
