@@ -1,6 +1,5 @@
-//import { ValidationAbleInstance, Fields } from './types'
-import * as helpers from './reactHelpers';
-
+import { ValidationAbleInstance } from "./types";
+import * as helpers from "./reactHelpers";
 
 /**
  *  @hidden
@@ -10,10 +9,8 @@ const mixinProperties = Object.keys(helpers);
 /**
  * Handy interface that contains attributes corresponding to each
  * `Reform.reactHelpers.*` method.
- *
- * Used by the `classMixin`.
  */
-export interface Reform {
+export interface IReform {
   validateField: typeof helpers.validateField;
   validateFieldFromState: typeof helpers.validateFieldFromState;
   fieldIsValid: typeof helpers.fieldIsValid;
@@ -25,70 +22,33 @@ export interface Reform {
   mapFieldErrors: typeof helpers.mapFieldErrors;
 }
 
-
 /**
- *  @hidden
- */
-export interface Base {}
-/**
- *  @hidden
- */
-export interface GenericClass<T> {
-  new (): T
-  readonly prototype: T;
-  displayName?: string;
-}
-
-
-/**
- * Class based mixin to auto-bind all `Reform.reactHelpers.*` methods into the `base` Component.
+ * Simplest mixin (well not really a mixin) that binds all
+ * reform helpers to your context and returns an object containing all common helerps.
  *
- * Use it if you want to have all reactHelpers available in your component's instance.
+ * Use it with typescript to get type checks and autocomplete.
  *
- * Recommended when using Typescript since will give you good autocomplete type suggestions
- * support.
- *
- * Note: This is implementing something very similar to Inheritance Inversion, but it's completely
- * independent from React.
- *
- * Example1
- *
- * ```javascript
- * const MyComponentPlusReform = classMixin(MyComponent);
+ * ```typescript
+ *  class MyForm extends React.Component<any, any> {
+ *    reform = objectMixin(this)
+ *  }
  * ```
  *
- * Example 2: with decorators
- *
- * ```javascript
- * $classMixin
- * class MyComponent extends React.Component {}
- * ```
- *
- * NOTE: since limitations of the tool generating the docs I cannot use `@` as decorator, demands.
- * So replace `$` with `@`
  */
-export function classMixin<T extends Base>(base: GenericClass<T>): GenericClass<T & Reform> {
-  mixinProperties.forEach(prop => {
-    if (base[prop] != null) {
-      // TODO: better error message
-      throw new Error(`Wrapped Component already implements method, please use another one`)
-    }
-  })
+export function objectMixin(that: ValidationAbleInstance): IReform {
+  const reform = {
+    validateField: helpers.validateField.bind(that),
+    validateFieldFromState: helpers.validateFieldFromState.bind(that),
+    fieldIsValid: helpers.fieldIsValid.bind(that),
+    validateForm: helpers.validateForm.bind(that),
+    validateFormFromState: helpers.validateFormFromState.bind(that),
+    formIsValid: helpers.formIsValid.bind(that),
+    fieldErrors: helpers.fieldErrors.bind(that),
+    fieldIfError: helpers.fieldIfError.bind(that),
+    mapFieldErrors: helpers.mapFieldErrors.bind(that),
+  };
 
-  class ReformImpl extends (base as GenericClass<Base>) implements Reform {
-    static displayName = `Reform(${base.displayName})`;
-    validateField = helpers.validateField;
-    validateFieldFromState = helpers.validateFieldFromState;
-    fieldIsValid = helpers.fieldIsValid;
-    validateForm = helpers.validateForm;
-    validateFormFromState = helpers.validateFormFromState;
-    formIsValid = helpers.formIsValid;
-    fieldErrors = helpers.fieldErrors;
-    fieldIfError = helpers.fieldIfError;
-    mapFieldErrors = helpers.mapFieldErrors
-  }
-
-  return ReformImpl as GenericClass<T & Reform>;
+  return reform;
 }
 
 /**
@@ -117,9 +77,11 @@ export function functionalMixin(instance: any) {
   mixinProperties.forEach(prop => {
     if (instance[prop] != null) {
       // TODO: better error message
-      throw new Error(`Wrapped Component already implements method, please use another one`)
+      throw new Error(
+        `Wrapped Component already implements method, please use another one`
+      );
     }
-  })
+  });
 
   instance.validateField = helpers.validateField;
   instance.validateFieldFromState = helpers.validateFieldFromState;

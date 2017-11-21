@@ -1,23 +1,25 @@
 {
   "name": "@franleplant/reform",
   "version": "5.0.9",
-  "description": "Form validation library for Javascript, Typescript, React and the web",
-  "keywords": [
-    "form validation",
-    "react"
-  ],
+  "description":
+    "Form validation library for Javascript, Typescript, React and the web",
+  "keywords": ["form validation", "react"],
   "main": "./build/index.js",
   "types": "./build/src/@franleplant/reform.d.ts",
   "scripts": {
     "pre:publish": "npm run test:travis && npm run build:docs && npm run build",
-    "prettier": "prettier --write \"src/**/*.{ts,.test.ts}\"  && prettier --write --no-config \"*.json\" ",
-    "build:typedefs": "dts-bundle --name @franleplant/reform --main build/src/index.d.ts",
+    "prettier":
+      "prettier --write \"src/**/*.{ts,.test.ts}\"  && prettier --write --no-config \"*.json\" ",
+    "build:typedefs":
+      "dts-bundle --name @franleplant/reform --main build/src/index.d.ts",
     "build": "webpack && npm run build:typedefs",
     "start": "webpack --watch",
     "test": "jest --watch",
     "test:docs": "tape docs-src/**/*.test.js",
-    "test:travis": "jest --coverage && npm run test:docs",
-    "build:docs": "typedoc --ignoreCompilerErrors --tsconfig ./typedocconfig.json --out ./docs --name Reform --module commonjs --json docsContent.json src/index.ts && node docs-src/build.js",
+    "test:travis":
+      "npm run test:typecheck && jest --coverage && npm run test:docs",
+    "build:docs":
+      "typedoc --ignoreCompilerErrors --tsconfig ./typedocconfig.json --out ./docs --name Reform --module commonjs --json docsContent.json src/index.ts && node docs-src/build.js",
     "link-examples": "./scripts/link-examples.sh",
     "test:typecheck": "tsc -p tsconfig.test.json"
   },
