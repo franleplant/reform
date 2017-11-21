@@ -2,6 +2,7 @@ import * as React from 'react';
 import Form1 from './Form1'
 import Form2 from './Form2'
 import GettingStarted from './GettingStarted'
+import Radios from './Radios'
 
 
 const rowStyle = {
@@ -38,6 +39,12 @@ export default class App extends React.Component<{}, {}> {
           <div style={formContainerStyle}>
             <h3>validate onSubmit</h3>
             <Form2/>
+          </div>
+        </div>
+        <div style={rowStyle}>
+          <div style={formContainerStyle}>
+            <h3>With Radios!</h3>
+            <Radios/>
           </div>
         </div>
       </div>
