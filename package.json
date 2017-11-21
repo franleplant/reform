@@ -21,7 +21,9 @@
     "build:docs":
       "typedoc --ignoreCompilerErrors --tsconfig ./typedocconfig.json --out ./docs --name Reform --module commonjs --json docsContent.json src/index.ts && node docs-src/build.js",
     "link-examples": "./scripts/link-examples.sh",
-    "test:typecheck": "tsc -p tsconfig.test.json"
+    "test:typecheck": "tsc -p tsconfig.test.json",
+    "examples-js": "npm run link-examples && cd ./examples && npm run start",
+    "examples-ts": "npm run link-examples && cd ./examples-ts && npm run start"
   },
   "author": "franleplant@gmail.com",
   "license": "MIT",
