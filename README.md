@@ -117,9 +117,7 @@ This is a complete working example of a React Form plus Reform validation
 
 ```javascript
 import React, { Component } from 'react';
-import Reform from '../../build/index.js';
-// In your case you should import it like this:
-//import Reform from '@franleplant/reform';
+import Reform from '@franleplant/reform';
 
 /*
   Reform HTML5 mode example (validate onSubmit)
@@ -400,29 +398,16 @@ class MyComp extends React.Component {
   }
 }
 
-// With Class mixin (not selectively)
+// With object mixin (use it in typescript to get type information)
 class MyComp extends React.Component {
-  //All Reform.reactHelper methods are available inside `this`
+  re = Reform.reactMixins.objectMixin(this);
+  //All Reform.reactHelper methods are available inside `this.re`
+  //you can use any other attribute name
 }
-
-const MyCompWithReform = Reform.reactMixins.classMixin(MyComp);
-
-// With Class mixin (not selectively) and decorators
-@Reform.reactMixins.classMixin
-class MyComp extends React.Component {
-  //All Reform.reactHelper methods are available inside `this`
-}
-
 ```
 
-The last two are probably the more appropiate to use with Typescript
-since they will give you autocomplete and not type errors or at least that's how it's
-supposed to work. If you have any problems please report, decorators and mixins are kind of
-an untamed beast in Typescript land. You can always use the `functionalMixin` but you are going
-to need to express the new attributes by hand.
-
-NOTE: important for typescript users, the class based mixins are broken because the type signature is hard to use,
-please the other ways of using reform in your components until we fix this.
+objectMixin is the most appropiate with Typescript
+since it will give you autocomplete and proper typechecking.
 
 ###  Triggering Validation
 

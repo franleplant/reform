@@ -1,4 +1,4 @@
-import { ValidatorMap } from '../types';
+import { ValidatorMap } from "../types";
 /**
  * These are all the official validators HTML5 validators.
  *

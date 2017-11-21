@@ -1,4 +1,4 @@
-import { ValidationAbleInstance, Fields } from './types';
+import { Fields } from "./types";
 /**
  * Calculate the validity of a field, by `fieldName`, with a new value and store it in the
  * `this.state.errors[fieldName]`
@@ -31,7 +31,7 @@ import { ValidationAbleInstance, Fields } from './types';
  * This function will also set your form to `dirty` in `this.state.formIsDirty`
  *
  */
-export declare function validateField(this: ValidationAbleInstance, fieldName: string, value: any): boolean;
+export declare function validateField(fieldName: string, value: any): boolean;
 /**
  * A minimal variant of `validateField` but with the particularity of using the `value` already set in
  * your component's state.
@@ -43,7 +43,7 @@ export declare function validateField(this: ValidationAbleInstance, fieldName: s
  * This function will also set your form to `dirty` in `this.state.formIsDirty`
  *
  */
-export declare function validateFieldFromState(this: ValidationAbleInstance, fieldName: string): boolean;
+export declare function validateFieldFromState(fieldName: string): boolean;
 /**
  * Calculate the validity of your form from `fieldsValues` as parameters, update your state, and
  * return whether your form is valid or not.
@@ -54,7 +54,7 @@ export declare function validateFieldFromState(this: ValidationAbleInstance, fie
  *
  * This function will also set your form to `dirty` in `this.state.formIsDirty`
  */
-export declare function validateForm(this: ValidationAbleInstance, fieldsValues: Fields): boolean;
+export declare function validateForm(fieldsValues: Fields): boolean;
 /**
  * Calculate the validity of your form from `fieldsValues` as parameters, update your state, and
  * return whether your form is valid or not.
@@ -65,7 +65,7 @@ export declare function validateForm(this: ValidationAbleInstance, fieldsValues:
  *
  * This function will also set your form to `dirty` in `this.state.formIsDirty`
  */
-export declare function validateFormFromState(this: ValidationAbleInstance): boolean;
+export declare function validateFormFromState(): boolean;
 /**
  * Calculate whether a field is valid or not depending on the already calculated
  * `fieldErrors` stored in the state.
@@ -74,7 +74,7 @@ export declare function validateFormFromState(this: ValidationAbleInstance): boo
  *
  * **Important** this function will **not re calculate your field's validity**
  */
-export declare function fieldIsValid(this: ValidationAbleInstance, fieldName: string): boolean;
+export declare function fieldIsValid(fieldName: string): boolean;
 /**
  *  Calculate the form's validity from the `values` in `this.state.fields` and
  *  the rules in `this.validationRules`.
@@ -84,7 +84,7 @@ export declare function fieldIsValid(this: ValidationAbleInstance, fieldName: st
  *  Use it to disable the submit button, or to prevent `onSubmit` callback from normal
  *  processing of the form.
  */
-export declare function formIsValid(this: ValidationAbleInstance): boolean;
+export declare function formIsValid(): boolean;
 /**
  * Simple helper to make conditional displaying field errors more ergonomic.
  *
@@ -96,7 +96,7 @@ export declare function formIsValid(this: ValidationAbleInstance): boolean;
  *
  * This function is purely for ergonomic purposes.
  */
-export declare function fieldIfError(this: ValidationAbleInstance, fieldName: string, errorKey: string): boolean;
+export declare function fieldIfError(fieldName: string, errorKey: string): boolean;
 /**
  *
  * Another error helper to make displaying field errors easier. Instead of `fieldIfError` which
@@ -119,7 +119,7 @@ export declare function fieldIfError(this: ValidationAbleInstance, fieldName: st
  *
  * @Unstable
  */
-export declare function fieldErrors(this: ValidationAbleInstance, fieldName: string): Array<Array<any>>;
+export declare function fieldErrors(fieldName: string): Array<[string, any]>;
 /**
  *
  * An abstraction of `fieldErrors` for structured field error rendering.
@@ -157,4 +157,4 @@ export declare function fieldErrors(this: ValidationAbleInstance, fieldName: str
  * @Unstable
  *
  */
-export declare function mapFieldErrors(this: ValidationAbleInstance, fieldName: string): Array<string>;
+export declare function mapFieldErrors(fieldName: string): Array<string>;

@@ -1,11 +1,10 @@
-import * as helpers from './reactHelpers';
+import { ValidationAbleInstance } from "./types";
+import * as helpers from "./reactHelpers";
 /**
  * Handy interface that contains attributes corresponding to each
  * `Reform.reactHelpers.*` method.
- *
- * Used by the `classMixin`.
  */
-export interface Reform {
+export interface IReform {
     validateField: typeof helpers.validateField;
     validateFieldFromState: typeof helpers.validateFieldFromState;
     fieldIsValid: typeof helpers.fieldIsValid;
@@ -17,46 +16,19 @@ export interface Reform {
     mapFieldErrors: typeof helpers.mapFieldErrors;
 }
 /**
- *  @hidden
- */
-export interface Base {
-}
-/**
- *  @hidden
- */
-export interface GenericClass<T> {
-    new (): T;
-    readonly prototype: T;
-    displayName?: string;
-}
-/**
- * Class based mixin to auto-bind all `Reform.reactHelpers.*` methods into the `base` Component.
+ * Simplest mixin (well not really a mixin) that binds all
+ * reform helpers to your context and returns an object containing all common helerps.
  *
- * Use it if you want to have all reactHelpers available in your component's instance.
+ * Use it with typescript to get type checks and autocomplete.
  *
- * Recommended when using Typescript since will give you good autocomplete type suggestions
- * support.
- *
- * Note: This is implementing something very similar to Inheritance Inversion, but it's completely
- * independent from React.
- *
- * Example1
- *
- * ```javascript
- * const MyComponentPlusReform = classMixin(MyComponent);
+ * ```typescript
+ *  class MyForm extends React.Component<any, any> {
+ *    reform = objectMixin(this)
+ *  }
  * ```
  *
- * Example 2: with decorators
- *
- * ```javascript
- * $classMixin
- * class MyComponent extends React.Component {}
- * ```
- *
- * NOTE: since limitations of the tool generating the docs I cannot use `@` as decorator, demands.
- * So replace `$` with `@`
  */
-export declare function classMixin<T extends Base>(base: GenericClass<T>): GenericClass<T & Reform>;
+export declare function objectMixin(that: ValidationAbleInstance): IReform;
 /**
  * Functional mixin to incorporate all reactHelpers methods into your Component's instance.
  *
