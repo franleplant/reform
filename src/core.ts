@@ -1,6 +1,5 @@
-import { Fields, FieldErrors, FormErrors, Rules, RulesMap } from './types';
-import validatorInterface from './validators';
-
+import { Fields, FieldErrors, FormErrors, Rules, RulesMap } from "./types";
+import validatorInterface from "./validators";
 
 /**
  *  @hidden
@@ -38,18 +37,23 @@ const EMPTY_OBJECT = Object.freeze({});
  * that there is an error, otherwise, it does not have an error, and that rule is passing.
  *
  */
-export function validateField(value: string | number, rules: Rules = {}): FieldErrors {
+export function validateField(
+  value: string | number,
+  rules: Rules = {}
+): FieldErrors {
   const fieldErrors = {};
 
   for (const ruleKey in rules) {
     const ruleValue = rules[ruleKey];
-    const validator = typeof ruleValue === 'function' ? ruleValue : validatorInterface.get(ruleKey);
+    const validator =
+      typeof ruleValue === "function"
+        ? ruleValue
+        : validatorInterface.get(ruleKey);
     fieldErrors[ruleKey] = validator(value, ruleValue);
   }
 
   return fieldErrors;
 }
-
 
 /**
  * Evaluate whether a field is valid or not.
@@ -66,8 +70,8 @@ export function validateField(value: string | number, rules: Rules = {}): FieldE
  * way you can avoid re calculating them again each time you want to know if the field is valid.
  *
  */
-export function fieldIsValid(value: string | number, rules: Rules) : boolean;
-export function fieldIsValid(fieldErrors: FieldErrors) : boolean;
+export function fieldIsValid(value: string | number, rules: Rules): boolean;
+export function fieldIsValid(fieldErrors: FieldErrors): boolean;
 export function fieldIsValid(...args: Array<any>): any {
   let fieldErrors: FieldErrors;
 
@@ -78,7 +82,7 @@ export function fieldIsValid(...args: Array<any>): any {
     fieldErrors = validateField(value, rules);
   }
 
-  const result = true
+  const result = true;
   for (const errorKey in fieldErrors) {
     const errorResult = fieldErrors[errorKey];
     if (errorResult) {
@@ -89,7 +93,6 @@ export function fieldIsValid(...args: Array<any>): any {
   return result;
 }
 
-
 /**
  * A simple generalization of `validateField` but for an entire form.
  * It will basically run `validateField` on each `value` and each `rules`
@@ -97,8 +100,11 @@ export function fieldIsValid(...args: Array<any>): any {
  * fieldNames as keys and `FieldErrors` as values.
  *
  */
-export function validateForm(fieldsValues: Fields, rulesMap: RulesMap = {}): FormErrors {
-  const formErrors = {}
+export function validateForm(
+  fieldsValues: Fields,
+  rulesMap: RulesMap = {}
+): FormErrors {
+  const formErrors = {};
 
   for (const fieldName in fieldsValues) {
     const fieldValue = fieldsValues[fieldName];
@@ -117,7 +123,7 @@ export function validateForm(fieldsValues: Fields, rulesMap: RulesMap = {}): For
  *
  */
 export function formIsValid(fieldsValues: Fields, rulesMap: RulesMap): boolean;
-export function formIsValid(formErrors: FormErrors) : boolean;
+export function formIsValid(formErrors: FormErrors): boolean;
 export function formIsValid(...args: Array<any>): any {
   let formErrors: FormErrors;
 
@@ -128,7 +134,7 @@ export function formIsValid(...args: Array<any>): any {
     formErrors = validateForm(fieldsValues, rulesMap);
   }
 
-  const result = true
+  const result = true;
   for (const fieldName in formErrors) {
     const fieldErrors = formErrors[fieldName];
     if (!fieldIsValid(fieldErrors)) {

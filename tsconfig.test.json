@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "lib": ["es2015"],
+    "declaration": true,
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "target": "es5",
+    "jsx": "react",
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "types": ["node", "jest"],
+    "suppressImplicitAnyIndexErrors": true,
+    "noEmit": true
+  },
+
+  "include": ["src/**/*.test.ts"],
+
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}

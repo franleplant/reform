@@ -1,4 +1,4 @@
-import { Validator } from './types';
+import { Validator } from "./types";
 /**
  * Main validator interface.
  *

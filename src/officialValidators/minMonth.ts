@@ -1,20 +1,22 @@
-import { parseMonth } from '../utils';
-import { month } from './month';
+import { parseMonth } from "../utils";
+import { month } from "./month";
 
 export const minMonth = (value: string, min: string) => {
-  if (!value) return false
+  if (!value) return false;
 
   const [vYear, vMonth] = parseMonth(value);
   const [mYear, mMonth] = parseMonth(min);
 
   // Check that the min month is a valid month
   if (!mYear || !mMonth || month(min)) {
-    throw new Error(`Reform minMonth should have a valid month as argument. Found "${min}"`)
+    throw new Error(
+      `Reform minMonth should have a valid month as argument. Found "${min}"`
+    );
   }
 
   // Invalid week
   if (!vYear || !vMonth) {
-    return false
+    return false;
   }
 
   let error = false;
@@ -24,8 +26,8 @@ export const minMonth = (value: string, min: string) => {
   } else if (vYear > mYear) {
     error = false;
   } else if (vYear === mYear) {
-    error = vMonth < mMonth
-  };
+    error = vMonth < mMonth;
+  }
 
-  return  error;
-}
+  return error;
+};

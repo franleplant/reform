@@ -46,6 +46,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var types = __webpack_require__(1);
 	exports.types = types;
 	var core = __webpack_require__(2);
@@ -76,7 +77,6 @@ module.exports =
 	    reactHelpers: reactHelpers,
 	    reactMixins: reactMixins,
 	};
-	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = Reform;
 
 
@@ -85,7 +85,7 @@ module.exports =
 /***/ function(module, exports) {
 
 	"use strict";
-	;
+	Object.defineProperty(exports, "__esModule", { value: true });
 
 
 /***/ },
@@ -93,6 +93,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var validators_1 = __webpack_require__(3);
 	/**
 	 *  @hidden
@@ -134,7 +135,9 @@ module.exports =
 	    var fieldErrors = {};
 	    for (var ruleKey in rules) {
 	        var ruleValue = rules[ruleKey];
-	        var validator = typeof ruleValue === 'function' ? ruleValue : validators_1.default.get(ruleKey);
+	        var validator = typeof ruleValue === "function"
+	            ? ruleValue
+	            : validators_1.default.get(ruleKey);
 	        fieldErrors[ruleKey] = validator(value, ruleValue);
 	    }
 	    return fieldErrors;
@@ -213,6 +216,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var officialValidators_1 = __webpack_require__(4);
 	/**
 	 * Main validator interface.
@@ -241,9 +245,8 @@ module.exports =
 	            throw new Error("Validator " + key + " is already used, please use another name");
 	        }
 	        officialValidators_1.default[key] = value;
-	    }
+	    },
 	};
-	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = validatorInterface;
 
 
@@ -252,6 +255,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var url_1 = __webpack_require__(5);
 	var time_1 = __webpack_require__(6);
 	var month_1 = __webpack_require__(8);
@@ -269,7 +273,9 @@ module.exports =
 	/**
 	 * @hidden
 	 */
-	var isNumber = function (value) { return (!!value || value === 0) && !Number.isFinite(parseFloat(value)); };
+	var isNumber = function (value) {
+	    return (!!value || value === 0) && !Number.isFinite(parseFloat(value));
+	};
 	/**
 	 * These are all the official validators HTML5 validators.
 	 *
@@ -315,8 +321,12 @@ module.exports =
 	var validatorMap = {
 	    required: function (value) { return !value; },
 	    email: function (value) { return !!value && !/\S+@\S+\.\S+/.test(value); },
-	    minLength: function (value, minLength) { return !!value && value.length < minLength; },
-	    maxLength: function (value, maxLength) { return !!value && value.length > maxLength; },
+	    minLength: function (value, minLength) {
+	        return !!value && value.length < minLength;
+	    },
+	    maxLength: function (value, maxLength) {
+	        return !!value && value.length > maxLength;
+	    },
 	    pattern: function (value, re) { return !!value && !re.test(value); },
 	    number: isNumber,
 	    range: isNumber,
@@ -337,7 +347,6 @@ module.exports =
 	    minWeek: minWeek_1.minWeek,
 	    maxWeek: maxWeek_1.maxWeek,
 	};
-	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = validatorMap;
 
 
@@ -346,6 +355,7 @@ module.exports =
 /***/ function(module, exports) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	/**
 	 * @hidden
 	 */
@@ -362,10 +372,13 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	// Official docs https://www.w3.org/TR/html5/infrastructure.html#valid-date-string
 	var utils_1 = __webpack_require__(7);
 	// Example "02:00"
-	exports.time = function (value) { return !!value && Number.isNaN(utils_1.parseTime(value)); };
+	exports.time = function (value) {
+	    return !!value && Number.isNaN(utils_1.parseTime(value));
+	};
 
 
 /***/ },
@@ -373,7 +386,9 @@ module.exports =
 /***/ function(module, exports) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	// Returns [] if something went wrong
+	// TODO better return types
 	function parseMonth(value) {
 	    var _a = value.split("-"), yearStr = _a[0], monthStr = _a[1];
 	    var year = parseInt(yearStr, 10);
@@ -385,11 +400,12 @@ module.exports =
 	}
 	exports.parseMonth = parseMonth;
 	// Returns [] if something went wrong
+	// TODO better return types
 	function parseWeek(value) {
 	    var _a = value.split("-"), yearStr = _a[0], weekStr = _a[1];
 	    var year = parseInt(yearStr, 10);
 	    // Error if weekstr is not defined
-	    if (!weekStr || weekStr[0] !== 'W') {
+	    if (!weekStr || weekStr[0] !== "W") {
 	        return [];
 	    }
 	    weekStr = weekStr.slice(1);
@@ -405,7 +421,7 @@ module.exports =
 	    var isLeap = new Date(year, 1, 29).getMonth() === 1;
 	    // Check for a Jan 1 that's a Thursday or a leap year that has a
 	    // Wednesday jan 1. Otherwise year has 52 weeks.
-	    return d.getDay() === 4 || isLeap && d.getDay() === 3 ? 53 : 52;
+	    return d.getDay() === 4 || (isLeap && d.getDay() === 3) ? 53 : 52;
 	}
 	exports.weeksInYear = weeksInYear;
 	/**
@@ -423,6 +439,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	// Official docs https://www.w3.org/TR/html5/infrastructure.html#valid-month-string
 	var utils_1 = __webpack_require__(7);
 	exports.month = function (value) {
@@ -441,6 +458,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	// Official docs https://www.w3.org/TR/html5/infrastructure.html
 	// 2.4.5.8 Weeks
 	var utils_1 = __webpack_require__(7);
@@ -462,6 +480,7 @@ module.exports =
 /***/ function(module, exports) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.minNumber = function (value, min) {
 	    if (!value)
 	        return false;
@@ -482,6 +501,7 @@ module.exports =
 /***/ function(module, exports) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.maxNumber = function (value, max) {
 	    if (!value)
 	        return false;
@@ -502,6 +522,7 @@ module.exports =
 /***/ function(module, exports) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.minDate = function (value, min) {
 	    if (!value)
 	        return false;
@@ -522,6 +543,7 @@ module.exports =
 /***/ function(module, exports) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.maxDate = function (value, max) {
 	    if (!value)
 	        return false;
@@ -542,6 +564,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var utils_1 = __webpack_require__(7);
 	var month_1 = __webpack_require__(8);
 	exports.minMonth = function (value, min) {
@@ -567,7 +590,6 @@ module.exports =
 	    else if (vYear === mYear) {
 	        error = vMonth < mMonth;
 	    }
-	    ;
 	    return error;
 	};
 
@@ -577,6 +599,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var utils_1 = __webpack_require__(7);
 	var month_1 = __webpack_require__(8);
 	exports.maxMonth = function (value, max) {
@@ -602,7 +625,6 @@ module.exports =
 	    else if (vYear === mYear) {
 	        error = vMonth > mMonth;
 	    }
-	    ;
 	    return error;
 	};
 
@@ -612,6 +634,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var utils_1 = __webpack_require__(7);
 	exports.minTime = function (value, min) {
 	    if (!value)
@@ -633,6 +656,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var utils_1 = __webpack_require__(7);
 	exports.maxTime = function (value, max) {
 	    if (!value)
@@ -654,6 +678,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var utils_1 = __webpack_require__(7);
 	var week_1 = __webpack_require__(9);
 	exports.minWeek = function (value, min) {
@@ -679,7 +704,6 @@ module.exports =
 	    else if (vYear === mYear) {
 	        error = vWeek < mWeek;
 	    }
-	    ;
 	    return error;
 	};
 
@@ -689,6 +713,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var utils_1 = __webpack_require__(7);
 	var week_1 = __webpack_require__(9);
 	exports.maxWeek = function (value, max) {
@@ -714,7 +739,6 @@ module.exports =
 	    else if (vYear === mYear) {
 	        error = vWeek > mWeek;
 	    }
-	    ;
 	    return error;
 	};
 
@@ -724,6 +748,7 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var core = __webpack_require__(2);
 	/**
 	 * Mimic react __DEV__ env.
@@ -742,19 +767,19 @@ module.exports =
 	 *
 	 */
 	function checkInstance(instance) {
-	    if (!instance.hasOwnProperty('validationRules')) {
+	    if (!instance.hasOwnProperty("validationRules")) {
 	        console.error("Reform: instance does not have validationRules attribute", instance);
 	        throw new Error("Reform: instance.validationRules not found");
 	    }
-	    if (!instance.hasOwnProperty('state')) {
+	    if (!instance.hasOwnProperty("state")) {
 	        console.error("Reform: instance does not have state attribute", instance);
 	        throw new Error("Reform: instance.state not found");
 	    }
-	    if (!instance.state.hasOwnProperty('fields')) {
+	    if (!instance.state.hasOwnProperty("fields")) {
 	        console.error("Reform: instance does not have state.fields attribute", instance);
 	        throw new Error("Reform: instance.state.fields not found");
 	    }
-	    if (!instance.state.hasOwnProperty('errors')) {
+	    if (!instance.state.hasOwnProperty("errors")) {
 	        console.error("Reform: instance does not have state.errors attribute", instance);
 	        throw new Error("Reform: instance.state.errors not found");
 	    }
@@ -1002,17 +1027,18 @@ module.exports =
 	    var _this = this;
 	    if (__DEV__) {
 	        checkInstance(this);
-	        if (!this.hasOwnProperty('validationMessages')) {
+	        if (!this.hasOwnProperty("validationMessages")) {
 	            throw new Error("\"this.validationMessages\" is required when using \"mapFieldErrors\"");
 	        }
-	        if (!this.validationMessages.hasOwnProperty('default')) {
+	        if (!this.validationMessages.hasOwnProperty("default")) {
 	            throw new Error("\"this.validationMessages.default\" must be defined when using \"mapFieldErrors\"");
 	        }
 	    }
-	    return fieldErrors.call(this, fieldName)
+	    return fieldErrors
+	        .call(this, fieldName)
 	        .map(function (_a) {
 	        var ruleKey = _a[0], ruleValue = _a[1];
-	        var creator = _this.validationMessages[ruleKey] || _this.validationMessages['default'];
+	        var creator = _this.validationMessages[ruleKey] || _this.validationMessages["default"];
 	        return creator(ruleValue, ruleKey, fieldName);
 	    });
 	}
@@ -1211,72 +1237,40 @@ module.exports =
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	//import { ValidationAbleInstance, Fields } from './types'
+	Object.defineProperty(exports, "__esModule", { value: true });
 	var helpers = __webpack_require__(20);
 	/**
 	 *  @hidden
 	 */
 	var mixinProperties = Object.keys(helpers);
 	/**
-	 * Class based mixin to auto-bind all `Reform.reactHelpers.*` methods into the `base` Component.
+	 * Simplest mixin (well not really a mixin) that binds all
+	 * reform helpers to your context and returns an object containing all common helerps.
 	 *
-	 * Use it if you want to have all reactHelpers available in your component's instance.
+	 * Use it with typescript to get type checks and autocomplete.
 	 *
-	 * Recommended when using Typescript since will give you good autocomplete type suggestions
-	 * support.
-	 *
-	 * Note: This is implementing something very similar to Inheritance Inversion, but it's completely
-	 * independent from React.
-	 *
-	 * Example1
-	 *
-	 * ```javascript
-	 * const MyComponentPlusReform = classMixin(MyComponent);
+	 * ```typescript
+	 *  class MyForm extends React.Component<any, any> {
+	 *    reform = objectMixin(this)
+	 *  }
 	 * ```
 	 *
-	 * Example 2: with decorators
-	 *
-	 * ```javascript
-	 * $classMixin
-	 * class MyComponent extends React.Component {}
-	 * ```
-	 *
-	 * NOTE: since limitations of the tool generating the docs I cannot use `@` as decorator, demands.
-	 * So replace `$` with `@`
 	 */
-	function classMixin(base) {
-	    mixinProperties.forEach(function (prop) {
-	        if (base[prop] != null) {
-	            // TODO: better error message
-	            throw new Error("Wrapped Component already implements method, please use another one");
-	        }
-	    });
-	    var ReformImpl = (function (_super) {
-	        __extends(ReformImpl, _super);
-	        function ReformImpl() {
-	            var _this = _super.apply(this, arguments) || this;
-	            _this.validateField = helpers.validateField;
-	            _this.validateFieldFromState = helpers.validateFieldFromState;
-	            _this.fieldIsValid = helpers.fieldIsValid;
-	            _this.validateForm = helpers.validateForm;
-	            _this.validateFormFromState = helpers.validateFormFromState;
-	            _this.formIsValid = helpers.formIsValid;
-	            _this.fieldErrors = helpers.fieldErrors;
-	            _this.fieldIfError = helpers.fieldIfError;
-	            _this.mapFieldErrors = helpers.mapFieldErrors;
-	            return _this;
-	        }
-	        return ReformImpl;
-	    }(base));
-	    ReformImpl.displayName = "Reform(" + base.displayName + ")";
-	    return ReformImpl;
+	function objectMixin(that) {
+	    var reform = {
+	        validateField: helpers.validateField.bind(that),
+	        validateFieldFromState: helpers.validateFieldFromState.bind(that),
+	        fieldIsValid: helpers.fieldIsValid.bind(that),
+	        validateForm: helpers.validateForm.bind(that),
+	        validateFormFromState: helpers.validateFormFromState.bind(that),
+	        formIsValid: helpers.formIsValid.bind(that),
+	        fieldErrors: helpers.fieldErrors.bind(that),
+	        fieldIfError: helpers.fieldIfError.bind(that),
+	        mapFieldErrors: helpers.mapFieldErrors.bind(that),
+	    };
+	    return reform;
 	}
-	exports.classMixin = classMixin;
+	exports.objectMixin = objectMixin;
 	/**
 	 * Functional mixin to incorporate all reactHelpers methods into your Component's instance.
 	 *

@@ -1,5 +1,5 @@
-import { Validator } from './types';
-import validatorMap from './officialValidators';
+import { Validator } from "./types";
+import validatorMap from "./officialValidators";
 
 /**
  * Main validator interface.
@@ -27,11 +27,13 @@ const validatorInterface = {
 
   set(key: string, value: Validator): void {
     if (validatorMap.hasOwnProperty(key)) {
-      throw new Error(`Validator ${key} is already used, please use another name`);
+      throw new Error(
+        `Validator ${key} is already used, please use another name`
+      );
     }
 
     validatorMap[key] = value;
-  }
-}
+  },
+};
 
 export default validatorInterface;

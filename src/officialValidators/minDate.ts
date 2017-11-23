@@ -1,11 +1,13 @@
 export const minDate = (value: string, min: string) => {
-  if (!value) return false
+  if (!value) return false;
 
-  const minDate = Date.parse(min)
-  const valueDate = Date.parse(value)
+  const minDate = Date.parse(min);
+  const valueDate = Date.parse(value);
 
   if (Number.isNaN(minDate)) {
-    throw new Error(`Reform minDate should have a valid date as argument. Found "${min}"`);
+    throw new Error(
+      `Reform minDate should have a valid date as argument. Found "${min}"`
+    );
   }
 
   if (Number.isNaN(valueDate)) {
@@ -13,4 +15,4 @@ export const minDate = (value: string, min: string) => {
   }
 
   return valueDate < minDate;
-}
+};

@@ -5,12 +5,16 @@ export const maxNumber = (value: number | string, max: number | string) => {
   const valueN = parseInt(value as string, 10);
 
   if (!Number.isFinite(maxN)) {
-    throw new Error(`Reform maxNumber argument should be a valid a number or a number string. Found "${max}"`);
+    throw new Error(
+      `Reform maxNumber argument should be a valid a number or a number string. Found "${
+        max
+      }"`
+    );
   }
 
   if (!Number.isFinite(valueN)) {
-    return false
+    return false;
   }
 
-  return valueN > maxN
-}
+  return valueN > maxN;
+};

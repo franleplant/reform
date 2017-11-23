@@ -1,4 +1,4 @@
-import { Fields, FieldErrors, FormErrors, Rules, RulesMap } from './types';
+import { Fields, FieldErrors, FormErrors, Rules, RulesMap } from "./types";
 /**
  * Validate `value` against `rules` and return which rules are valid with a value `false`
  * and which rules ar invalid with a value of `true`.

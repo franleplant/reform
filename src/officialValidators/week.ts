@@ -1,6 +1,6 @@
 // Official docs https://www.w3.org/TR/html5/infrastructure.html
 // 2.4.5.8 Weeks
-import { parseWeek, weeksInYear } from '../utils';
+import { parseWeek, weeksInYear } from "../utils";
 
 // Example week: "2016-W33"
 export const week = (value: string) => {
@@ -14,5 +14,4 @@ export const week = (value: string) => {
   }
 
   return !(0 < year && 1 <= week && week <= weeksInYear(year));
-}
-
+};
