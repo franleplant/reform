@@ -116,8 +116,7 @@ yarn add @franleplant/reform
 This is a complete working example of a React Form plus Reform validation
 
 ```javascript
-{{#includeFile './examples/src/GettingStarted.js'}}
-{{/includeFile}}
+{{includeFile './examples/src/GettingStarted.js'}}
 ```
 
 ## Validators
