@@ -1,3 +1,9 @@
+import * as path from "path";
+
+export function fakeAbsolutePath(fileUnderSrc: string): string {
+  return path.resolve(__dirname, "../../../", fileUnderSrc);
+}
+
 export default {
   id: 252,
   name: "Reform",
@@ -32,7 +38,7 @@ export default {
       ],
       type: {
         type: "reference",
-        name: '"/Users/flp/code/reform/src/core"',
+        name: `"${fakeAbsolutePath("src/core")}"`,
         id: 178,
       },
     },
@@ -53,7 +59,7 @@ export default {
       ],
       type: {
         type: "reference",
-        name: '"/Users/flp/code/reform/src/reactHelpers"',
+        name: `"${fakeAbsolutePath("src/reactHelpers")}"`,
         id: 201,
       },
     },
@@ -74,7 +80,7 @@ export default {
       ],
       type: {
         type: "reference",
-        name: '"/Users/flp/code/reform/src/reactMixins"',
+        name: `"${fakeAbsolutePath("src/reactMixins")}"`,
         id: 233,
       },
     },
@@ -95,7 +101,7 @@ export default {
       ],
       type: {
         type: "reference",
-        name: '"/Users/flp/code/reform/src/types"',
+        name: `"${fakeAbsolutePath("src/types")}"`,
         id: 1,
       },
     },

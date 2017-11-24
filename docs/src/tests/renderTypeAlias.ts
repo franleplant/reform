@@ -9,14 +9,13 @@ test("renderTypeAlias", function(t) {
   const actual = renderNode(node, new Context());
   const expected = [
     '## MessageCreator <small>Type alias [src](./src/types.ts#L29)</small> <a id="#36"></a>',
-    '',
-    '<big><pre>',
-    '{',
-    '  (ruleArgument: any, ruleKey: string, fieldName: string): string',
-    '}',
-    '</big></pre>'
-  ]
-
+    "",
+    "<big><pre>",
+    "{",
+    "  (ruleArgument: any, ruleKey: string, fieldName: string): string",
+    "}",
+    "</big></pre>",
+  ];
 
   t.deepEqual(actual, expected);
 });
