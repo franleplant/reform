@@ -18,7 +18,7 @@
     "build": "webpack && npm run build:typedefs",
     "start": "webpack --watch",
     "test": "jest --watch",
-    "test:docs": "ts-node node_modules/tape/bin/tape docs/src/tests/*.ts",
+    "test:docs": "ts-node ./node_modules/tape/bin/tape ./docs/src/tests/*.ts",
     "test:travis":
       "npm run test:typecheck && jest --coverage && npm run test:docs",
     "build:gather-docs":
