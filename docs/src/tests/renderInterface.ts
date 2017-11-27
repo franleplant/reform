@@ -1,6 +1,7 @@
 import * as test from "tape";
 import Context from "../Context";
 import { renderInterface } from "../components";
+import { CODE_TAGS_OPEN, CODE_TAGS_CLOSE } from '../constants'
 import node from "./renderInterfaceFixture";
 import node2 from "./renderInterfaceFixture2";
 
@@ -11,11 +12,11 @@ test("renderInterface", function(t) {
   const expected = [
     '## FieldErrors <small>Interface [src](./src/types.ts#L17)</small> <a id="#15"></a>',
     "",
-    "<big><pre>",
+    CODE_TAGS_OPEN,
     "{",
     "  \\[ruleKey: string\\]: boolean",
     "}",
-    "</big></pre>",
+    CODE_TAGS_CLOSE,
   ];
 
   t.deepEqual(actual, expected);
@@ -28,7 +29,7 @@ test("renderInterface2", function(t) {
   const expected = [
     '## ValidationAbleInstance <small>Interface [src](./src/types.ts#L35)</small> <a id="#24"></a>',
     "",
-    "<big><pre>",
+    CODE_TAGS_OPEN,
     "{",
     "  setState: any",
     "  state:",
@@ -43,7 +44,7 @@ test("renderInterface2", function(t) {
     "  }",
     "  validationRules: [RulesMap](#user-content-#12)",
     "}",
-    "</big></pre>",
+    CODE_TAGS_CLOSE,
   ];
 
   t.deepEqual(actual, expected);

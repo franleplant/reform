@@ -2,6 +2,7 @@ import * as ts from "typescript";
 import * as helpers from "./helpers";
 import { TypeNode, Node } from "./types";
 import Context from "./Context";
+import { CODE_TAGS_OPEN, CODE_TAGS_CLOSE } from './constants'
 
 //TODO renderSection and renderTypeOfNode
 
@@ -12,7 +13,7 @@ const KIND_STRING_EXTERNAL_MODULE = "External module";
 const KIND_STRING_INTERFACE = "Interface";
 const KIND_STRING_PROPERTY = "Property";
 const KIND_STRING_TYPE_LITERAL = "Type literal";
-const KIND_STRING_TYPE_ALIAS = "Type alias";
+const KIND_STRING_TYPE_ALIAS = "Type alias"
 
 export function renderNode(node: Node, context: Context): Array<string> {
   //console.log(ts.SyntaxKind.PropertyDeclaration, ts.SyntaxKind.PropertyAssignment, ts.SyntaxKind.PropertySignature )
@@ -48,9 +49,6 @@ export function renderNodes(
   nodes: Array<Node>,
   context: Context
 ): Array<string> {
-  // TODO probably we need to start freezing context in different renders
-  //return nodes.map(node => renderNode(node, context))
-
   let lines: Array<string> = [];
   nodes.forEach(node => {
     lines = lines.concat(renderNode(node, context));
@@ -87,9 +85,9 @@ export function renderFunction(node: Node, context: Context): Array<string> {
       ``,
       `${helpers.renderComments(signatureNode)}`,
       ``,
-      `<big><pre>`,
+      CODE_TAGS_OPEN,
       renderFunctionSignature(signatureNode, context),
-      `</pre></big>`,
+      CODE_TAGS_CLOSE,
       ``,
     ];
 
@@ -201,7 +199,7 @@ export function renderObjectLiteral(
       `${child.name}: ${renderNode(child, context.setInline(true)).join(" ")}`
   );
 
-  const lines = ["<big><pre>", "{", ...indent(children), "}", "</big></pre>"];
+  const lines = [ CODE_TAGS_OPEN, "{", ...indent(children), "}", CODE_TAGS_CLOSE];
 
   if (context.inline) {
     return lines;
@@ -243,13 +241,13 @@ export function renderInterface(node: Node, context: Context): Array<string> {
   );
 
   const content = [
-    "<big><pre>",
+    CODE_TAGS_OPEN,
     "{",
     ...indent(children),
     ...indent(indexSignatures),
     ...indent(signatures),
     "}",
-    "</big></pre>",
+    CODE_TAGS_CLOSE
   ];
 
   // TODO do we really need inline interfaces?
@@ -280,13 +278,10 @@ export function renderProperty(node: Node, context: Context): Array<string> {
   return [`${node.name}: ${renderType(node.type, context).join("TODO")}`];
 }
 
-export function renderTypeLiteral(
-  node: Node,
-  _context: Context
-): Array<string> {
-  let context = _context;
+export function renderTypeLiteral(node: Node, _context: Context): Array<string> {
+  let context = _context
   if (node.name === "__type") {
-    context = context.setInline(true);
+    context = context.setInline(true)
   }
 
   let children: Array<string> = [] as any;
@@ -325,11 +320,11 @@ export function renderTypeLiteral(
   return [
     `## ${helpers.renderTitle(node)}`,
     `${helpers.renderComments(node)}`,
-    "<big><pre>",
+    CODE_TAGS_OPEN,
     "{",
     ...indent(content),
     "}",
-    "</big></pre>",
+    CODE_TAGS_CLOSE,
   ];
 }
 
@@ -340,7 +335,7 @@ export function renderTypeAlias(node: Node, context: Context): Array<string> {
     content = content.concat(renderType(node.type, context));
   }
 
-  const obj = ["<big><pre>", ...content, "</big></pre>"];
+  const obj = [CODE_TAGS_OPEN, ...content, CODE_TAGS_CLOSE];
 
   if (context.inline) {
     return obj;

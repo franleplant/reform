@@ -1,5 +1,6 @@
 import * as test from "tape";
 import { renderObjectLiteral } from "../components";
+import { CODE_TAGS_OPEN, CODE_TAGS_CLOSE } from '../constants'
 import Context from "../Context";
 import node from "./renderObjectLiteralFixture";
 
@@ -10,7 +11,7 @@ test("renderObjectLiteral", function(t) {
   const expected = [
     '## Reform <small>Object literal [src](./src/index.ts#L22)</small> <a id="#252"></a>',
     "",
-    "<big><pre>",
+    CODE_TAGS_OPEN,
     "{",
     "  core: [./src/core](#user-content-#178)",
     "  reactHelpers: [./src/reactHelpers](#user-content-#201)",
@@ -18,7 +19,7 @@ test("renderObjectLiteral", function(t) {
     "  types: [./src/types](#user-content-#1)",
     "  validators: [./src/validators](./src/validators)",
     "}",
-    "</big></pre>",
+    CODE_TAGS_CLOSE,
   ];
 
   t.deepEqual(actual, expected);
