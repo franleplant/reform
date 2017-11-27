@@ -17,7 +17,7 @@
 
 
 
-<big><pre>
+<pre><code>
 {
   core: [./src/core](#user-content-#178)
   reactHelpers: [./src/reactHelpers](#user-content-#201)
@@ -25,7 +25,7 @@
   types: [./src/types](#user-content-#1)
   validators: [./src/validators](./src/validators)
 }
-</big></pre>
+</code></pre>
 # core <small>Module [src](./src/core.ts#L1)</small> <a id="#178"></a>
 ## fieldIsValid <small>Function [src](./src/core.ts#L73)</small> <a id="#185"></a>
 
@@ -348,7 +348,7 @@ validateFormFromState(): boolean
 Handy interface that contains attributes corresponding to each
 `Reform.reactHelpers.*` method.
 
-<big><pre>
+<pre><code>
 {
   fieldErrors: [fieldErrors](#user-content-#227)
   fieldIfError: [fieldIfError](#user-content-#223)
@@ -360,7 +360,7 @@ Handy interface that contains attributes corresponding to each
   validateForm: [validateForm](#user-content-#213)
   validateFormFromState: [validateFormFromState](#user-content-#216)
 }
-</big></pre>
+</code></pre>
 ## functionalMixin <small>Function [src](./src/reactMixins.ts#L76)</small> <a id="#248"></a>
 
 Functional mixin to incorporate all reactHelpers methods into your Component's instance.
@@ -426,51 +426,51 @@ The main reasons for this abstraction to exist are:
 Use it if you want to add new global custom validators.
 
 
-<big><pre>
+<pre><code>
 {
   get: get(key: string): [Validator](#user-content-#2)
   set: set(key: string, value: [Validator](#user-content-#2)): void
 }
-</big></pre>
+</code></pre>
 # types <small>Module [src](./src/types.ts#L1)</small> <a id="#1"></a>
 ## FieldErrors <small>Interface [src](./src/types.ts#L17)</small> <a id="#15"></a>
 
-<big><pre>
+<pre><code>
 {
   \[ruleKey: string\]: boolean
 }
-</big></pre>
+</code></pre>
 ## Fields <small>Interface [src](./src/types.ts#L25)</small> <a id="#21"></a>
 
-<big><pre>
+<pre><code>
 {
   \[fieldName: string\]: any
 }
-</big></pre>
+</code></pre>
 ## FormErrors <small>Interface [src](./src/types.ts#L21)</small> <a id="#18"></a>
 
-<big><pre>
+<pre><code>
 {
   \[fieldName: string\]: [FieldErrors](#user-content-#15)
 }
-</big></pre>
+</code></pre>
 ## Rules <small>Interface [src](./src/types.ts#L9)</small> <a id="#9"></a>
 
-<big><pre>
+<pre><code>
 {
   \[ruleKey: string\]: boolean | string | [Validator](#user-content-#2) | any
 }
-</big></pre>
+</code></pre>
 ## RulesMap <small>Interface [src](./src/types.ts#L13)</small> <a id="#12"></a>
 
-<big><pre>
+<pre><code>
 {
   \[fieldName: string\]: [Rules](#user-content-#9)
 }
-</big></pre>
+</code></pre>
 ## ValidationAbleInstance <small>Interface [src](./src/types.ts#L35)</small> <a id="#24"></a>
 
-<big><pre>
+<pre><code>
 {
   setState: any
   state:
@@ -485,21 +485,21 @@ Use it if you want to add new global custom validators.
   }
   validationRules: [RulesMap](#user-content-#12)
 }
-</big></pre>
+</code></pre>
 ## Validator <small>Interface [src](./src/types.ts#L1)</small> <a id="#2"></a>
 
-<big><pre>
+<pre><code>
 {
   (value: string | number | any, ruleValue: any): boolean
 }
-</big></pre>
+</code></pre>
 ## ValidatorMap <small>Interface [src](./src/types.ts#L5)</small> <a id="#6"></a>
 
-<big><pre>
+<pre><code>
 {
   \[ruleKey: string\]: [Validator](#user-content-#2)
 }
-</big></pre>
+</code></pre>
 ## MessageCreator <small>Type alias [src](./src/types.ts#L29)</small> <a id="#36"></a>
 
 <big><pre>
@@ -550,7 +550,7 @@ this.validationRules = {
 
 
 
-<big><pre>
+<pre><code>
 {
   maxDate: [maxDate](#user-content-#91)
   maxMonth: [maxMonth](#user-content-#101)
@@ -576,7 +576,7 @@ this.validationRules = {
   pattern: pattern(value: string, re: RegExp): boolean
   required: required(value: any): boolean
 }
-</big></pre>
+</code></pre>
 # officialValidators/minMonth <small>Module [src](./src/officialValidators/minMonth.ts#L1)</small> <a id="#94"></a>
 ## minMonth <small>Function [src](./src/officialValidators/minMonth.ts#L4)</small> <a id="#95"></a>
 
