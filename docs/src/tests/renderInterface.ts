@@ -1,7 +1,7 @@
 import * as test from "tape";
 import Context from "../Context";
 import { renderInterface } from "../components";
-import { CODE_TAGS_OPEN, CODE_TAGS_CLOSE } from "../constants";
+import { INDENT_SYMBOL, CODE_TAGS_OPEN, CODE_TAGS_CLOSE } from "../constants";
 import node from "./renderInterfaceFixture";
 import node2 from "./renderInterfaceFixture2";
 
@@ -14,7 +14,7 @@ test("renderInterface", function(t) {
     "",
     CODE_TAGS_OPEN,
     "{",
-    "  \\[ruleKey: string\\]: boolean",
+    `${INDENT_SYMBOL}\\[ruleKey: string\\]: boolean`,
     "}",
     CODE_TAGS_CLOSE,
   ];
@@ -31,18 +31,20 @@ test("renderInterface2", function(t) {
     "",
     CODE_TAGS_OPEN,
     "{",
-    "  setState: any",
-    "  state:",
-    "  {",
-    "    errors: [FormErrors](#user-content-#18)",
-    "    fields: [Fields](#user-content-#21)",
-    "    formIsDirty: boolean",
-    "  }",
-    "  validationMessages:",
-    "  {",
-    "    \\[ruleKey: string\\]: [MessageCreator](#user-content-#36)",
-    "  }",
-    "  validationRules: [RulesMap](#user-content-#12)",
+    `${INDENT_SYMBOL}setState: any`,
+    `${INDENT_SYMBOL}state:`,
+    `${INDENT_SYMBOL}{`,
+    `${INDENT_SYMBOL}${INDENT_SYMBOL}errors: [FormErrors](#user-content-#18)`,
+    `${INDENT_SYMBOL}${INDENT_SYMBOL}fields: [Fields](#user-content-#21)`,
+    `${INDENT_SYMBOL}${INDENT_SYMBOL}formIsDirty: boolean`,
+    `${INDENT_SYMBOL}}`,
+    `${INDENT_SYMBOL}validationMessages:`,
+    `${INDENT_SYMBOL}{`,
+    `${INDENT_SYMBOL}${
+      INDENT_SYMBOL
+    }\\[ruleKey: string\\]: [MessageCreator](#user-content-#36)`,
+    `${INDENT_SYMBOL}}`,
+    `${INDENT_SYMBOL}validationRules: [RulesMap](#user-content-#12)`,
     "}",
     CODE_TAGS_CLOSE,
   ];

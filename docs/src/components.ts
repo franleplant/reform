@@ -2,7 +2,7 @@ import * as ts from "typescript";
 import * as helpers from "./helpers";
 import { TypeNode, Node } from "./types";
 import Context from "./Context";
-import { CODE_TAGS_OPEN, CODE_TAGS_CLOSE } from "./constants";
+import { INDENT_SYMBOL, CODE_TAGS_OPEN, CODE_TAGS_CLOSE } from "./constants";
 
 //TODO renderSection and renderTypeOfNode
 
@@ -358,5 +358,5 @@ export function renderTypeAlias(node: Node, context: Context): Array<string> {
 }
 
 export function indent(lines: Array<string>): Array<string> {
-  return lines.map(line => `  ${line}`);
+  return lines.map(line => `${INDENT_SYMBOL}${line}`);
 }

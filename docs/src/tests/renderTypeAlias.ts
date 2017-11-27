@@ -1,6 +1,6 @@
 import * as test from "tape";
 import { renderNode } from "../components";
-import { CODE_TAGS_OPEN, CODE_TAGS_CLOSE } from "../constants";
+import { INDENT_SYMBOL, CODE_TAGS_OPEN, CODE_TAGS_CLOSE } from "../constants";
 import Context from "../Context";
 import node from "./renderTypeAliasFixture";
 
@@ -13,7 +13,9 @@ test("renderTypeAlias", function(t) {
     "",
     CODE_TAGS_OPEN,
     "{",
-    "  (ruleArgument: any, ruleKey: string, fieldName: string): string",
+    `${
+      INDENT_SYMBOL
+    }(ruleArgument: any, ruleKey: string, fieldName: string): string`,
     "}",
     CODE_TAGS_CLOSE,
   ];
