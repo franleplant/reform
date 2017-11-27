@@ -17,7 +17,7 @@
 
 
 
-<pre><code>
+<pre>
 {
   core: [./src/core](#user-content-#178)
   reactHelpers: [./src/reactHelpers](#user-content-#201)
@@ -25,7 +25,7 @@
   types: [./src/types](#user-content-#1)
   validators: [./src/validators](./src/validators)
 }
-</code></pre>
+</pre>
 # core <small>Module [src](./src/core.ts#L1)</small> <a id="#178"></a>
 ## fieldIsValid <small>Function [src](./src/core.ts#L73)</small> <a id="#185"></a>
 
@@ -45,16 +45,16 @@ way you can avoid re calculating them again each time you want to know if the fi
 
 
 
-<pre><code>
+<pre>
 fieldIsValid(value: string | number, rules: [Rules](#user-content-#9)): boolean
-</code></pre>
+</pre>
 
 
 
 
-<pre><code>
+<pre>
 fieldIsValid(fieldErrors: [FieldErrors](#user-content-#15)): boolean
-</code></pre>
+</pre>
 
 ## formIsValid <small>Function [src](./src/core.ts#L125)</small> <a id="#195"></a>
 
@@ -64,16 +64,16 @@ two variants, the first one accepts values and rules and calculates the
 one accepts an already calculated `formErrors`.
 
 
-<pre><code>
+<pre>
 formIsValid(fieldsValues: [Fields](#user-content-#21), rulesMap: [RulesMap](#user-content-#12)): boolean
-</code></pre>
+</pre>
 
 
 
 
-<pre><code>
+<pre>
 formIsValid(formErrors: [FormErrors](#user-content-#18)): boolean
-</code></pre>
+</pre>
 
 ## validateField <small>Function [src](./src/core.ts#L40)</small> <a id="#181"></a>
 
@@ -109,9 +109,9 @@ that there is an error, otherwise, it does not have an error, and that rule is p
 
 
 
-<pre><code>
+<pre>
 validateField(value: string | number, rules: [Rules](#user-content-#9)): [FieldErrors](#user-content-#15)
-</code></pre>
+</pre>
 
 ## validateForm <small>Function [src](./src/core.ts#L103)</small> <a id="#191"></a>
 
@@ -121,9 +121,9 @@ indexed by `fieldName` and return `FormErrors` which is, an object that has
 fieldNames as keys and `FieldErrors` as values.
 
 
-<pre><code>
+<pre>
 validateForm(fieldsValues: [Fields](#user-content-#21), rulesMap: [RulesMap](#user-content-#12)): [FormErrors](#user-content-#18)
-</code></pre>
+</pre>
 
 # reactHelpers <small>Module [src](./src/reactHelpers.ts#L1)</small> <a id="#201"></a>
 ## fieldErrors <small>Function [src](./src/reactHelpers.ts#L242)</small> <a id="#227"></a>
@@ -153,9 +153,9 @@ Tags
 - unstable 
 
 
-<pre><code>
+<pre>
 fieldErrors(fieldName: string): Array\<[string, any]\>
-</code></pre>
+</pre>
 
 ## fieldIfError <small>Function [src](./src/reactHelpers.ts#L203)</small> <a id="#223"></a>
 
@@ -171,9 +171,9 @@ This function is purely for ergonomic purposes.
 
 
 
-<pre><code>
+<pre>
 fieldIfError(fieldName: string, errorKey: string): boolean
-</code></pre>
+</pre>
 
 ## fieldIsValid <small>Function [src](./src/reactHelpers.ts#L164)</small> <a id="#218"></a>
 
@@ -186,9 +186,9 @@ Use it to render _invalid_ state in your inputs.
 
 
 
-<pre><code>
+<pre>
 fieldIsValid(fieldName: string): boolean
-</code></pre>
+</pre>
 
 ## formIsValid <small>Function [src](./src/reactHelpers.ts#L185)</small> <a id="#221"></a>
 
@@ -202,9 +202,9 @@ fieldIsValid(fieldName: string): boolean
 
 
 
-<pre><code>
+<pre>
 formIsValid(): boolean
-</code></pre>
+</pre>
 
 ## mapFieldErrors <small>Function [src](./src/reactHelpers.ts#L298)</small> <a id="#230"></a>
 
@@ -248,9 +248,9 @@ Tags
 
 
 
-<pre><code>
+<pre>
 mapFieldErrors(fieldName: string): Array\<string\>
-</code></pre>
+</pre>
 
 ## validateField <small>Function [src](./src/reactHelpers.ts#L83)</small> <a id="#206"></a>
 
@@ -287,9 +287,9 @@ This function will also set your form to `dirty` in `this.state.formIsDirty`
 
 
 
-<pre><code>
+<pre>
 validateField(fieldName: string, value: any): boolean
-</code></pre>
+</pre>
 
 ## validateFieldFromState <small>Function [src](./src/reactHelpers.ts#L113)</small> <a id="#210"></a>
 
@@ -305,9 +305,9 @@ This function will also set your form to `dirty` in `this.state.formIsDirty`
 
 
 
-<pre><code>
+<pre>
 validateFieldFromState(fieldName: string): boolean
-</code></pre>
+</pre>
 
 ## validateForm <small>Function [src](./src/reactHelpers.ts#L128)</small> <a id="#213"></a>
 
@@ -322,9 +322,9 @@ This function will also set your form to `dirty` in `this.state.formIsDirty`
 
 
 
-<pre><code>
+<pre>
 validateForm(fieldsValues: [Fields](#user-content-#21)): boolean
-</code></pre>
+</pre>
 
 ## validateFormFromState <small>Function [src](./src/reactHelpers.ts#L151)</small> <a id="#216"></a>
 
@@ -339,16 +339,16 @@ This function will also set your form to `dirty` in `this.state.formIsDirty`
 
 
 
-<pre><code>
+<pre>
 validateFormFromState(): boolean
-</code></pre>
+</pre>
 
 # reactMixins <small>Module [src](./src/reactMixins.ts#L1)</small> <a id="#233"></a>
 ## IReform <small>Interface [src](./src/reactMixins.ts#L13)</small> <a id="#234"></a>
 Handy interface that contains attributes corresponding to each
 `Reform.reactHelpers.*` method.
 
-<pre><code>
+<pre>
 {
   fieldErrors: [fieldErrors](#user-content-#227)
   fieldIfError: [fieldIfError](#user-content-#223)
@@ -360,7 +360,7 @@ Handy interface that contains attributes corresponding to each
   validateForm: [validateForm](#user-content-#213)
   validateFormFromState: [validateFormFromState](#user-content-#216)
 }
-</code></pre>
+</pre>
 ## functionalMixin <small>Function [src](./src/reactMixins.ts#L76)</small> <a id="#248"></a>
 
 Functional mixin to incorporate all reactHelpers methods into your Component's instance.
@@ -386,9 +386,9 @@ class MyComponent extends React.Component {
 
 
 
-<pre><code>
+<pre>
 functionalMixin(instance: any): void
-</code></pre>
+</pre>
 
 ## objectMixin <small>Function [src](./src/reactMixins.ts#L38)</small> <a id="#245"></a>
 
@@ -406,9 +406,9 @@ Use it with typescript to get type checks and autocomplete.
 
 
 
-<pre><code>
+<pre>
 objectMixin(that: [ValidationAbleInstance](#user-content-#24)): [IReform](#user-content-#234)
-</code></pre>
+</pre>
 
 # validators <small>Module [src](./src/validators.ts#L1)</small> <a id="#169"></a>
 ## validatorInterface <small>Object literal [src](./src/validators.ts#L18)</small> <a id="#170"></a>
@@ -426,51 +426,51 @@ The main reasons for this abstraction to exist are:
 Use it if you want to add new global custom validators.
 
 
-<pre><code>
+<pre>
 {
   get: get(key: string): [Validator](#user-content-#2)
   set: set(key: string, value: [Validator](#user-content-#2)): void
 }
-</code></pre>
+</pre>
 # types <small>Module [src](./src/types.ts#L1)</small> <a id="#1"></a>
 ## FieldErrors <small>Interface [src](./src/types.ts#L17)</small> <a id="#15"></a>
 
-<pre><code>
+<pre>
 {
   \[ruleKey: string\]: boolean
 }
-</code></pre>
+</pre>
 ## Fields <small>Interface [src](./src/types.ts#L25)</small> <a id="#21"></a>
 
-<pre><code>
+<pre>
 {
   \[fieldName: string\]: any
 }
-</code></pre>
+</pre>
 ## FormErrors <small>Interface [src](./src/types.ts#L21)</small> <a id="#18"></a>
 
-<pre><code>
+<pre>
 {
   \[fieldName: string\]: [FieldErrors](#user-content-#15)
 }
-</code></pre>
+</pre>
 ## Rules <small>Interface [src](./src/types.ts#L9)</small> <a id="#9"></a>
 
-<pre><code>
+<pre>
 {
   \[ruleKey: string\]: boolean | string | [Validator](#user-content-#2) | any
 }
-</code></pre>
+</pre>
 ## RulesMap <small>Interface [src](./src/types.ts#L13)</small> <a id="#12"></a>
 
-<pre><code>
+<pre>
 {
   \[fieldName: string\]: [Rules](#user-content-#9)
 }
-</code></pre>
+</pre>
 ## ValidationAbleInstance <small>Interface [src](./src/types.ts#L35)</small> <a id="#24"></a>
 
-<pre><code>
+<pre>
 {
   setState: any
   state:
@@ -485,28 +485,28 @@ Use it if you want to add new global custom validators.
   }
   validationRules: [RulesMap](#user-content-#12)
 }
-</code></pre>
+</pre>
 ## Validator <small>Interface [src](./src/types.ts#L1)</small> <a id="#2"></a>
 
-<pre><code>
+<pre>
 {
   (value: string | number | any, ruleValue: any): boolean
 }
-</code></pre>
+</pre>
 ## ValidatorMap <small>Interface [src](./src/types.ts#L5)</small> <a id="#6"></a>
 
-<pre><code>
+<pre>
 {
   \[ruleKey: string\]: [Validator](#user-content-#2)
 }
-</code></pre>
+</pre>
 ## MessageCreator <small>Type alias [src](./src/types.ts#L29)</small> <a id="#36"></a>
 
-<pre><code>
+<pre>
 {
   (ruleArgument: any, ruleKey: string, fieldName: string): string
 }
-</code></pre>
+</pre>
 # officialValidators/index <small>Module [src](./src/officialValidators/index.ts#L1)</small> <a id="#124"></a>
 ## validatorMap <small>Object literal [src](./src/officialValidators/index.ts#L65)</small> <a id="#128"></a>
 These are all the official validators HTML5 validators.
@@ -550,7 +550,7 @@ this.validationRules = {
 
 
 
-<pre><code>
+<pre>
 {
   maxDate: [maxDate](#user-content-#91)
   maxMonth: [maxMonth](#user-content-#101)
@@ -576,162 +576,162 @@ this.validationRules = {
   pattern: pattern(value: string, re: RegExp): boolean
   required: required(value: any): boolean
 }
-</code></pre>
+</pre>
 # officialValidators/minMonth <small>Module [src](./src/officialValidators/minMonth.ts#L1)</small> <a id="#94"></a>
 ## minMonth <small>Function [src](./src/officialValidators/minMonth.ts#L4)</small> <a id="#95"></a>
 
 
 
-<pre><code>
+<pre>
 minMonth(value: string, min: string): boolean
-</code></pre>
+</pre>
 
 # officialValidators/minNumber <small>Module [src](./src/officialValidators/minNumber.ts#L1)</small> <a id="#74"></a>
 ## minNumber <small>Function [src](./src/officialValidators/minNumber.ts#L1)</small> <a id="#75"></a>
 
 
 
-<pre><code>
+<pre>
 minNumber(value: number | string, min: number | string): boolean
-</code></pre>
+</pre>
 
 # officialValidators/maxMonth <small>Module [src](./src/officialValidators/maxMonth.ts#L1)</small> <a id="#99"></a>
 ## maxMonth <small>Function [src](./src/officialValidators/maxMonth.ts#L4)</small> <a id="#100"></a>
 
 
 
-<pre><code>
+<pre>
 maxMonth(value: string, max: string): boolean
-</code></pre>
+</pre>
 
 # officialValidators/minWeek <small>Module [src](./src/officialValidators/minWeek.ts#L1)</small> <a id="#114"></a>
 ## minWeek <small>Function [src](./src/officialValidators/minWeek.ts#L4)</small> <a id="#115"></a>
 
 
 
-<pre><code>
+<pre>
 minWeek(value: string, min: string): boolean
-</code></pre>
+</pre>
 
 # officialValidators/minDate <small>Module [src](./src/officialValidators/minDate.ts#L1)</small> <a id="#84"></a>
 ## minDate <small>Function [src](./src/officialValidators/minDate.ts#L1)</small> <a id="#85"></a>
 
 
 
-<pre><code>
+<pre>
 minDate(value: string, min: string): boolean
-</code></pre>
+</pre>
 
 # officialValidators/time <small>Module [src](./src/officialValidators/time.ts#L1)</small> <a id="#62"></a>
 ## time <small>Function [src](./src/officialValidators/time.ts#L5)</small> <a id="#63"></a>
 
 
 
-<pre><code>
+<pre>
 time(value: string): boolean
-</code></pre>
+</pre>
 
 # officialValidators/url <small>Module [src](./src/officialValidators/url.ts#L1)</small> <a id="#42"></a>
 ## url <small>Function [src](./src/officialValidators/url.ts#L11)</small> <a id="#45"></a>
 
 
 
-<pre><code>
+<pre>
 url(value: string): boolean
-</code></pre>
+</pre>
 
 # officialValidators/week <small>Module [src](./src/officialValidators/week.ts#L1)</small> <a id="#70"></a>
 ## week <small>Function [src](./src/officialValidators/week.ts#L6)</small> <a id="#71"></a>
 
 
 
-<pre><code>
+<pre>
 week(value: string): boolean
-</code></pre>
+</pre>
 
 # officialValidators/maxDate <small>Module [src](./src/officialValidators/maxDate.ts#L1)</small> <a id="#89"></a>
 ## maxDate <small>Function [src](./src/officialValidators/maxDate.ts#L1)</small> <a id="#90"></a>
 
 
 
-<pre><code>
+<pre>
 maxDate(value: string, max: string): boolean
-</code></pre>
+</pre>
 
 # officialValidators/maxWeek <small>Module [src](./src/officialValidators/maxWeek.ts#L1)</small> <a id="#119"></a>
 ## maxWeek <small>Function [src](./src/officialValidators/maxWeek.ts#L4)</small> <a id="#120"></a>
 
 
 
-<pre><code>
+<pre>
 maxWeek(value: string, max: string): boolean
-</code></pre>
+</pre>
 
 # officialValidators/maxNumber <small>Module [src](./src/officialValidators/maxNumber.ts#L1)</small> <a id="#79"></a>
 ## maxNumber <small>Function [src](./src/officialValidators/maxNumber.ts#L1)</small> <a id="#80"></a>
 
 
 
-<pre><code>
+<pre>
 maxNumber(value: number | string, max: number | string): boolean
-</code></pre>
+</pre>
 
 # officialValidators/maxTime <small>Module [src](./src/officialValidators/maxTime.ts#L1)</small> <a id="#109"></a>
 ## maxTime <small>Function [src](./src/officialValidators/maxTime.ts#L3)</small> <a id="#110"></a>
 
 
 
-<pre><code>
+<pre>
 maxTime(value: string, max: string): boolean
-</code></pre>
+</pre>
 
 # officialValidators/minTime <small>Module [src](./src/officialValidators/minTime.ts#L1)</small> <a id="#104"></a>
 ## minTime <small>Function [src](./src/officialValidators/minTime.ts#L3)</small> <a id="#105"></a>
 
 
 
-<pre><code>
+<pre>
 minTime(value: string, min: string): boolean
-</code></pre>
+</pre>
 
 # officialValidators/month <small>Module [src](./src/officialValidators/month.ts#L1)</small> <a id="#66"></a>
 ## month <small>Function [src](./src/officialValidators/month.ts#L4)</small> <a id="#67"></a>
 
 
 
-<pre><code>
+<pre>
 month(value: string): boolean
-</code></pre>
+</pre>
 
 # utils <small>Module [src](./src/utils.ts#L1)</small> <a id="#48"></a>
 ## parseMonth <small>Function [src](./src/utils.ts#L3)</small> <a id="#49"></a>
 
 
 
-<pre><code>
+<pre>
 parseMonth(value: string): Array\<number\>
-</code></pre>
+</pre>
 
 ## parseTime <small>Function [src](./src/utils.ts#L49)</small> <a id="#59"></a>
 
 
 
-<pre><code>
+<pre>
 parseTime(time: string): number
-</code></pre>
+</pre>
 
 ## parseWeek <small>Function [src](./src/utils.ts#L17)</small> <a id="#52"></a>
 
 
 
-<pre><code>
+<pre>
 parseWeek(value: string): Array\<number\>
-</code></pre>
+</pre>
 
 ## weeksInYear <small>Function [src](./src/utils.ts#L36)</small> <a id="#55"></a>
 
 
 
-<pre><code>
+<pre>
 weeksInYear(year: number): number
-</code></pre>
+</pre>
