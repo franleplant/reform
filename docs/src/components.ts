@@ -2,7 +2,7 @@ import * as ts from "typescript";
 import * as helpers from "./helpers";
 import { TypeNode, Node } from "./types";
 import Context from "./Context";
-import { CODE_TAGS_OPEN, CODE_TAGS_CLOSE } from './constants'
+import { CODE_TAGS_OPEN, CODE_TAGS_CLOSE } from "./constants";
 
 //TODO renderSection and renderTypeOfNode
 
@@ -13,7 +13,7 @@ const KIND_STRING_EXTERNAL_MODULE = "External module";
 const KIND_STRING_INTERFACE = "Interface";
 const KIND_STRING_PROPERTY = "Property";
 const KIND_STRING_TYPE_LITERAL = "Type literal";
-const KIND_STRING_TYPE_ALIAS = "Type alias"
+const KIND_STRING_TYPE_ALIAS = "Type alias";
 
 export function renderNode(node: Node, context: Context): Array<string> {
   //console.log(ts.SyntaxKind.PropertyDeclaration, ts.SyntaxKind.PropertyAssignment, ts.SyntaxKind.PropertySignature )
@@ -199,7 +199,13 @@ export function renderObjectLiteral(
       `${child.name}: ${renderNode(child, context.setInline(true)).join(" ")}`
   );
 
-  const lines = [ CODE_TAGS_OPEN, "{", ...indent(children), "}", CODE_TAGS_CLOSE];
+  const lines = [
+    CODE_TAGS_OPEN,
+    "{",
+    ...indent(children),
+    "}",
+    CODE_TAGS_CLOSE,
+  ];
 
   if (context.inline) {
     return lines;
@@ -247,7 +253,7 @@ export function renderInterface(node: Node, context: Context): Array<string> {
     ...indent(indexSignatures),
     ...indent(signatures),
     "}",
-    CODE_TAGS_CLOSE
+    CODE_TAGS_CLOSE,
   ];
 
   // TODO do we really need inline interfaces?
@@ -278,10 +284,13 @@ export function renderProperty(node: Node, context: Context): Array<string> {
   return [`${node.name}: ${renderType(node.type, context).join("TODO")}`];
 }
 
-export function renderTypeLiteral(node: Node, _context: Context): Array<string> {
-  let context = _context
+export function renderTypeLiteral(
+  node: Node,
+  _context: Context
+): Array<string> {
+  let context = _context;
   if (node.name === "__type") {
-    context = context.setInline(true)
+    context = context.setInline(true);
   }
 
   let children: Array<string> = [] as any;

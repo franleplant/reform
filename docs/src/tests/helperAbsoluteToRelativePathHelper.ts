@@ -1,6 +1,6 @@
 import * as test from "tape";
 import { absoluteToRelativePathHelper } from "../helpers";
-import { fakeAbsolutePath } from './renderObjectLiteralFixture'
+import { fakeAbsolutePath } from "./renderObjectLiteralFixture";
 
 test("absoluteToRelativePathHelper", function(t) {
   t.plan(1);

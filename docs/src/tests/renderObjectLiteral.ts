@@ -1,6 +1,6 @@
 import * as test from "tape";
 import { renderObjectLiteral } from "../components";
-import { CODE_TAGS_OPEN, CODE_TAGS_CLOSE } from '../constants'
+import { CODE_TAGS_OPEN, CODE_TAGS_CLOSE } from "../constants";
 import Context from "../Context";
 import node from "./renderObjectLiteralFixture";
 

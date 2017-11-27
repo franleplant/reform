@@ -1,7 +1,7 @@
 import * as test from "tape";
 import Context from "../Context";
 import { renderInterface } from "../components";
-import { CODE_TAGS_OPEN, CODE_TAGS_CLOSE } from '../constants'
+import { CODE_TAGS_OPEN, CODE_TAGS_CLOSE } from "../constants";
 import node from "./renderInterfaceFixture";
 import node2 from "./renderInterfaceFixture2";
 
