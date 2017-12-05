@@ -255,6 +255,7 @@ export default class GettingStarted extends Component {
     );
   }
 }
+
 ```
 
 ## Validators
