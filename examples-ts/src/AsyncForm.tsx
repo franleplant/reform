@@ -2,6 +2,13 @@ import * as React from 'react';
 import * as Reform from '@franleplant/reform';
 
 
+
+function isEmailUsed(isUsed: boolean): Promise<boolean> {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(isUsed), 1000)
+  })
+}
+
 interface State {
   message: string;
 
@@ -11,23 +18,14 @@ interface State {
   };
 
   errors: Partial<{
-    email: Reform.types.FieldErrors;
+    email: {[ruleKey: string]: boolean};
     password: Reform.types.FieldErrors;
   }>
 }
 
-/*
-  Reform HTML5 mode example (validate onSubmit)
-*/
 export default class GettingStarted extends React.Component<{}, State> {
-  /*
-    Hook Reform into your component
-  */
   re = Reform.reactMixins.objectMixin(this)
 
-  /*
-   Initialize your field and error state
-  */
   state = {
     fields: {
       email: '',
@@ -40,39 +38,58 @@ export default class GettingStarted extends React.Component<{}, State> {
     message: '',
   }
 
-  /*
-   Declare validation rules for your fields
-  */
   validationRules = {
-    email: { email: true, required: true},
+    email: {required: true, email: true},
     password: { required: true, minLength: 6},
   };
 
-  /*
-   [Optional] Easy way of displaying error messages
-  */
   validationMessages = {
-    required: (_ruleKey: string, _ruleValue: any, fieldName: string) => `${fieldName} is required`,
-    email: (_ruleKey: string, _ruleValue: any, fieldName: string) => `${fieldName} must be a valid email`,
-    default: (_ruleKey: string, _ruleValue: any, fieldName: string) => `${fieldName} is invalid`,
+    required: () => `Field is required`,
+    email: () => `Field must be a valid email`,
+    validating: () => `Validating...`,
+    isUsed: () => `Email is already in use`,
+    default: () => `Field is invalid`,
+  }
+
+  onEmailChange = async (event: any) => {
+    const value = event.target.value;
+    this.re.validateField('email', value)
+    this.setState(state => {
+      const fields = {
+        ...state.fields,
+        email: value,
+      };
+
+      return {...state, message: '', errors: { ...state.errors, email: {...state.errors.email, validating: true}}, fields};
+    });
+
+    // TODO this should be debounced
+    const isUsed = await isEmailUsed(true)
+    this.setState(state => {
+      const errors = {
+        ...state.errors,
+        email: {
+          ...state.errors.email,
+          validating: false,
+          isUsed,
+        }
+      }
+      return {...state, errors };
+    });
   }
 
 
-  /*
-    Regular onChange handlers from React world
-  */
-  onChangeFactory = (fieldName: string) => {
-    return (event: any) => {
-      const value = event.target.value;
-      this.setState(state => {
-        const fields = {
-          ...state.fields,
-          [fieldName]: value,
-        };
+  onPasswordChange = (event: any) => {
+    const value = event.target.value;
+    this.setState(state => {
+      const fields = {
+        ...state.fields,
+        password: value,
+      };
 
-        return {...state, message: '', error: {}, fields};
-      });
-    }
+      return {...state, message: '', error: {}, fields};
+    });
+    this.re.validateField('password', value);
   }
 
   /*
@@ -93,13 +110,14 @@ export default class GettingStarted extends React.Component<{}, State> {
   }
 
   render() {
+    console.log(this.state.errors)
     return (
       <form>
         <div>
           {/*
             Regular React controlled component
           */}
-          <input type="email" value={this.state.fields.email} onChange={this.onChangeFactory('email')} />
+          <input type="email" value={this.state.fields.email} onChange={this.onEmailChange} />
           {/*
             Display errors (first way)
           */}
@@ -120,7 +138,7 @@ export default class GettingStarted extends React.Component<{}, State> {
           {/*
             Regular React controlled component
           */}
-          <input type="password" value={this.state.fields.password} onChange={this.onChangeFactory('password')} />
+          <input type="password" value={this.state.fields.password} onChange={this.onPasswordChange} />
           {/*
             Display errors (second way) (there are more)
           */}

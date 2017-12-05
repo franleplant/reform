@@ -8,7 +8,7 @@ interface State {
   }
 
   errors: Partial<{
-    radio: boolean
+    radio: any
   }>
 }
 

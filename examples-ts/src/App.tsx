@@ -1,4 +1,5 @@
 import * as React from 'react';
+import AsyncForm from './AsyncForm'
 import Form1 from './Form1'
 import Form2 from './Form2'
 import GettingStarted from './GettingStarted'
@@ -45,6 +46,12 @@ export default class App extends React.Component<{}, {}> {
           <div style={formContainerStyle}>
             <h3>With Radios!</h3>
             <Radios/>
+          </div>
+        </div>
+        <div style={rowStyle}>
+          <div style={formContainerStyle}>
+            <h3>Async</h3>
+            <AsyncForm/>
           </div>
         </div>
       </div>

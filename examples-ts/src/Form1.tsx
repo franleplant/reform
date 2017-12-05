@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { reactMixins } from '@franleplant/reform';
+import * as Reform from '@franleplant/reform';
 
 interface State {
   fields: {
@@ -10,10 +10,10 @@ interface State {
   }
 
   errors: Partial<{
-    name: boolean;
-    email: boolean;
-    password: boolean;
-    confirmPassword: boolean;
+    name: Reform.types.FieldErrors;
+    email: Reform.types.FieldErrors;
+    password: Reform.types.FieldErrors;
+    confirmPassword: Reform.types.FieldErrors;
   }>
 }
 
@@ -21,7 +21,7 @@ interface State {
  *  Validate on every input change
  */
 export default class Form1 extends React.Component<{}, State> {
-  re = reactMixins.objectMixin(this)
+  re = Reform.reactMixins.objectMixin(this)
 
   state = {
     fields: {
